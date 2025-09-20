@@ -44,7 +44,7 @@ export const StickyScroll = ({
     setActiveCard(newActiveCard);
   });
 
-  const backgroundColors = ["#ffffff", "#e5e5e5", "#f1f1f1"];
+  const backgroundColors = ["#000000", "#000000", "#000000"];
   const linearGradients = [
     "linear-gradient(to bottom right, #06b6d4, #0f172a)",
     "linear-gradient(to bottom right, #0f172a, #6366f1)",
@@ -67,9 +67,9 @@ export const StickyScroll = ({
       style={{ minHeight: `${cardLength * 100}vh` }}
     >
       <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4 sm:px-6">
-        <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-4">More REVENUE. More PROFIT. Fewer FIREs.</p>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">What AiPRL can do for you</h1>
-        <p className="text-gray-500 w-full sm:w-4/5 md:w-2/4 mt-2 sm:mt-3 mx-auto text-sm sm:text-base md:text-xl">AiPRL is your 24/7 AI-powered associate—built to elevate every customer interaction, empower your team to sell more, and deliver seamless experiences that exceed expectations.</p>
+        <p className="text-xs sm:text-sm text-white/80 mb-2 sm:mb-4">More REVENUE. More PROFIT. Fewer FIREs.</p>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">What AiPRL can do for you</h1>
+        <p className="text-white/80 w-full sm:w-4/5 md:w-2/4 mt-2 sm:mt-3 mx-auto text-sm sm:text-base md:text-xl">AiPRL is your 24/7 AI-powered associate—built to elevate every customer interaction, empower your team to sell more, and deliver seamless experiences that exceed expectations.</p>
       </div>
 
       <div className="mx-auto w-full max-w-[95%] sm:max-w-[90%] md:max-w-[80%] px-2 sm:px-4 md:px-6 lg:px-8">
@@ -86,7 +86,7 @@ export const StickyScroll = ({
                     y: activeCard === index ? 0 : 20
                   }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="text-xl sm:text-2xl font-bold text-black/80"
+                  className="text-xl sm:text-2xl font-bold text-white/80"
                 >
                   {item.title}
                 </motion.h2>
@@ -97,7 +97,7 @@ export const StickyScroll = ({
                     y: activeCard === index ? 0 : 20
                   }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="mt-4 sm:mt-6 max-w-prose text-sm sm:text-base leading-6 sm:leading-7 text-black/80"
+                  className="mt-4 sm:mt-6 max-w-prose text-sm sm:text-base leading-6 sm:leading-7 text-white/80"
                 >
                   {item.description}
                 </motion.p>
@@ -108,7 +108,7 @@ export const StickyScroll = ({
                     y: activeCard === index ? 0 : 20
                   }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="bg-transparent w-full hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-lg sm:text-xl font-bold rounded-full dark:bg-slate-900 text-white dark:text-white border-neutral-200 dark:border-slate-800"
+                  className="bg-transparent w-full hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-lg sm:text-xl font-bold rounded-full dark:bg-slate-900 text-white/80 dark:text-white/80 border-neutral-200 dark:border-slate-800"
                 >
                   {item.button}
                 </motion.div>
@@ -156,7 +156,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="text-3xl xl:text-5xl font-bold text-black/80"
+                  className="text-3xl xl:text-5xl font-bold text-white/80"
               >
                 {item.title}
               </motion.h2>
@@ -167,7 +167,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="mt-6 max-w-prose text-lg xl:text-xl leading-7 xl:leading-8 text-black/80"
+                  className="mt-6 max-w-prose text-lg xl:text-xl leading-7 xl:leading-8 text-white/80"
               >
                 {item.description}
               </motion.p>
@@ -178,7 +178,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                className="bg-transparent w-full hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-2xl font-bold rounded-full dark:bg-slate-900 text-white dark:text-white border-neutral-200 dark:border-slate-800"
+                className="bg-transparent w-full hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-2xl font-bold rounded-full dark:bg-slate-900 text-white/80 dark:text-white/80 border-neutral-200 dark:border-slate-800"
               >
                 {item.button}
               </motion.div>

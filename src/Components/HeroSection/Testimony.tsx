@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { InfiniteMovingCards } from "../ui/Testimony";
 
 export function Testimony() {
     return (
         <>
-            <div className="my-20">
-                <h1 className="text-4xl font-bold text-center">Testimonials</h1>
-                <p className="text-center text-gray-500">What our clients say about us</p>
-                <div className="h-[20rem] rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+            <section id="customers" className="my-20 bg-black scroll-mt-28">
+                <h1 className="text-4xl text-white/80 font-bold text-center">Testimonials</h1>
+                <p className="text-center text-gray-600">What our clients say about us</p>
+                <div className="h-[20rem] rounded-md flex flex-col antialiased bg-black dark:bg-black dark:bg-grid-black/[0.05] items-center justify-center relative overflow-hidden">
                     <InfiniteMovingCards
                         items={testimonials}
                         direction="right"
                         speed="slow"
                     />
                 </div>
-            </div>
+            </section>
         </>
     );
 }
@@ -47,7 +47,7 @@ const testimonials = [
     },
     {
         quote:
-            "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
+            "Call me Ishmael. Some years ago-never mind how long precisely-having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
         name: "Herman Melville",
         title: "Moby-Dick",
     },

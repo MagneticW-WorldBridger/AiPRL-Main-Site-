@@ -51,7 +51,7 @@ export const Newsletter = () => {
   ]
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
+    <section className="py-20 px-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -107,12 +107,12 @@ export const Newsletter = () => {
 
           {/* Right Side - Form */}
           <div className="relative">
-            <BackgroundGradient className="rounded-[22px] p-6 sm:p-8 bg-white dark:bg-zinc-900">
-              <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-8">
+            <BackgroundGradient className="rounded-[22px] p-6 sm:p-8 bg-gray-900 dark:bg-zinc-900">
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-8">
                 {!isSubmitted ? (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="text-center mb-6">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      <h3 className="text-2xl font-bold text-white/80 mb-2">
                         Join our community
                       </h3>
                       <p className="text-gray-600">
@@ -168,7 +168,7 @@ export const Newsletter = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+                      className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <>

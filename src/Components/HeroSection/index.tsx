@@ -1,28 +1,58 @@
-import { SparklesPreview } from './HeroComponent'
-import { MacbookScrollDemo } from './ScrollBehaviour'
-import { SideCallAiprl } from './SideCallAiprl'
-import { StickyScrollRevealDemo } from './BenefitOfAiprl'
-import { ExpandTeam } from './ExpandTeam'
-import { InfiniteMovingCardsDemo } from './infiniteScroll'
-import { Retails } from './Retails'
-import { Testimony } from './Testimony'
-import { Pricing } from './Pricing'
-import { Newsletter } from '../Newletters/NewsLetter'
+import { SparklesPreview } from "./HeroComponent"
+import { MacbookScrollDemo } from "./ScrollBehaviour"
+import { SideCallAiprl } from "./SideCallAiprl"
+import { StickyScrollRevealDemo } from "./BenefitOfAiprl"
+import { ExpandTeam } from "./ExpandTeam"
+import { InfiniteMovingCardsDemo } from "./infiniteScroll"
+import { Retails } from "./Retails"
+import { Testimony } from "./Testimony"
+import { Pricing } from "./Pricing"
+import { Newsletter } from "../Newletters/NewsLetter"
+// import ChatbotWidget from "../ChatBotChatRace/chatBot"
+import ChatbotDock from "../ChatbotComponents"
+import { BlogPreview } from "./BlogPreview"
+
 function index() {
   return (
-    <div className=''>
-      <div className='max-w-[95%] sm:max-w-[90%] mx-auto px-2 sm:px-11'>
-        <SparklesPreview />
-        <MacbookScrollDemo />
-        <SideCallAiprl />
+    <div className="bg-black">
+      <div className="max-w-[95%] sm:max-w-[90%] mx-auto px-2 -sm:px-16">
+        <section id="home" className="scroll-mt-28">
+          <SparklesPreview />
+          <SideCallAiprl />
+        </section>
+        <section id="products" className="scroll-mt-28">
+          <MacbookScrollDemo />
+        </section>
       </div>
-      <StickyScrollRevealDemo />
-      <ExpandTeam />
-      <InfiniteMovingCardsDemo />
-      <Retails />
+
+      <section id="solutions" className="scroll-mt-28">
+        <StickyScrollRevealDemo />
+      </section>
+
+      <section id="team" className="scroll-mt-28">
+        <ExpandTeam />
+      </section>
+
+      <section id="company" className="scroll-mt-28">
+        <InfiniteMovingCardsDemo />
+      </section>
+
+      <section id="partners" className="scroll-mt-28">
+        <Retails />
+      </section>
+
       <Pricing />
       <Testimony />
-      <Newsletter />
+      <BlogPreview />
+
+      <section id="resources" className="scroll-mt-28">
+        <Newsletter />
+      </section>
+
+      <section id="contact" className="scroll-mt-28">
+        {/* <ChatbotWidget />  */}
+        <ChatbotDock />
+      </section>
     </div>
   )
 }
