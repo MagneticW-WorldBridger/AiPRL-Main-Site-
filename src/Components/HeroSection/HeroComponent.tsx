@@ -1,7 +1,6 @@
 "use client";
 import { SparklesCore } from "../ui/sparkles";
-import { showDemoModal } from "../../lib/demoModal";
-import { ArrowRight, Star, TrendingUp, Clock, Shield } from "lucide-react";
+import { Phone, Star, TrendingUp, Clock, Shield } from "lucide-react";
 
 export function SparklesPreview() {
   return (
@@ -74,16 +73,15 @@ export function SparklesPreview() {
               {/* Button */}
               <button
                 type="button"
-                onClick={() => showDemoModal()}
                 className="relative w-full py-3 sm:py-4 md:py-4 flex items-center justify-center sm:w-auto bg-black hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-lg sm:text-xl md:text-2xl font-bold rounded-full dark:bg-slate-900 text-white/70 dark:text-white/70 border-neutral-200 dark:border-slate-800 px-6 sm:px-8 md:px-10"
               >
-                Book a Demo
-                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 ml-3 sm:ml-5 md:ml-6" />
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-3 sm:mr-5 md:mr-6" />
+                Talk to Aiprl
               </button>
             </div>
-            <button className="w-auto sm:w-auto text-center bg-transparent text-white/70 px-4 sm:px-6 md:px-8 lg:px-10 border-2 rounded-full border-gray-300 hover:border-gray-400 py-2 sm:py-3 md:py-4 flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg lg:text-xl font-semibold transition-all duration-300">
+            {/* <button className="w-auto sm:w-auto text-center bg-transparent text-white/70 px-4 sm:px-6 md:px-8 lg:px-10 border-2 rounded-full border-gray-300 hover:border-gray-400 py-2 sm:py-3 md:py-4 flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg lg:text-xl font-semibold transition-all duration-300">
               Test on your website
-            </button>
+            </button> */}
           </div>
 
           {/* Trust Indicators */}

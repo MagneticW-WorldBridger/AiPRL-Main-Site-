@@ -71,7 +71,7 @@ export const OverlayMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ 
 
                         <button
                             onClick={onClose}
-                            className="absolute right-0 top-0 inline-flex h-16 w-16 items-center justify-center rounded-full p-2 bg-white/10 hover:bg-white/20 transition"
+                            className="absolute cursor-pointer right-0 top-0 inline-flex h-16 w-16 items-center justify-center rounded-full p-2 bg-white/10 hover:bg-white/20 transition"
                             aria-label="Close menu"
                         >
                             <X className="h-16 w-16 text-white rounded-full" />
