@@ -11,7 +11,7 @@ export default function App() {
 
     return (
         <>
-            <div className="font-[Inter]">
+            <div className="font-[Inter] bg-black">
                 <TopNav onOpen={() => setOpen(true)} />
                 <BrandLogo />
                 {/* <Home onOpen={() => setOpen(true)} /> */}

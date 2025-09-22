@@ -15,14 +15,14 @@ const handleButtonClick = () => {
 export function ExpandTeam() {
   return (
     <>
-      <div className="w-full bg-[#f1f1f1] py-4 sm:py-6 md:py-8 lg:py-16 flex flex-col items-center justify-center">
+      <div className="w-full bg-[#000000] py-4 sm:py-6 md:py-8 lg:py-16 flex flex-col items-center justify-center">
         <BlurText
           text="More SUPPORT. Less OVERHEAD. CONSISTENT results."
           delay={150}
           animateBy="words"
           direction="top"
           onAnimationComplete={handleAnimationComplete}
-          className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-2 sm:mb-4 md:mb-6 px-4 sm:px-6"
+          className="text-lg text-white/40 sm:text-xl md:text-2xl font-bold text-center mb-2 sm:mb-4 md:mb-6 px-4 sm:px-6"
         />
 
         <div className="bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent h-[2px] w-3/4 blur-sm mb-4 sm:mb-6 md:mb-8" />
@@ -36,22 +36,22 @@ export function ExpandTeam() {
             </div> */}
 
             {/* Main background shape */}
-            <div className="absolute top-1/2 right-1/2 transform -translate-y-1/2 w-[23dvw] h-full bg-gradient-to-br from-gray-100/20 via-gray-100/30 to-gray-200/40 backdrop-blur-sm" />
+            {/* <div className="absolute top-1/2 right-1/2 transform -translate-y-1/2 w-[23dvw] h-full bg-gradient-to-br from-white/20 via-white/30 to-white/40 backdrop-blur" /> */}
 
             {/* Overlapping gradient effects */}
             {/* <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-orange-200/30 via-transparent to-blue-100/20 rounded-full mix-blend-soft-light" /> */}
 
             {/* User image with blending */}
-            <div className="absolute top-0 right-1 h-full">
+            {/* <div className="absolute top-0 right-1 h-full"> */}
               <img
                 src={Users}
                 alt="AiprlAssist"
-                className="w-full h-full object-contain mix-blend-multiply "
+                className="w-full rounded-2xl h-full object-contain opacity-[0.7]"
               />
 
               {/* Subtle overlay for better integration */}
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/5 to-gray-100/20 rounded-r-full" />
-            </div>
+              {/* <div className="absolute inset-0 bg-gradient-to-l rounded-2xl from-transparent via-white/5 to-gray-100/20 rounded-r-full" /> */}
+            {/* </div> */}
 
             {/* Additional depth layers */}
             <div className="absolute bottom-4 left-8 w-32 h-32 bg-gradient-to-tr from-orange-300/20 to-transparent rounded-full blur-lg" />

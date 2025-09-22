@@ -2,7 +2,7 @@ import { TextHoverEffect } from '../ui/text-hover-effect'
 
 export const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-white py-12 sm:py-14 md:py-16 px-2 sm:px-4">
+        <footer className="bg-black text-white py-12 sm:py-14 md:py-16 px-2 sm:px-4">
             <div className="max-w-7xl mx-auto">
                 {/* Trust Badges */}
                 {/* <div className="text-center mb-12">

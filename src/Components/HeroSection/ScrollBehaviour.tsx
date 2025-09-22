@@ -3,7 +3,7 @@ import AiprlLogo from '../../assets/AiprlLogo.svg'
 
 export function MacbookScrollDemo() {
   return (
-    <div className="w-full top-2 sm:top-3 md:top-4 overflow-hidden bg-white dark:bg-[#0B0B0F] px-2 sm:px-3 md:px-4">
+    <div className="w-full top-2 sm:top-3 md:top-4 overflow-hidden bg-black dark:bg-[#0B0B0F] px-2 sm:px-3 md:px-4">
       <MacbookScroll
         badge={
           <div className="relative z-40">

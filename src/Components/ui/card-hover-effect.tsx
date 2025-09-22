@@ -37,7 +37,7 @@ export const HoverEffect = ({
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-[20dvh] w-full bg-[#0d61fd] dark:bg-slate-800/[0.8] block py-12 sm:py-16 md:py-20 px-2 sm:px-4 rounded-2xl sm:rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-[#0d61fd] dark:bg-slate-800/[0.8] block py-12 sm:py-16 md:py-20 px-2 sm:px-4 rounded-2xl sm:rounded-3xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -51,7 +51,7 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
+          <Card className="bg-gray-900/40 h-full shadow-2xl shadow-gray-900/90">
             <div className="flex justify-center mb-3 sm:mb-4">
               <img src={item.image.src} alt={item.image.alt} className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 object-contain" />
             </div>
@@ -74,7 +74,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-xl sm:rounded-2xl px-4 sm:px-6 overflow-hidden bg-gray-100 border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20 py-4 sm:py-6",
+        "rounded-xl sm:rounded-2xl px-4 sm:px-6 overflow-hidden bg-gray-900/40 border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20 dark:bg-gray-900/40 py-4 sm:py-6",
         className
       )}
     >
