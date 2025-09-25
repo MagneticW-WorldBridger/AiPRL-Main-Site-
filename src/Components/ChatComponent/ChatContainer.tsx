@@ -3,6 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import ChatInput from "./ChatInput";
 import SuggestedResponses from "./SuggestedResponses";
 import ChatMessages from "./ChatMessages";
+import { useChatApi } from "../../hooks/useChatApi";
 
 const chatPlaceholderMessages = [
   "What can I help you with?",
@@ -17,6 +18,8 @@ export interface Message {
   text: string;
   isUser: boolean;
   timestamp: Date;
+  isLoading?: boolean;
+  isError?: boolean;
 }
 
 const ChatContainer: React.FC = () => {
@@ -26,6 +29,12 @@ const ChatContainer: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reopenTimerRef = useRef<number | null>(null);
+
+  const { sendMessage: sendApiMessage, isLoading: apiLoading, error: apiError } = useChatApi();
+
+  const handleMinimize = () => {
+    setIsExpanded(false);
+  };
 
   // Close handler: closes now, auto-reopens in 20s
   const handleClose = () => {
@@ -53,7 +62,7 @@ const ChatContainer: React.FC = () => {
     }
   };
 
-  const handleSendMessage = (text: string) => {
+  const handleSendMessage = async (text: string) => {
     if (text.trim()) {
       // Add user message
       const userMessage: Message = {
@@ -63,20 +72,68 @@ const ChatContainer: React.FC = () => {
         timestamp: new Date(),
       };
 
-      setShowSuggestions(false);
       setMessages(prev => [...prev, userMessage]);
       setIsExpanded(true);
 
+      const loadingMessageId = (Date.now() + 1).toString();
+      const loadingMessage: Message = {
+        id: loadingMessageId,
+        text: "Thinking...",
+        isUser: false,
+        timestamp: new Date(),
+        isLoading: true,
+      };
+
+      //To be deleted Started
+      setIsExpanded(true);
+      //To be deleted Ended
+
+      setMessages(prev => [...prev, loadingMessage]);
+
+
+      try {
+        //Uses the API service to send the message
+        const aiResponseHTML = await (apiLoading ? "Thinking..." : sendApiMessage(text.trim()));
+
+        setMessages(prev => 
+          prev.map(msg =>
+            msg.id === loadingMessageId
+            ? {
+              ...msg,
+              text: aiResponseHTML,
+              isLoading: false,
+            }
+            : msg
+          )
+        );
+      } catch (error) {
+        console.error("Error calling AI API:", error);
+
+        //Update the loading message to show an error
+        setMessages(prev =>
+          prev.map(msg =>
+            msg.id === loadingMessageId
+            ? {
+              ...msg,
+              // text: "Sorry, I'm having trouble processing your request. Please try again later.",
+              text: `Sorry, I encountered an error: ${error instanceof Error ? error.message : 'Unknown error'} Please try again later.`,
+              isLoading: false,
+              isError: true,
+            }
+            : msg
+          )
+        );
+      }
       // Simulate AI response after a short delay
-      setTimeout(() => {
-        const aiResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          text: "Thank you for your message! I'm here to help you with AiprlAssist. How can I assist you further?",
-          isUser: false,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, aiResponse]);
-      }, 1000);
+      // setTimeout(() => {
+      //   const aiResponse: Message = {
+      //     id: (Date.now() + 1).toString(),
+      //     text: "Thank you for your message! I'm here to help you with AiprlAssist. How can I assist you further?",
+      //     isUser: false,
+      //     timestamp: new Date(),
+      //   };
+      //   setMessages(prev => [...prev, aiResponse]);
+      // }, 1000);
     }
   };
 
@@ -121,8 +178,8 @@ const ChatContainer: React.FC = () => {
         >
           {/* Chat messages - only show when expanded */}
           {isExpanded && (
-            <div className="flex-1 w-full overflow-y-scroll scrollbar-hide bg-black shadow-xl shadow-orange-400/30 border border-orange-400/20 rounded-t-lg">
-              <ChatMessages messages={messages} />
+            <div className="flex-1 w-full overflow-y-scroll scrollbar-thin bg-black shadow-xl shadow-orange-400/30 border border-orange-400/20 rounded-t-lg">
+              <ChatMessages messages={messages} onMinimize={handleMinimize} />
             </div>
           )}
 

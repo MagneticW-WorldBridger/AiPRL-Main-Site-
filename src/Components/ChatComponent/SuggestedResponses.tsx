@@ -2,10 +2,12 @@ import React from 'react';
 import { IoSparklesOutline } from 'react-icons/io5';
 
 const suggestions = [
-  "Can I see AiprlAssist trained on my website?",
-  "How can AiprlAssist integrate with my existing CRM and tools seamlessly?",
-  "Help me improve my inbound conversion rates",
-  "How does AiprlAssist ensure data privacy and compliance with GDPR?",
+  "What are the most common customer inquiries?",
+  "Show mw top performing dealers by region",
+  "What products have the highest satisfaction rates?",
+  "Analyze recent chat conversation trends",
+  "Which facilities need attention based on performance metrics?",
+  "What are the FAQ topics with lowest effectiveness?"
 ];
 
 interface SuggestedResponsesProps {

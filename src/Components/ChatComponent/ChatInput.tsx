@@ -52,12 +52,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
     >
       <div
         className="relative"
-        onMouseEnter={() => onShowSuggestions(true)}
+        onMouseEnter={() => !isExpanded && onShowSuggestions(true)}
+        onMouseLeave={() => !isExpanded && onShowSuggestions(false)}
       >
         <button
           className="p-2 text-gray-400 cursor-pointer hover:text-white transition-colors duration-200"
           aria-label="AI features"
-          onFocus={() => onShowSuggestions(true)}
+          onFocus={() => !isExpanded && onShowSuggestions(true)}
+          onBlur={() => !isExpanded && onShowSuggestions(false)}
         >
           <IoSparklesOutline className="w-5 h-5" />
         </button>
