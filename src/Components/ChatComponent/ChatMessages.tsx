@@ -51,9 +51,9 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex overflow-y-scroll items-center justify-center h-full">
             <div className="text-center">
               <IoSparklesOutline className="w-12 h-12 text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 text-sm">Start a conversation...</p>

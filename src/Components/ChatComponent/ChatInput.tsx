@@ -74,7 +74,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       />
 
       <button
-        className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+        className="p-2 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
         aria-label="Record voice message"
       >
         <IoMic className="w-5 h-5" />
@@ -85,7 +85,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         disabled={!inputValue.trim()}
         className={`p-2 rounded-full outline-none transition-all duration-300 ${
           inputValue.trim()
-            ? 'text-orange-400 hover:text-orange-300 hover:bg-orange-400/10'
+            ? 'text-orange-400 cursor-pointer hover:text-orange-300 hover:bg-orange-400/10'
             : 'text-white/50 cursor-not-allowed'
         }`}
         aria-label="Send message"
@@ -95,7 +95,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
       <button
         onClick={onClose}
-        className="p-2 rounded-full text-white/50 hover:text-white hover:bg-white/10 outline-none transition-all duration-300"
+        className="p-2 rounded-full cursor-pointer text-white/50 hover:text-white hover:bg-white/10 outline-none transition-all duration-300"
         aria-label="Close chat"
       >
         <IoClose className="w-6 h-6" />

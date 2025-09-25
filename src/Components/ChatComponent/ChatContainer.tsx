@@ -96,6 +96,15 @@ const ChatContainer: React.FC = () => {
 
   return (
     <>
+      {isExpanded && (
+        <div
+          className={`fixed inset-0 h-screen w-screen bg-black/90 backdrop-blur-md transition-opacity duration-300 pointer-events-none ${
+            isExpanded ? 'opacity-90 z-50' : 'opacity-60'
+          }`}
+          aria-hidden="true"
+        />
+      )}
+
       <CSSTransition
         in={isOpen}
         timeout={300}
@@ -105,14 +114,14 @@ const ChatContainer: React.FC = () => {
       >
         <div
           ref={panelRef}
-          className={`fixed item-center z-50 rounded-lg flex top-4 flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${isExpanded
-              ? 'w-full lg:max-w-5xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
-              : 'w-full lg:max-w-5xl lg:mt-3 mt-10 left-1/2 -translate-x-1/2 overflow-visible'
+          className={`fixed item-center shadow-lg shadow-orange-400/40 z-50 rounded-lg flex top-4 flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${isExpanded
+              ? 'w-full lg:max-w-6xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
+              : 'w-full lg:max-w-6xl lg:mt-3 mt-10 left-1/2 -translate-x-1/2 overflow-visible'
             }`}
         >
           {/* Chat messages - only show when expanded */}
           {isExpanded && (
-            <div className="flex-1 w-full bg-black border border-orange-400/20 rounded-t-lg">
+            <div className="flex-1 w-full overflow-y-scroll scrollbar-hide bg-black shadow-xl shadow-orange-400/30 border border-orange-400/20 rounded-t-lg">
               <ChatMessages messages={messages} />
             </div>
           )}

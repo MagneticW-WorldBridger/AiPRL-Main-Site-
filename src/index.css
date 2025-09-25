@@ -433,3 +433,11 @@ border-radius: 100% !important;background: rgba(255, 255, 255, 0.18) !important;
   transform: translateY(-20px) scale(0.95);
   transition: opacity 300ms ease-in, transform 300ms ease-in;
 }
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
