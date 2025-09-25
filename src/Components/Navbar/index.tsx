@@ -3,6 +3,7 @@ import { TopNav } from "./TopNav";
 import { OverlayMenu } from "./OverlayMenu";
 import { BrandLogo } from "./BrandLogo";
 // import { Home } from "./Home";
+import ChatContainer from "../ChatComponent/ChatContainer";
 
 
 export default function App() {
@@ -12,7 +13,10 @@ export default function App() {
     return (
         <>
             <div className="font-[Inter] bg-black">
-                <TopNav onOpen={() => setOpen(true)} />
+                <div className="w-full flex justify-between items-center z-40">
+                    <TopNav onOpen={() => setOpen(true)} />
+                    <ChatContainer />
+                </div>
                 <BrandLogo />
                 {/* <Home onOpen={() => setOpen(true)} /> */}
 
