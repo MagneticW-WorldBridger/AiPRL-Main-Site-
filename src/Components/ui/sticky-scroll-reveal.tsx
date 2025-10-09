@@ -7,7 +7,7 @@ export const StickyScroll = ({
   content,
   contentClassName,
 }: {
-  content: { title: string; description: string; content?: React.ReactNode; button?: React.ReactNode }[];
+  content: { title: string; description: string; paragraphContent?: string; content?: React.ReactNode; button?: React.ReactNode }[];
   contentClassName?: string;
 }) => {
   const [activeCard, setActiveCard] = useState(0);
@@ -69,7 +69,7 @@ export const StickyScroll = ({
       <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4 sm:px-6">
         <p className="text-xs sm:text-sm text-white/80 mb-2 sm:mb-4">More REVENUE. More PROFIT. Fewer FIREs.</p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">What AiPRL can do for you</h1>
-        <p className="text-white/80 w-full sm:w-4/5 md:w-2/4 mt-2 sm:mt-3 mx-auto text-sm sm:text-base md:text-xl">AiPRL is your 24/7 AI-powered associate—built to elevate every customer interaction, empower your team to sell more, and deliver seamless experiences that exceed expectations.</p>
+        <p className="text-white/80 w-full sm:w-4/5 md:w-2/4 mt-2 sm:mt-3 mx-auto text-sm sm:text-base md:text-xl">AiPRL is your 24/7 AI assistant, engineered to elevate every interaction, empower your team, and deliver seamless, high-impact customer experiences.</p>
       </div>
 
       <div className="mx-auto w-full max-w-[95%] sm:max-w-[90%] md:max-w-[80%] px-2 sm:px-4 md:px-6 lg:px-8">
@@ -101,6 +101,17 @@ export const StickyScroll = ({
                 >
                   {item.description}
                 </motion.p>
+                <motion.p
+                  initial={{ opacity: 0.3 }}
+                  animate={{
+                    opacity: activeCard === index ? 1 : 0.3,
+                    y: activeCard === index ? 0 : 20
+                  }}
+                  transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
+                  className="mt-4 sm:mt-6 max-w-prose text-sm sm:text-base leading-6 sm:leading-7 text-white/80"
+                >
+                  {item.paragraphContent}
+                </motion.p>
                 <motion.div
                   initial={{ opacity: 0.3 }}
                   animate={{
@@ -118,7 +129,7 @@ export const StickyScroll = ({
               <motion.div
                 style={{ background: linearGradients[index % linearGradients.length] }}
                 className={cn(
-                  "relative w-full h-[40vh] sm:h-[50vh] rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl overflow-hidden",
+                  "relative w-full h-[40vh] sm:h-[50vh] rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden",
                   contentClassName,
                 )}
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -167,9 +178,20 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="mt-6 max-w-prose text-lg xl:text-xl leading-7 xl:leading-8 text-white/80"
+                  className="mt-6 max-w-prose text-lg xl:text-lg leading-7 xl:leading-8 text-white/80"
               >
                 {item.description}
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0.3 }}
+                animate={{
+                  opacity: activeCard === index ? 1 : 0.3,
+                  y: activeCard === index ? 0 : 20
+                }}
+                transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
+                  className="mt-6 max-w-prose text-lg xl:text-lg leading-7 xl:leading-8 text-white/80"
+              >
+                {item.paragraphContent}
               </motion.p>
               <motion.div
                 initial={{ opacity: 0.3 }}
@@ -187,11 +209,11 @@ export const StickyScroll = ({
         </div>
 
         {/* Right column – sticky preview */}
-          <div className="sticky top-24 h-fit">
+          <div className="sticky top-[20%] h-fit">
           <motion.div
             style={{ background: backgroundGradient }}
             className={cn(
-                "relative w-[28rem] xl:w-[54rem] h-[60vh] xl:h-[70vh] rounded-2xl p-6 shadow-2xl overflow-hidden",
+                "relative w-[28rem] xl:w-[54rem] h-[60vh] xl:h-[70vh] rounded-2xl p-3 shadow-2xl overflow-hidden",
               contentClassName,
             )}
               key={activeCard}

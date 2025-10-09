@@ -1,10 +1,22 @@
 "use client";
 import { SparklesCore } from "../ui/sparkles";
 import { Phone, Star, TrendingUp, Clock, Shield } from "lucide-react";
+import { VoicePopup } from "../VoiceAgent";
+import { useState } from "react";
 
 export function SparklesPreview() {
+  const [isVoicePopupOpen, setIsVoicePopupOpen] = useState(false);
+
+  const handleTalkToAiprl = () => {
+    setIsVoicePopupOpen(true);
+  };
+
   return (
     <>
+      <VoicePopup 
+        isOpen={isVoicePopupOpen} 
+        onClose={() => setIsVoicePopupOpen(false)} 
+      />
       <div className="grid grid-cols-1 mt-16 sm:mt-24 md:mt-[3rem] lg:mt-[4rem]">
         <div className=" w-full col-span-2 flex flex-col items-center justify-center overflow-hidden">
           {/* Social Proof Badge */}
@@ -73,6 +85,7 @@ export function SparklesPreview() {
               {/* Button */}
               <button
                 type="button"
+                onClick={handleTalkToAiprl}
                 className="relative w-full py-1.5 sm:py-4 md:py-4 flex items-center justify-center sm:w-auto bg-[#fd8a0d]/60 hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-lg sm:text-xl md:text-2xl font-bold rounded-full dark:bg-slate-900 text-white/70 dark:text-white/70 border-neutral-200 dark:border-slate-800 px-6 sm:px-8 md:px-10"
               >
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-3 sm:mr-5 md:mr-6" />

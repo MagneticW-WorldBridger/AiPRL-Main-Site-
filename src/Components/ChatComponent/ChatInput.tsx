@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  IoSend, IoMic, IoSparklesOutline,
+  IoSend, IoSparklesOutline,
   IoClose
 } from 'react-icons/io5';
 import useAutoTyping from '../../hooks/useAutoTyping';
@@ -75,12 +75,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
         aria-label="Chat input"
       />
 
-      <button
+      {/* <button
         className="p-2 cursor-pointer text-gray-400 hover:text-white transition-colors duration-200"
         aria-label="Record voice message"
       >
         <IoMic className="w-5 h-5" />
-      </button>
+      </button> */}
 
       <button
         onClick={handleSendMessage}

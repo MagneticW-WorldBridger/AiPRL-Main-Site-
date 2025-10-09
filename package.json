@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:voice\"",
+    "dev:frontend": "vite",
+    "dev:voice": "cd standalone-voice-rings && npm start",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup-voice": "node setup-voice-rings.js"
   },
   "dependencies": {
     "@tabler/icons-react": "^3.34.1",
@@ -39,6 +42,7 @@
     "@types/react-dom": "^19.1.7",
     "@types/react-transition-group": "^4.4.12",
     "@vitejs/plugin-react-swc": "^4.0.0",
+    "concurrently": "^8.2.2",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

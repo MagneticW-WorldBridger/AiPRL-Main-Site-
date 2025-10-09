@@ -1,4 +1,4 @@
-import { readEnv, requireEnv } from '../utils/env';
+import { readEnv } from '../utils/env';
 
 // Chat API Service
 // This service handles all API calls to your n8n webhook
@@ -17,8 +17,8 @@ interface ChatApiResponse {
     private debugMode: boolean;
   
     constructor() {
-      // Get API configuration from environment variables
-      this.apiUrl = requireEnv('VITE_CHAT_API_URL');
+      // Use the exact webhook URL provided
+      this.apiUrl =  (readEnv('VITE_CHAT_API_URL') || '');
       this.timeout = parseInt(readEnv('VITE_CHAT_API_TIMEOUT') || '30000', 10);
       this.debugMode = readEnv('VITE_CHAT_API_ENABLE_DEBUG') === 'true';
   
