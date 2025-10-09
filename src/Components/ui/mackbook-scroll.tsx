@@ -1,37 +1,20 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "motion/react";
 import { cn } from "../../lib/utils";
 import AiprlLogo from '../../assets/AiprlLogo.svg'
 import {
-  IconBrightnessDown,
-  IconBrightnessUp,
   IconCaretRightFilled,
   IconCaretUpFilled,
-  IconChevronUp,
-  IconMicrophone,
-  IconMoon,
-  IconPlayerSkipForward,
-  IconPlayerTrackNext,
-  IconPlayerTrackPrev,
-  IconTable,
-  IconVolume,
-  IconVolume2,
-  IconVolume3,
 } from "@tabler/icons-react";
-import { IconSearch } from "@tabler/icons-react";
-import { IconWorld } from "@tabler/icons-react";
-import { IconCommand } from "@tabler/icons-react";
 import { IconCaretLeftFilled } from "@tabler/icons-react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import Aiprl from '../../assets/Imagecontent.png'
 
 export const MacbookScroll = ({
-  src,
   showGradient,
   badge,
 }: {
-  src?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
@@ -109,12 +92,10 @@ export const MacbookScroll = ({
       
       {/* Lid */}
       <Lid
-        src={src}
         scaleX={scaleX}
         scaleY={scaleY}
         rotate={rotate}
         translate={translateY}
-        isMobile={isMobile}
       />
       
       {/* Base area - Responsive proportions */}
@@ -159,15 +140,11 @@ export const Lid = ({
   scaleY,
   rotate,
   translate,
-  src,
-  isMobile,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
-  src?: string;
-  isMobile: boolean;
 }) => {
   return (
     <div className="relative [perspective:1200px]">

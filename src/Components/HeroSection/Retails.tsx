@@ -1,4 +1,3 @@
-import React from 'react'
 import { HoverEffect } from '../ui/card-hover-effect'
 import AiprlLogo from '../../assets/AiprlLogo.svg'
 

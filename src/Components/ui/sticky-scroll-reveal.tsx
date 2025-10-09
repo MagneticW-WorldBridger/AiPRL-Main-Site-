@@ -193,17 +193,7 @@ export const StickyScroll = ({
               >
                 {item.paragraphContent}
               </motion.p>
-              <motion.div
-                initial={{ opacity: 0.3 }}
-                animate={{
-                  opacity: activeCard === index ? 1 : 0.3,
-                  y: activeCard === index ? 0 : 20
-                }}
-                transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                className="bg-transparent w-full hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-2xl font-bold rounded-full dark:bg-slate-900 text-white/80 dark:text-white/80 border-neutral-200 dark:border-slate-800"
-              >
-                {item.button}
-              </motion.div>
+             
             </div>
           ))}
         </div>

@@ -15,7 +15,6 @@ export function MacbookScrollDemo() {
             <div className="absolute -inset-0.5 sm:-inset-1 md:-inset-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 opacity-50 sm:opacity-65 md:opacity-75 blur-sm" />
           </div>
         }
-        src={`/linear.webp`}
         showGradient={false}
       />
     </div>

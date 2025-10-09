@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Mail, Send, CheckCircle, ArrowRight, Clock, Award } from 'lucide-react'
+import { Mail, Send, CheckCircle, ArrowRight } from 'lucide-react'
 import { BackgroundGradient } from '../ui/background-gradient'
 
 interface NewsletterFormData {

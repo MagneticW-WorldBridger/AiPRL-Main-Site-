@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TopNav } from "./TopNav";
 import { OverlayMenu } from "./OverlayMenu";
 import { BrandLogo } from "./BrandLogo";

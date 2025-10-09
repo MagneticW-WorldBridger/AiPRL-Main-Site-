@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { InfiniteMovingCards } from "../ui/Testimony";
 
 export function Testimony() {

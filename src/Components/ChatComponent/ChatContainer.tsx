@@ -30,7 +30,7 @@ const ChatContainer: React.FC = () => {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reopenTimerRef = useRef<number | null>(null);
 
-  const { sendMessage: sendApiMessage, isLoading: apiLoading, error: apiError } = useChatApi();
+  const { sendMessage: sendApiMessage, isLoading: apiLoading } = useChatApi();
 
   const handleMinimize = () => {
     setIsExpanded(false);

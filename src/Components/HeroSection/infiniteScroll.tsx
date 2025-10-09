@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 import CharlesDickens from "../../assets/AiprlLogo.svg";
 

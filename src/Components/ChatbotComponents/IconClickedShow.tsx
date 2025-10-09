@@ -1,4 +1,3 @@
-import React from "react";
 import Character01 from "../../assets/GraphicContent/Character01.png";
 
 interface IconClickedShowProps {

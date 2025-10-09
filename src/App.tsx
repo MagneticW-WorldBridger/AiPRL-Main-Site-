@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import NavbarDemo from './Components/Navbar'
 import HeroComponent from './Components/HeroSection'
 // import { ChatBot } from './Components/ChatBot/chatBot'

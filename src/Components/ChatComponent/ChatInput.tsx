@@ -19,7 +19,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   onClose, 
   onSendMessage, 
   isExpanded,
-  showSuggestions,
+  showSuggestions: _showSuggestions,
   onShowSuggestions
 }) => {
   const autoTypeText = useAutoTyping({ messages, loop: true });
