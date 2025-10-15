@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   IoSend, IoSparklesOutline,
   IoClose
@@ -24,6 +24,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
 }) => {
   const autoTypeText = useAutoTyping({ messages, loop: true });
   const [inputValue, setInputValue] = useState('');
+  const [isSuggestionsVisible, setIsSuggestionsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -42,8 +45,83 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
+  // Handle showing suggestions
+  const showSuggestions = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsSuggestionsVisible(true);
+    onShowSuggestions(true);
+  };
+
+  // Handle hiding suggestions with delay
+  const hideSuggestions = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      // Only hide if we're not currently showing suggestions due to click
+      if (isSuggestionsVisible) {
+        setIsSuggestionsVisible(false);
+        onShowSuggestions(false);
+      }
+    }, 1000); // 1000ms delay before hiding
+  };
+
+  // Sync local state with parent state
+  useEffect(() => {
+    if (!_showSuggestions) {
+      setIsSuggestionsVisible(false);
+    }
+  }, [_showSuggestions]);
+
+  // Handle click on suggestions button
+  const handleSuggestionsClick = () => {
+    if (isSuggestionsVisible) {
+      hideSuggestions();
+    } else {
+      showSuggestions();
+    }
+  };
+
+  // Handle click outside to hide suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsSuggestionsVisible(false);
+        onShowSuggestions(false);
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+      }
+    };
+
+    if (isSuggestionsVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isSuggestionsVisible, onShowSuggestions]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       className={`flex items-center rounded-lg shadow-inner shadow-orange-400 space-x-2 p-1 bg-black transition-all duration-500 ease-in-out ${
         isExpanded 
           ? 'w-full rounded-t-none rounded-b-lg border-t border-orange-400/20' 
@@ -52,14 +130,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
     >
       <div
         className="relative"
-        onMouseEnter={() => !isExpanded && onShowSuggestions(true)}
-        onMouseLeave={() => !isExpanded && onShowSuggestions(false)}
+        onMouseEnter={() => !isExpanded && showSuggestions()}
+        onMouseLeave={() => !isExpanded && hideSuggestions()}
       >
         <button
           className="p-2 text-gray-400 cursor-pointer hover:text-white transition-colors duration-200"
           aria-label="AI features"
-          onFocus={() => !isExpanded && onShowSuggestions(true)}
-          onBlur={() => !isExpanded && onShowSuggestions(false)}
+          onClick={handleSuggestionsClick}
+          onFocus={() => !isExpanded && showSuggestions()}
+          onBlur={() => !isExpanded && hideSuggestions()}
         >
           <IoSparklesOutline className="w-5 h-5" />
         </button>

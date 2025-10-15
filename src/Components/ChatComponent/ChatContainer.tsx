@@ -172,8 +172,8 @@ const ChatContainer: React.FC = () => {
         <div
           ref={panelRef}
           className={`fixed item-center shadow-lg shadow-orange-400/40 z-50 rounded-lg flex top-4 flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${isExpanded
-              ? 'w-full lg:max-w-6xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
-              : 'w-full lg:max-w-6xl lg:mt-3 mt-10 left-1/2 -translate-x-1/2 overflow-visible'
+              ? 'w-[90%] lg:max-w-6xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
+              : 'w-[90%] lg:max-w-6xl lg:mt-3 mt-10 left-1/2 -translate-x-1/2 overflow-visible'
             }`}
         >
           {/* Chat messages - only show when expanded */}
@@ -184,10 +184,14 @@ const ChatContainer: React.FC = () => {
           )}
 
           {/* Input container */}
-          <div className="relative w-full" onMouseLeave={() => setShowSuggestions(false)}>
+          <div className="relative w-full">
             {/* Suggestions dropdown on Default */}
             {showSuggestions && !isExpanded && (
-              <div className="absolute top-full left-0 right-0 mb-2 z-[60]">
+              <div 
+                className="absolute top-full left-0 right-0 mb-2 z-[60]"
+                onMouseEnter={() => setShowSuggestions(true)}
+                onMouseLeave={() => setShowSuggestions(false)}
+              >
                 <SuggestedResponses onSuggestionClick={handleSuggestionClick} />
               </div>
             )}
@@ -204,7 +208,11 @@ const ChatContainer: React.FC = () => {
 
             {/* Suggestions dropdown when expanded */}
             {showSuggestions && isExpanded && (
-              <div className="absolute bottom-full left-0 right-0 mt-2 z-[60]">
+              <div 
+                className="absolute bottom-full left-0 right-0 mt-2 z-[60]"
+                onMouseEnter={() => setShowSuggestions(true)}
+                onMouseLeave={() => setShowSuggestions(false)}
+              >
                 <SuggestedResponses onSuggestionClick={handleSuggestionClick} />
               </div>
             )}

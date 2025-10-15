@@ -4,11 +4,11 @@ import AiprlLogo from '../../assets/AiprlLogo.svg'
 export const Retails = () => {
     return (
         <>
-            <div className='my-8 sm:my-12 md:my-16 px-4 sm:px-6'>
-                <h1 className='text-lg sm:text-xl md:text-2xl font-semibold text-center text-[#fd8a0d] mb-2 sm:mb-3'>Trusted by THE LEADING retailers.</h1>
-                <p className='text-center text-lg sm:text-xl md:text-2xl font-semibold text-gray-500 mb-1 sm:mb-2'>Retail AI, Built for Real Business Impact</p>
-                <p className='text-center text-sm sm:text-base md:text-lg text-gray-500 mb-6 sm:mb-8'>AiPRL works smarter, not harder, and sells more</p>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 my-6 sm:my-8 md:my-10">
+            <div className='my-8 sm:my-12 md:my-16 lg:my-20 px-4 sm:px-6 lg:px-8'>
+                <h1 className='text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-center text-[#fd8a0d] mb-2 sm:mb-3 lg:mb-4'>Trusted by THE LEADING retailers.</h1>
+                <p className='text-center text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-500 mb-2 sm:mb-3 lg:mb-4'>The AI Assistant Built for Real Business Impact</p>
+                <p className='text-center text-xs sm:text-sm md:text-base lg:text-lg text-gray-500 mb-6 sm:mb-8 lg:mb-10 max-w-4xl mx-auto leading-relaxed'>AiPRL is the always-on retail AI Assistant that works smarter, sells more, and supports faster across every channel.</p>
+                <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 my-6 sm:my-8 md:my-10 lg:my-12">
                     <HoverEffect items={projects} />
                 </div>
             </div>
@@ -20,7 +20,7 @@ export const projects = [
     {
         title: "Multi-LLM Response Optimization",
         description:
-            "AiPRL test thousand of AI output in real-time to deliver the most accurate, brand-consistent responses-no scripts, no guesswork.",
+            "AiPRL’s AI Assistant runs thousands of real-time outputs through multiple LLMs to generate accurate, brand-consistent responses. No scripts. No guesswork. Just intelligent support.",
         image: {
             src: AiprlLogo,
             alt: "Multi-LLM Response Optimization",
@@ -30,7 +30,7 @@ export const projects = [
     {
         title: "Advanced Sentiment Analysis",
         description:
-            "Detects emotion, urgency, and frustration automatically, escalating sensitive issues to the right human agent with full context.",
+            "The AI Assistant detects emotion, urgency, and frustration in every interaction. It escalates high-priority issues to human agents with full context for faster resolution.",
         image: {
             src: AiprlLogo,
             alt: "Advanced Sentiment Analysis",
@@ -40,7 +40,7 @@ export const projects = [
     {
         title: "Machine Learning Models",
         description:
-            "Learns your products, pricing, promotions, and customer behavior to personaize every interaction across web, SMS, chat, and voice.",
+            "AiPRL’s AI Assistant learns from your customers to personalize product recommendations, pricing, and promotions across voice, chat, SMS, and web.",
         image: {
             src: AiprlLogo,
             alt: "Machine Learning Models",

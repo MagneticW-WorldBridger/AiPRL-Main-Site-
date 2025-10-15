@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Check, Star, Globe } from 'lucide-react'
+import { useCounterAnimation } from '../../hooks/useCounterAnimation'
+import { ROICalculator } from './ROICalculator'
 
 interface PricingPlan {
     id: string
@@ -18,15 +20,14 @@ const pricingPlans: PricingPlan[] = [
     {
         id: 'starter',
         name: 'Starter',
-        description: 'Perfect for single storefronts.',
+        description: 'Perfect for small teams and single storefronts getting started with the AiPRL AI Assistant.',
         monthlyPrice: 250,
         yearlyPrice: 2500, // 10% off
         features: [
-            'Chat with customers',
-            'SMS with AI',
-            'SMS with AI',
-            'Voice with AI',
-            'Email with AI'
+            'Live chat with customers',
+            'SMS powered by AI Assistant',
+            'Voice support with AI Assistant',
+            'AI-driven email replies',
         ],
         buttonText: 'Start with Starter',
         buttonVariant: 'outline'
@@ -34,15 +35,15 @@ const pricingPlans: PricingPlan[] = [
     {
         id: 'growth',
         name: 'Growth',
-        description: 'Multi-location, more integrations.',
+        description: 'Ideal for growing retailers managing multiple channels or locations.',
         monthlyPrice: 3000,
         yearlyPrice: 30000, // 10% off
         features: [
             'Everythng in Starter',
-            'Advanced reporting & filters',
-            'Priority support',
+            'Advanced reporting and filters',
+            'Priority customer support',
             'Multi-location support',
-            'More integrations'
+            'Integration with 3rd-party platforms'
         ],
         buttonText: 'Start with Growth',
         buttonVariant: 'primary',
@@ -52,15 +53,15 @@ const pricingPlans: PricingPlan[] = [
     {
         id: 'enterprise',
         name: 'Enterprise',
-        description: 'Custom, full orchestration.',
+        description: 'Designed for large retail operations that need full customization and orchestration with the AiPRL AI Assistant.',
         monthlyPrice: 5000,
         yearlyPrice: 100000, // 10% off
         features: [
             'Everything in Growth',
-            'Custom integrations & automation',
-            'More integrations',
-            'Custom orchestration',
-            'Onboarding support'
+            'Custom workflows and automation',
+            'Advanced integrations',
+            'End-to-end orchestration',
+            'Dedicated onboarding and training'
         ],
         buttonText: 'Start with Enterprise',
         buttonVariant: 'outline',
@@ -68,8 +69,35 @@ const pricingPlans: PricingPlan[] = [
     }
 ]
 
+interface MetricCardProps {
+    value: number;
+    prefix?: string;
+    suffix?: string;
+    color: string;
+    label: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ value, prefix = '', suffix = '', color, label }) => {
+    const { count, elementRef } = useCounterAnimation({
+        end: value,
+        prefix,
+        suffix,
+        duration: 2000
+    });
+
+    return (
+        <div className="text-center" ref={elementRef}>
+            <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${color} mb-2 sm:mb-3`}>
+                {count}
+            </div>
+            <div className="text-xs sm:text-sm text-gray-600 leading-relaxed">{label}</div>
+        </div>
+    );
+};
+
 export const Pricing = () => {
     const [isYearly, setIsYearly] = useState(true)
+    const [isROICalculatorOpen, setIsROICalculatorOpen] = useState(false)
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -151,7 +179,7 @@ export const Pricing = () => {
             </div>
 
             {/* Pricing Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-7xl mx-auto px-4 sm:px-6">
                 {pricingPlans.map((plan) => {
                     if (plan.recommended) {
                         return (
@@ -169,43 +197,43 @@ export const Pricing = () => {
                                         </div>
                                     )}
                                     <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-30">
-                                        <div className="bg-blue-600 whitespace-nowrap text-white text-sm font-medium px-4 py-4 rounded-full flex items-center gap-2 shadow-lg">
+                                        <div className="bg-blue-600 whitespace-nowrap text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 sm:py-3 rounded-full flex items-center gap-2 shadow-lg">
                                             Recommended for you
                                         </div>
                                     </div>
 
-                                    <div className="p-6 my-10 sm:p-7 md:p-8">
+                                    <div className="p-6 sm:p-8 lg:p-10 my-8 sm:my-10">
                                         {/* Plan Name */}
-                                        <div className="mb-4">
-                                            <h3 className="text-xl sm:text-2xl font-bold text-white/80 mb-2">
+                                        <div className="mb-6 sm:mb-8">
+                                            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
                                                 {plan.name}
                                             </h3>
-                                            <p className="text-sm sm:text-base text-gray-600">{plan.description}</p>
+                                            <p className="text-xs sm:text-sm lg:text-base text-gray-600 leading-relaxed">{plan.description}</p>
                                         </div>
 
                                         {/* Price */}
-                                        <div className="mb-6 sm:mb-8">
+                                        <div className="mb-8 sm:mb-10">
                                             <div className="flex items-baseline">
-                                                <span className="text-4xl sm:text-5xl font-bold text-white/80">
+                                                <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/80">
                                                     {formatPrice(isYearly ? plan.yearlyPrice : plan.monthlyPrice)}
                                                 </span>
-                                                <span className="text-gray-500 ml-2 text-sm sm:text-base">
+                                                <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
                                                     /{isYearly ? 'year' : 'month'}
                                                 </span>
                                             </div>
                                             {isYearly && (
-                                                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                                                    {formatPrice(plan.monthlyPrice)}/month billed annually
+                                                <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                                                    Billed at {formatPrice(plan.monthlyPrice)}/ monthly
                                                 </p>
                                             )}
                                         </div>
 
                                         {/* Features */}
-                                        <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                                        <ul className="space-y-4 sm:space-y-5 mb-8 sm:mb-10">
                                             {plan.features.map((feature, featureIndex) => (
                                                 <li key={featureIndex} className="flex items-start">
                                                     <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                                                    <span className="text-sm sm:text-base text-gray-700">{feature}</span>
+                                                    <span className="text-xs sm:text-sm lg:text-base text-gray-700 leading-relaxed">{feature}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -236,38 +264,38 @@ export const Pricing = () => {
                                     </div>
                                 )}
 
-                                <div className="p-6 sm:p-8">
+                                <div className="p-6 sm:p-8 lg:p-10">
                                     {/* Plan Name */}
-                                    <div className="mb-4">
-                                        <h3 className="text-xl sm:text-2xl font-bold text-white/80 mb-2">
+                                    <div className="mb-6 sm:mb-8">
+                                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
                                             {plan.name}
                                         </h3>
-                                        <p className="text-sm sm:text-base text-gray-600">{plan.description}</p>
+                                        <p className="text-xs sm:text-sm lg:text-base text-gray-600 leading-relaxed">{plan.description}</p>
                                     </div>
 
                                     {/* Price */}
-                                    <div className="mb-6 sm:mb-8">
+                                    <div className="mb-8 sm:mb-10">
                                         <div className="flex items-baseline">
-                                            <span className="text-4xl sm:text-5xl font-bold text-white/80">
+                                            <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/80">
                                                 {formatPrice(isYearly ? plan.yearlyPrice : plan.monthlyPrice)}
                                             </span>
-                                            <span className="text-gray-500 ml-2 text-sm sm:text-base">
+                                            <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
                                                 /{isYearly ? 'year' : 'month'}
                                             </span>
                                         </div>
                                         {isYearly && (
-                                            <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                                                {formatPrice(plan.monthlyPrice)}/month billed annually
+                                            <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                                                Billed at {formatPrice(plan.monthlyPrice)}/ monthly
                                             </p>
                                         )}
                                     </div>
 
                                     {/* Features */}
-                                    <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                                    <ul className="space-y-4 sm:space-y-5 mb-8 sm:mb-10">
                                         {plan.features.map((feature, featureIndex) => (
                                             <li key={featureIndex} className="flex items-start">
                                                 <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                                                <span className="text-sm sm:text-base text-gray-700">{feature}</span>
+                                                <span className="text-xs sm:text-sm lg:text-base text-gray-700 leading-relaxed">{feature}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -307,39 +335,58 @@ export const Pricing = () => {
                         Not sure which plan is right for you?
                     </h3>
                     <p className="text-gray-600 mb-6">
-                        Calculate your potential ROI and see how much AIPRL could save your business.
+                    Discover how much time and money the AiPRL AI Assistant could save your business. Get a custom ROI projection in seconds.
                     </p>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors">
+                    <button 
+                        onClick={() => setIsROICalculatorOpen(true)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors"
+                    >
                         Calculate My ROI
                     </button>
                 </div>
             </div>
 
             {/* Customer Success Metrics */}
-            <div className="mt-16">
-                <h3 className="text-2xl font-bold text-gray-700 text-center mb-8">
-                    Join 500+ retailers who've transformed their customer experience
+            <div className="mt-16 sm:mt-20">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-700 text-center mb-8 sm:mb-12 px-4">
+                    Join 500+ retailers transforming customer experiences with AiPRL
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                    <div className="text-center">
-                        <div className="text-3xl font-bold text-blue-600 mb-2">40%</div>
-                        <div className="text-sm text-gray-600">Avg. Conversion Increase</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl font-bold text-green-600 mb-2">2 min</div>
-                        <div className="text-sm text-gray-600">Response Time</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl font-bold text-purple-600 mb-2">98%</div>
-                        <div className="text-sm text-gray-600">Customer Satisfaction</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl font-bold text-orange-600 mb-2">$50K</div>
-                        <div className="text-sm text-gray-600">Avg. Annual Savings</div>
-                    </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-4 sm:px-6">
+                    <MetricCard 
+                        value={40} 
+                        suffix="%" 
+                        prefix="+" 
+                        color="text-blue-600" 
+                        label="Average increase in conversions" 
+                    />
+                    <MetricCard 
+                        value={2} 
+                        suffix=" minutes" 
+                        color="text-green-600" 
+                        label="Average response time using the AI Assistant" 
+                    />
+                    <MetricCard 
+                        value={98} 
+                        suffix="%" 
+                        color="text-purple-600" 
+                        label="Customer satisfaction score" 
+                    />
+                    <MetricCard 
+                        value={50} 
+                        prefix="$" 
+                        suffix="K" 
+                        color="text-orange-600" 
+                        label="Average annual cost savings per client" 
+                    />
                 </div>
             </div>
         </div>
+
+        {/* ROI Calculator Modal */}
+        <ROICalculator 
+            isOpen={isROICalculatorOpen} 
+            onClose={() => setIsROICalculatorOpen(false)} 
+        />
     </section>
     )
 }

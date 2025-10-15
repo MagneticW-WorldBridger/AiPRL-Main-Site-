@@ -23,31 +23,37 @@ export function Testimony() {
 const testimonials = [
     {
         quote:
-            "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-        name: "Charles Dickens",
-        title: "A Tale of Two Cities",
+            "Before AiPRL, we were juggling three tools just to keep up with customer messages. Now, everything’s routed and answered in one place, with way less manual effort.",
+        name: "Melissa T",
+        title: "Customer Experience Manager, Boutique Home Retailer",
     },
     {
         quote:
-            "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-        name: "William Shakespeare",
-        title: "Hamlet",
+            "The AI Assistant didn’t just help us respond faster, it actually helped us recover abandoned carts through chat and SMS. That was a game changer.",
+        name: "Jason K",
+        title: "Ecommerce Lead, Mid-Market Apparel Brand",
     },
     {
-        quote: "All that we see or seem is but a dream within a dream.",
-        name: "Edgar Allan Poe",
-        title: "A Dream Within a Dream",
-    },
-    {
-        quote:
-            "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-        name: "Jane Austen",
-        title: "Pride and Prejudice",
+        quote: "We didn’t have the budget for a full support team. AiPRL let us automate the basics and still sound human. Our customers love how responsive we’ve become.",
+        name: "Aisha R",
+        title: "Owner, Independent Beauty Store",
     },
     {
         quote:
-            "Call me Ishmael. Some years ago-never mind how long precisely-having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-        name: "Herman Melville",
-        title: "Moby-Dick",
+            "The setup was faster than I expected. We were live in under 2 weeks, and it already feels like AiPRL is part of the team.",
+        name: "Carlos M",
+        title: "Head of IT, Regional Electronics Chain",
+    },
+    {
+        quote:
+            "What stood out for us was the sentiment detection. It flags issues before they escalate, and that’s helped our team jump in before things spiral.",
+        name: "Rachel B",
+        title: "Digital Ops Manager, DTC Furniture Brand",
+    },
+    {
+        quote:
+            "We did the math, AiPRL is saving us close to $4,000 a month in support labor, and our CSAT scores are still climbing.",
+        name: "Leo S",
+        title: "COO, Sporting Goods Retailer",
     },
 ];

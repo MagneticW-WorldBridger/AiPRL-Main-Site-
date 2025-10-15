@@ -43,11 +43,11 @@ export const Newsletter = () => {
   }
 
   const benefits = [
-    'Exclusive AI insights and tips',
-    'Early access to new features',
-    'Special discounts and offers',
-    'Weekly industry updates',
-    'No spam, unsubscribe anytime'
+    'Weekly AI retail insights and best practices',
+    'Sneak peeks at upcoming features',
+    'Early access to product updates',
+    'Exclusive discounts and partner offers',
+    'No spam. Unsubscribe anytime'
   ]
 
   return (
@@ -70,15 +70,15 @@ export const Newsletter = () => {
               </div>
               
               <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
-                Stay ahead with our
+              Stay ahead with 
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  {' '}AI insights
+                  {' '}AI-powered
                 </span>
+                {' '}retail insights
               </h2>
               
               <p className="text-xl text-gray-600 leading-relaxed">
-                Get the latest updates on AI technology, exclusive tips, and early access to new features. 
-                Join thousands of professionals who trust AiprlAssist.
+              Join 10,000+ retail professionals who subscribe for expert tips, early product access, and exclusive offers from the team behind AiPRL’s AI Assistant.
               </p>
             </div>
 
@@ -108,15 +108,15 @@ export const Newsletter = () => {
           {/* Right Side - Form */}
           <div className="relative">
             <BackgroundGradient className="rounded-[22px] p-6 sm:p-8 bg-gray-900 dark:bg-zinc-900">
-              <div className="bg-gray-900 rounded-2xl shadow-lg p-8">
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-2 sm:p-8">
                 {!isSubmitted ? (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="text-center mb-6">
                       <h3 className="text-2xl font-bold text-white/80 mb-2">
-                        Join our community
+                      Join our retail AI community
                       </h3>
                       <p className="text-gray-600">
-                        Get started with your email address
+                      Get smarter with every issue. Enter your email to start receiving updates from the AiPRL team.
                       </p>
                     </div>
 
@@ -132,8 +132,8 @@ export const Newsletter = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                          placeholder="Enter your email address"
+                          className="w-full px-4 py-3 border-b border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                          placeholder="Subscribe for Insights"
                         />
                       </div>
 
@@ -158,9 +158,9 @@ export const Newsletter = () => {
                         <button
                           type="button"
                           onClick={() => setShowNameField(true)}
-                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                          className="text-sm cursor-pointer text-blue-600 hover:text-blue-700 font-medium"
                         >
-                          + Add your name for personalized updates
+                          Optional: Add your name for personalized updates
                         </button>
                       )}
                     </div>
