@@ -239,13 +239,13 @@ export const Pricing = () => {
                                         </ul>
 
                                         {/* Button */}
-                                        <button
+                                        {/* <button
                                             className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                                 plan.buttonVariant
                                             )} hover:scale-105 active:scale-95`}
                                         >
                                             {plan.buttonText}
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                                 {/* </BackgroundGradient> */}
@@ -301,13 +301,13 @@ export const Pricing = () => {
                                     </ul>
 
                                     {/* Button */}
-                                    <button
+                                    {/* <button
                                         className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                             plan.buttonVariant
                                         )} hover:scale-105 active:scale-95`}
                                     >
                                         {plan.buttonText}
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>
@@ -329,7 +329,7 @@ export const Pricing = () => {
             </div>
 
             {/* ROI Calculator CTA */}
-            <div className="text-center mt-12">
+            {/* <div className="text-center mt-12">
                 <div className="bg-gradient-to-r from-gray-900/40 to-gray-900/40 rounded-2xl p-8 max-w-4xl mx-auto">
                     <h3 className="text-2xl font-bold text-white/80 mb-4">
                         Not sure which plan is right for you?
@@ -344,7 +344,7 @@ export const Pricing = () => {
                         Calculate My ROI
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             {/* Customer Success Metrics */}
             <div className="mt-16 sm:mt-20">
