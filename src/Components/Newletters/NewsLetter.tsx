@@ -15,6 +15,7 @@ export const Newsletter = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showNameField, setShowNameField] = useState(false)
+  const [error, setError] = useState<string>('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -22,24 +23,65 @@ export const Newsletter = () => {
       ...prev,
       [name]: value
     }))
+    // Clear error when user starts typing again
+    if (error) setError('')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitted(true)
-    setIsSubmitting(false)
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ email: '', name: '' })
-      setShowNameField(false)
-    }, 3000)
+    setError('') // Clear any previous errors
+
+    try {
+      // N8N Webhook URL from environment variable
+      const webhookUrl = import.meta.env.VITE_NEWSLETTER_WEBHOOK_URL
+
+      if (!webhookUrl) {
+        throw new Error('Newsletter webhook URL is not configured')
+      }
+
+      // Prepare data to send
+      const payload = {
+        email: formData.email.trim(),
+        name: formData.name?.trim() || '' // Send empty string if name not provided
+      }
+
+      // Send POST request to N8N webhook
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      // Parse response
+      const data = await response.json()
+
+      // Check if request was successful
+      if (response.ok && data.success !== false) {
+        // Success!
+        setIsSubmitted(true)
+        setIsSubmitting(false)
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false)
+          setFormData({ email: '', name: '' })
+          setShowNameField(false)
+        }, 3000)
+      } else {
+        // Handle error from N8N
+        const errorMessage = data.error || data.message || 'Failed to subscribe. Please try again.'
+        setError(errorMessage)
+        setIsSubmitting(false)
+      }
+    } catch (err) {
+      // Handle network or other errors
+      console.error('Newsletter subscription error:', err)
+      setError('Network error. Please check your connection and try again.')
+      setIsSubmitting(false)
+    }
   }
 
   const benefits = [
@@ -119,6 +161,13 @@ export const Newsletter = () => {
                       Get smarter with every issue. Enter your email to start receiving updates from the AiPRL team.
                       </p>
                     </div>
+
+                    {/* Error Message Display */}
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+                        <p className="text-sm font-medium">{error}</p>
+                      </div>
+                    )}
 
                     <div className="space-y-4">
                       <div>
