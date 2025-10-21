@@ -11,11 +11,250 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Varela+Round&display=swap"
       rel="stylesheet"
     />
-    <!-- KTT10 AiprlAssist Webchat Plugin -->
-    <script src="https://app.aiprlassist.com/webchat/plugin.js?v=6"></script>
+    <!-- AiprlAssist Webchat Plugin -->
+    <script src="https://app.aiprlassist.com/webchat/plugin.js?v=6" defer></script>
+    <script src="https://cdn.delve.co/src/delve-cookie-consent-default.js" defer></script>
+    <script>
+      // Prevent multiple initializations to avoid multiple script loading issues
+      let scriptsInitialized = false;
+      
+      // Function to initialize scripts when they are ready
+      function initializeScripts() {
+        if (scriptsInitialized) {
+          console.log('Scripts already initialized, skipping...');
+          return;
+        }
+
+        // Initialize AiprlAssist Webchat Plugin
+        if (typeof window.AiprlAssist !== 'undefined') {
+          try {
+            // Will initialize webchat plugin here when needed
+            console.log('AiprlAssist Webchat Plugin loaded successfully');
+          } catch (error) {
+            console.error('Error initializing AiprlAssist Webchat Plugin:', error);
+          }
+        } else {
+          console.warn('AiprlAssist Webchat Plugin not loaded');
+        }
+
+        // Initialize Delve Cookie Consent
+        if (typeof window.DelveCookieConsent !== 'undefined') {
+          try {
+            DelveCookieConsent.init({
+              message: "We use cookies to enhance your development experience and keep your data secure.",
+              acceptText: "Accept All",
+              rejectText: "Reject Non-Essential",
+              settingsText: "Cookie Preferences",
+              privacyPolicyUrl: "https://delve.co/privacy-policy",
+              manageScriptTags: true,
+              preferencesDisplayMode: 'button',
+              showInNonRegulatedRegions: true, // Show to all regions
+              ccpaEnabled: false,
+              customStyles: {
+                // Dark theme 
+                fontFamily: "'Space Grotesk', -apple-system, sans-serif",
+                fontSize: "15px",
+                
+                primaryColor: "#ff6b35",              // Orange primary colour
+                primaryColorDark: "#e55a2b",          // Darker hover colour
+                textColor: "#ffffff",                 // White text colour
+                backgroundColor: "#000000",           // Background black colour
+                borderColor: "#333333",              // Dark borders
+                
+                // Footer customization
+                footerBackgroundColor: "#000000",     // Black footer
+                footerTextColor: "#94a3b8",          // Muted text
+                
+                // Dark mode colors
+                darkModeTextColor: "#ffffff",
+                darkModeBackgroundColor: "#000000",
+                darkModeBorderColor: "#333333",
+                darkModeFooterBackgroundColor: "#000000",
+                darkModeFooterTextColor: "#94a3b8",
+                
+                // Dimensions and effects
+                borderRadius: "15px",
+                bannerMaxWidth: "100%",
+                bannerPadding: "20px 28px",
+                buttonPadding: "10px 24px",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
+                backdropFilter: "blur(16px)",
+                
+                // Logo customization
+                invertLogo: true,
+                
+                customCSS: `
+                  .delve-cookie-banner {
+                    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%) !important;
+                    border: 1px solid #333333 !important;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+                  }
+                  .delve-btn-primary {
+                    background: linear-gradient(135deg, #ff6b35 0%, #e55a2b 100%) !important;
+                    border: none !important;
+                    font-weight: 600 !important;
+                    transition: all 0.3s ease !important;
+                    color: #ffffff !important;
+                  }
+                  .delve-btn-primary:hover {
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4) !important;
+                    background: linear-gradient(135deg, #e55a2b 0%, #d44a1f 100%) !important;
+                  }
+                  .delve-btn-secondary {
+                    background: transparent !important;
+                    border: 1px solid #ff6b35 !important;
+                    color: #ff6b35 !important;
+                    transition: all 0.3s ease !important;
+                  }
+                  .delve-btn-secondary:hover {
+                    background: #ff6b35 !important;
+                    color: #ffffff !important;
+                    transform: translateY(-2px) !important;
+                  }
+                  .delve-cookie-table {
+                    background: rgba(0, 0, 0, 0.8) !important;
+                    border: 1px solid #333333 !important;
+                  }
+                  .delve-cookie-table th {
+                    background: rgba(255, 107, 53, 0.1) !important;
+                    color: #ffffff !important;
+                  }
+                  .delve-cookie-table td {
+                    color: #e5e5e5 !important;
+                    border-color: #333333 !important;
+                  }
+                  .delve-cookie-banner .delve-text {
+                    color: #ffffff !important;
+                  }
+                  .delve-cookie-banner .delve-link {
+                    color: #ff6b35 !important;
+                  }
+                  .delve-cookie-banner .delve-link:hover {
+                    color: #e55a2b !important;
+                  }
+                  /* Hide scrollbar but keep scrolling functionality */
+                  .delve-cookie-banner *::-webkit-scrollbar {
+                    width: 0px !important;
+                    background: transparent !important;
+                  }
+                  .delve-cookie-banner *::-webkit-scrollbar-track {
+                    background: transparent !important;
+                  }
+                  .delve-cookie-banner *::-webkit-scrollbar-thumb {
+                    background: transparent !important;
+                  }
+                  .delve-cookie-banner *::-webkit-scrollbar-thumb:hover {
+                    background: transparent !important;
+                  }
+                  /* For Firefox */
+                  .delve-cookie-banner * {
+                    scrollbar-width: none !important;
+                  }
+                  /* For IE and Edge */
+                  .delve-cookie-banner * {
+                    -ms-overflow-style: none !important;
+                  }
+                  /* Hide the "Cookie consent by Delve" attribution */
+                  .delve-cookie-banner .delve-attribution,
+                  .delve-cookie-banner .delve-footer,
+                  .delve-cookie-banner [class*="attribution"],
+                  .delve-cookie-banner [class*="footer"],
+                  .delve-cookie-banner [class*="branding"] {
+                    display: none !important;
+                  }
+                `
+              },
+              categories: {
+                necessary: {
+                  name: 'Necessary',
+                  description: 'Essential cookies required for the website to function properly.',
+                  required: true,
+                  enabled: true,
+                  cookieTable: {
+                    cookies: [
+                      { name: 'delve_cookie_consent', purpose: 'Stores your cookie preferences', duration: '1 year' },
+                      { name: 'session_id',           purpose: 'Keeps you logged in',           duration: 'Session' },
+                      { name: 'csrf_token',           purpose: 'Security protection',             duration: 'Session' }
+                    ]
+                  }
+                },
+                analytics: {
+                  name: 'Analytics',
+                  description: 'Help us understand how visitors interact with our website.',
+                  enabled: false,
+                  cookieTable: {
+                    cookies: [
+                      { name: '_ga*',             purpose: 'Google Analytics – Distinguishes users',     duration: '2 years' },
+                      { name: '_gid',             purpose: 'Google Analytics – Session identification', duration: '24 hours' },
+                      { name: '_gat',             purpose: 'Google Analytics – Throttles request rate', duration: '1 minute' },
+                      { name: 'analytics_session',purpose: 'Custom analytics session',                  duration: 'Session' }
+                    ]
+                  }
+                },
+                marketing: {
+                  name: 'Marketing',
+                  description: 'Used to track visitors and show relevant advertisements.',
+                  enabled: false,
+                  cookieTable: {
+                    cookies: [
+                      { name: '_fbp*',   purpose: 'Facebook Browser Pixel', duration: '3 months' },
+                      { name: '_fbc*',   purpose: 'Facebook Click ID',      duration: '7 days'   },
+                      { name: '_gcl_au', purpose: 'Google Ads attribution', duration: '90 days'  },
+                      { name: 'utm_*',   purpose: 'UTM tracking parameters',duration: 'Session' }
+                    ]
+                  }
+                },
+                preferences: {
+                  name: 'Preferences',
+                  description: 'Remember your settings and preferences for a better experience.',
+                  enabled: false,
+                  cookieTable: {
+                    cookies: [
+                      { name: 'theme_*',   purpose: 'UI theme preferences', duration: '1 year' },
+                      { name: 'lang_*',    purpose: 'Language preferences', duration: '1 year' },
+                      { name: 'user_prefs',purpose: 'General user settings',duration: '1 year' }
+                    ]
+                  }
+                }
+              },
+              onAccept: (categories) => {
+                console.log('Cookie consent accepted for categories:', categories);
+                scriptsInitialized = true;
+              },
+              onReject: () => {
+                console.log('Non-essential cookies rejected');
+                scriptsInitialized = true;
+              }
+            });
+            console.log('Delve Cookie Consent initialized successfully');
+            scriptsInitialized = true;
+          } catch (error) {
+            console.error('Error initializing Delve Cookie Consent:', error);
+          }
+        } else {
+          console.warn('Delve Cookie Consent not loaded');
+        }
+      }
+
+      // DOM Implementation initialize script
+      document.addEventListener('DOMContentLoaded', function() {
+        if (!scriptsInitialized) {
+          initializeScripts();
+          
+          if (typeof window.AiprlAssist === 'undefined' || typeof window.DelveCookieConsent === 'undefined') {
+            setTimeout(function() {
+              if (!scriptsInitialized) {
+                initializeScripts();
+              }
+            }, 1000);
+          }
+        }
+      });
+    </script> 
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script> 
   </body>
 </html>

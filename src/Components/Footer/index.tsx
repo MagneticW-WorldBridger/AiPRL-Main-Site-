@@ -1,5 +1,14 @@
 import { TextHoverEffect } from '../ui/text-hover-effect'
 
+// Declare DelveCookieConsent for TypeScript
+declare global {
+    interface Window {
+        DelveCookieConsent: {
+            show: () => void;
+        };
+    }
+}
+
 export const Footer = () => {
     return (
         <footer className="bg-black text-white py-12 sm:py-14 md:py-16 px-2 sm:px-4">
@@ -59,33 +68,33 @@ export const Footer = () => {
                     <div>
                         <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Product</h4>
                         <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+                            <li><a href="/#partners" className="hover:text-white transition-colors">Features</a></li>
                             <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li> */}
+                            {/* <li><a href="#" className="hover:text-white transition-colors">API</a></li> */}
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Security</a></li> */}
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Resources</h4>
                         <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Case Studies</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Webinars</a></li>
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li> */}
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li> */}
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Case Studies</a></li> */}
+                            <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Webinars</a></li> */}
                         </ul>
                     </div>
 
                     <div>
                         <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Company</h4>
                         <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                            <li><a href="/#solutions" className="hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
+                            {/* <li><a href="#" className="hover:text-white transition-colors">Contact</a></li> */}
+                            <li><a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="/terms-and-conditions" className="hover:text-white transition-colors">Terms and Condition</a></li>
                         </ul>
                     </div>
                 </div>
@@ -100,6 +109,16 @@ export const Footer = () => {
                             © {new Date().getFullYear()} AIPRL Assist. All rights reserved.
                         </div>
                         <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400">
+                            <button 
+                                onClick={() => {
+                                    if (typeof window !== 'undefined' && window.DelveCookieConsent) {
+                                        window.DelveCookieConsent.show();
+                                    }
+                                }}
+                                className="hover:text-white transition-colors duration-200 hover:underline"
+                            >
+                                Cookie Preferences
+                            </button>
                             <span>Made for retailers</span>
                             {/* <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>

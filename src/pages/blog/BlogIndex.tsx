@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { blogPosts } from "../../data/blogPosts";
+import { blogApi, BlogPost } from "../../services/blogApi";
 
 export const BlogIndex: React.FC = () => {
+  const [posts, setPosts] = useState<BlogPost[]>(blogPosts); // Start with static data as fallback
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const fetchedPosts = await blogApi.getAllPublishedBlogs();
+
+        // If we got data from the backend, use it; otherwise stick with static data
+        if (fetchedPosts && fetchedPosts.length > 0) {
+          setPosts(fetchedPosts);
+        }
+      } catch (error) {
+        console.error('Failed to fetch blogs, using static data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
     <section className="bg-black pb-24 pt-32 text-white">
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
@@ -17,8 +40,13 @@ export const BlogIndex: React.FC = () => {
           </p>
         </header>
 
-        <div className="grid gap-8 sm:gap-10">
-          {blogPosts.map((post) => (
+        {loading && posts.length === 0 ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+          </div>
+        ) : (
+          <div className="grid gap-8 sm:gap-10">
+            {posts.map((post) => (
             <article
               key={post.id}
               className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-10 shadow-lg shadow-black/10 transition hover:border-white/25 hover:bg-white/[0.06]"
@@ -52,8 +80,9 @@ export const BlogIndex: React.FC = () => {
                 aria-label={`Read ${post.title}`}
               />
             </article>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

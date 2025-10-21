@@ -184,7 +184,7 @@ export const Newsletter = () => {
                     </button>
 
                     <p className="text-xs text-gray-500 text-center">
-                      By subscribing, you agree to our privacy policy. We respect your inbox.
+                      By subscribing, you agree to our <a href="/privacy-policy" className="text-blue-600 hover:text-blue-800 underline">privacy policy</a>. We respect your inbox.
                     </p>
                   </form>
                 ) : (
