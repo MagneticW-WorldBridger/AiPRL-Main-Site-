@@ -1,6 +1,6 @@
 "use client";
 import { StickyScroll } from "../ui/sticky-scroll-reveal";
-import CaptureActionableInsights from '../../assets/GraphicContent/User01.png';
+import CaptureActionableInsights from '../../assets/GraphicContent/Enhanced.png';
 import DriveRepeatBusiness from '../../assets/GraphicContent/User02.png';
 import ImproveCustomerExperience from '../../assets/GraphicContent/User03.png';
 import { showDemoModal } from '../../lib/demoModal';
@@ -29,14 +29,14 @@ const content = [
                 <img src={DriveRepeatBusiness} alt="Drive Repeat Business" className="w-full h-full object-cover rounded-xl" />
             </div>
         ),
-        button: (
-            <button 
-                onClick={showDemoModal}
-                className="w-full py-3 px-6 text-center"
-            >
-                Try a Demo
-            </button>
-        ),
+        // button: (
+        //     <button 
+        //         onClick={showDemoModal}
+        //         className="w-full py-3 px-6 text-center"
+        //     >
+        //         Try a Demo
+        //     </button>
+        // ),
     },
     {
         title: "Improve Customer Experience with AiPRL’s AI Assistant",

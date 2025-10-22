@@ -1,11 +1,38 @@
 import React, { useState } from 'react'
 import { Mail, Send, CheckCircle, ArrowRight } from 'lucide-react'
 import { BackgroundGradient } from '../ui/background-gradient'
+import { useCounterAnimation } from '../../hooks/useCounterAnimation'
 
 interface NewsletterFormData {
   email: string
   name?: string
 }
+
+interface MetricCardProps {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  color: string;
+  label: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ value, prefix = '', suffix = '', color, label }) => {
+  const { count, elementRef } = useCounterAnimation({
+    end: value,
+    prefix,
+    suffix,
+    duration: 2000
+  });
+
+  return (
+    <div className="text-center lg:text-left" ref={elementRef}>
+      <div className={`text-3xl font-bold ${color}`}>
+        {count}
+      </div>
+      <div className="text-sm text-gray-600">{label}</div>
+    </div>
+  );
+};
 
 export const Newsletter = () => {
   const [formData, setFormData] = useState<NewsletterFormData>({
@@ -111,7 +138,7 @@ export const Newsletter = () => {
                 Newsletter
               </div>
               
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-700 leading-tight">
               Stay ahead with 
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
                   {' '}AI-powered
@@ -136,14 +163,18 @@ export const Newsletter = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-6 pt-6">
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-gray-900">10K+</div>
-                <div className="text-sm text-gray-600">Subscribers</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-gray-900">98%</div>
-                <div className="text-sm text-gray-600">Satisfaction Rate</div>
-              </div>
+              <MetricCard 
+                value={10} 
+                suffix="K" 
+                color="text-gray-700" 
+                label="Subscribers" 
+              />
+              <MetricCard 
+                value={98} 
+                suffix="%" 
+                color="text-gray-700" 
+                label="Satisfaction Rate" 
+              />
             </div>
           </div>
 
@@ -181,7 +212,7 @@ export const Newsletter = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 border-b border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                          className="w-full px-4 py-3 border-b text-gray-400 outline-none border-gray-300 rounded-lg"
                           placeholder="Subscribe for Insights"
                         />
                       </div>
@@ -197,7 +228,7 @@ export const Newsletter = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                            className="w-full px-4 py-3 border-b text-gray-400 outline-none border-gray-300 rounded-lg"
                             placeholder="Enter your full name"
                           />
                         </div>
@@ -242,7 +273,7 @@ export const Newsletter = () => {
                       <CheckCircle className="w-8 h-8 text-green-600" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      Welcome aboard! 🎉
+                      Welcome aboard!
                     </h3>
                     <p className="text-gray-600 mb-4">
                       Thank you for subscribing! Check your email for a confirmation message.
@@ -261,7 +292,7 @@ export const Newsletter = () => {
         <div className="text-center mt-16">
           <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-sm font-medium px-4 py-2 rounded-full mb-8">
             <Send className="w-4 h-4" />
-            Weekly updates every Tuesday
+            Insightful Business AI Tips
           </div>
         </div>
       </div>

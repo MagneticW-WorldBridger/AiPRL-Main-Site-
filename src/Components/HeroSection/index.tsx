@@ -5,7 +5,7 @@ import { StickyScrollRevealDemo } from "./BenefitOfAiprl"
 import { ExpandTeam } from "./ExpandTeam"
 import { InfiniteMovingCardsDemo } from "./infiniteScroll"
 import { Retails } from "./Retails"
-import { Testimony } from "./Testimony"
+// import { Testimony } from "./Testimony"
 import { Pricing } from "./Pricing"
 import { Newsletter } from "../Newletters/NewsLetter"
 // import ChatbotWidget from "../ChatBotChatRace/chatBot"
@@ -15,7 +15,7 @@ import { BlogPreview } from "./BlogPreview"
 function index() {
   return (
     <div className="bg-black">
-      <div className="max-w-[95%] sm:max-w-[90%] lg:max-w-[85%] xl:max-w-[85%] mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+      <div className="max-w-full sm:max-w-full md:max-w-full lg:max-w-full xl:max-w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         <section id="home" className="scroll-mt-28">
           <SparklesPreview />
           <SideCallAiprl />
@@ -37,12 +37,14 @@ function index() {
         <InfiniteMovingCardsDemo />
       </section>
 
-      <section id="partners" className="scroll-mt-28">
+      <section id="Features" className="scroll-mt-28">
         <Retails />
       </section>
 
-      <Pricing />
-      <Testimony />
+      <section id="pricing" className="scroll-mt-16">
+        <Pricing />
+      </section>
+      {/* <Testimony /> */}
       <BlogPreview />
 
       <section id="resources" className="scroll-mt-28">

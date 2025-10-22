@@ -7,8 +7,8 @@ interface PricingPlan {
     id: string
     name: string
     description: string
-    monthlyPrice: number
-    yearlyPrice: number
+    monthlyPrice: number | string
+    yearlyPrice: number | string
     features: string[]
     buttonText: string
     buttonVariant: 'primary' | 'secondary' | 'outline'
@@ -29,7 +29,7 @@ const pricingPlans: PricingPlan[] = [
             'Voice support with AI Assistant',
             'AI-driven email replies',
         ],
-        buttonText: 'Start with Starter',
+        buttonText: 'Get Started',
         buttonVariant: 'outline'
     },
     {
@@ -45,7 +45,7 @@ const pricingPlans: PricingPlan[] = [
             'Multi-location support',
             'Integration with 3rd-party platforms'
         ],
-        buttonText: 'Start with Growth',
+        buttonText: 'Get Started',
         buttonVariant: 'primary',
         recommended: true,
         icon: <Star className="w-6 h-6 text-yellow-400" />
@@ -54,8 +54,8 @@ const pricingPlans: PricingPlan[] = [
         id: 'enterprise',
         name: 'Enterprise',
         description: 'Designed for large retail operations that need full customization and orchestration with the AiPRL AI Assistant.',
-        monthlyPrice: 5000,
-        yearlyPrice: 100000, // 10% off
+        monthlyPrice: "Custom Pricing",
+        yearlyPrice: "Custom Pricing", // 10% off
         features: [
             'Everything in Growth',
             'Custom workflows and automation',
@@ -63,7 +63,7 @@ const pricingPlans: PricingPlan[] = [
             'End-to-end orchestration',
             'Dedicated onboarding and training'
         ],
-        buttonText: 'Start with Enterprise',
+        buttonText: 'Get Started',
         buttonVariant: 'outline',
         icon: <Globe className="w-6 h-6 text-blue-400" />
     }
@@ -96,16 +96,16 @@ const MetricCard: React.FC<MetricCardProps> = ({ value, prefix = '', suffix = ''
 };
 
 export const Pricing = () => {
-    const [isYearly, setIsYearly] = useState(true)
+    // const [isYearly, setIsYearly] = useState(true)
     const [isROICalculatorOpen, setIsROICalculatorOpen] = useState(false)
 
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0
-        }).format(price)
-    }
+    // const formatPrice = (price: number) => {
+    //     return new Intl.NumberFormat('en-US', {
+    //         style: 'currency',
+    //         currency: 'USD',
+    //         minimumFractionDigits: 0
+    //     }).format(price)
+    // }
 
     const getButtonStyles = (variant: string) => {
         switch (variant) {
@@ -129,7 +129,7 @@ export const Pricing = () => {
         <div className="max-w-7xl mx-auto relative">
             {/* Header */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 px-2 sm:px-4">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-600 mb-3 sm:mb-4">
                     Choose Your Plan
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto">
@@ -138,43 +138,43 @@ export const Pricing = () => {
 
                 {/* Toggle Switch */}
                 {/* Billing toggle (segmented control) */}
-                <div className="flex items-center justify-center mb-8 sm:mb-10 md:mb-12">
-                    <div className="relative inline-grid grid-cols-2 items-center cursor-pointer rounded-full bg-gray-900 px-1 h-12 sm:h-14 md:h-16 w-64 sm:w-80 md:w-96 lg:w-[400px] select-none">
+                {/* <div className="flex items-center justify-center mb-8 sm:mb-10 md:mb-12"> */}
+                    {/* <div className="relative inline-grid grid-cols-2 items-center cursor-pointer rounded-full bg-gray-900 px-1 h-12 sm:h-14 md:h-16 w-64 sm:w-80 md:w-96 lg:w-[400px] select-none"> */}
                         {/* Sliding pill (hidden toggle effect) */}
-                        <div
+                        {/* <div
                             aria-hidden
                             className={`absolute inset-y-1 left-1 w-1/2 rounded-full bg-gray-700 transition-transform duration-300
-        ${isYearly ? 'translate-x-full' : 'translate-x-0'}`}
-                        />
+                                ${isYearly ? 'translate-x-full' : 'translate-x-0'}`}
+                        /> */}
 
                         {/* Monthly */}
-                        <button
+                        {/* <button
                             type="button"
                             onClick={() => setIsYearly(false)}
                             className="relative cursor-pointer z-10 text-center font-medium text-xs sm:text-sm md:text-base rounded-full focus:outline-none w-full"
                             aria-pressed={!isYearly}
                         >
                             <span className={`${isYearly ? 'text-gray-400' : 'text-white/50'}`}>Bill monthly</span>
-                        </button>
+                        </button> */}
 
                         {/* Annually */}
-                        <button
+                        {/* <button
                             type="button"
                             onClick={() => setIsYearly(true)}
                             className="relative cursor-pointer z-10 text-center font-medium text-xs sm:text-sm md:text-base rounded-full focus:outline-none w-full"
                             aria-pressed={isYearly}
                         >
                             <span className={`${isYearly ? 'text-gray-400' : 'text-white/50'}`}>Bill yearly</span>
-                        </button>
-                    </div>
+                        </button> */}
+                    {/* </div> */}
 
                     {/* Badge */}
-                    {isYearly && (
+                    {/* {isYearly && (
                         <span className="ml-3 bg-green-100 text-green-800 text-xs sm:text-sm font-medium px-3 py-1 rounded-full">
                             10% OFF
                         </span>
-                    )}
-                </div>
+                    )} */}
+                {/* </div> */}
 
             </div>
 
@@ -212,21 +212,26 @@ export const Pricing = () => {
                                         </div>
 
                                         {/* Price */}
-                                        <div className="mb-8 sm:mb-10">
+                                        {/* <div className="mb-8 sm:mb-10">
                                             <div className="flex items-baseline">
                                                 <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/80">
-                                                    {formatPrice(isYearly ? plan.yearlyPrice : plan.monthlyPrice)}
+                                                    {typeof (isYearly ? plan.yearlyPrice : plan.monthlyPrice) === 'string' 
+                                                        ? (isYearly ? plan.yearlyPrice : plan.monthlyPrice)
+                                                        : formatPrice((isYearly ? plan.yearlyPrice : plan.monthlyPrice) as number)
+                                                    }
                                                 </span>
-                                                <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
-                                                    /{isYearly ? 'year' : 'month'}
-                                                </span>
+                                                {typeof (isYearly ? plan.yearlyPrice : plan.monthlyPrice) === 'number' && (
+                                                    <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
+                                                        /{isYearly ? 'year' : 'month'}
+                                                    </span>
+                                                )}
                                             </div>
-                                            {isYearly && (
+                                            {isYearly && typeof plan.monthlyPrice === 'number' && (
                                                 <p className="text-xs sm:text-sm text-gray-500 mt-2">
                                                     Billed at {formatPrice(plan.monthlyPrice)}/ monthly
                                                 </p>
                                             )}
-                                        </div>
+                                        </div> */}
 
                                         {/* Features */}
                                         <ul className="space-y-4 sm:space-y-5 mb-8 sm:mb-10">
@@ -239,13 +244,13 @@ export const Pricing = () => {
                                         </ul>
 
                                         {/* Button */}
-                                        {/* <button
+                                        <button
                                             className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                                 plan.buttonVariant
                                             )} hover:scale-105 active:scale-95`}
                                         >
                                             {plan.buttonText}
-                                        </button> */}
+                                        </button>
                                     </div>
                                 </div>
                                 {/* </BackgroundGradient> */}
@@ -274,21 +279,26 @@ export const Pricing = () => {
                                     </div>
 
                                     {/* Price */}
-                                    <div className="mb-8 sm:mb-10">
+                                    {/* <div className="mb-8 sm:mb-10">
                                         <div className="flex items-baseline">
-                                            <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white/80">
-                                                {formatPrice(isYearly ? plan.yearlyPrice : plan.monthlyPrice)}
+                                            <span className="text-3xl sm:text-4xl lg:text-4xl font-bold text-white/80">
+                                                {typeof (isYearly ? plan.yearlyPrice : plan.monthlyPrice) === 'string' 
+                                                    ? (isYearly ? plan.yearlyPrice : plan.monthlyPrice)
+                                                    : formatPrice((isYearly ? plan.yearlyPrice : plan.monthlyPrice) as number)
+                                                }
                                             </span>
-                                            <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
-                                                /{isYearly ? 'year' : 'month'}
-                                            </span>
+                                            {typeof (isYearly ? plan.yearlyPrice : plan.monthlyPrice) === 'number' && (
+                                                <span className="text-gray-500 ml-2 text-xs sm:text-sm lg:text-base">
+                                                    /{isYearly ? 'year' : 'month'}
+                                                </span>
+                                            )}
                                         </div>
-                                        {isYearly && (
+                                        {isYearly && typeof plan.monthlyPrice === 'number' && (
                                             <p className="text-xs sm:text-sm text-gray-500 mt-2">
                                                 Billed at {formatPrice(plan.monthlyPrice)}/ monthly
                                             </p>
                                         )}
-                                    </div>
+                                    </div> */}
 
                                     {/* Features */}
                                     <ul className="space-y-4 sm:space-y-5 mb-8 sm:mb-10">
@@ -301,13 +311,13 @@ export const Pricing = () => {
                                     </ul>
 
                                     {/* Button */}
-                                    {/* <button
+                                    <button
                                         className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                             plan.buttonVariant
                                         )} hover:scale-105 active:scale-95`}
                                     >
                                         {plan.buttonText}
-                                    </button> */}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -321,10 +331,10 @@ export const Pricing = () => {
                     All plans include 14-day free trial. No credit card required.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-500 px-4">
-                    <span>✓ Cancel anytime</span>
+                    {/* <span>✓ Cancel anytime</span> */}
                     <span>✓ 24/7 support</span>
                     <span>✓ 99.9% uptime</span>
-                    <span>✓ SSL encryption</span>
+                    <span>✓ SOC 2 certified</span>
                 </div>
             </div>
 
@@ -359,12 +369,12 @@ export const Pricing = () => {
                         color="text-blue-600" 
                         label="Average increase in conversions" 
                     />
-                    <MetricCard 
-                        value={2} 
-                        suffix=" minutes" 
-                        color="text-green-600" 
-                        label="Average response time using the AI Assistant" 
-                    />
+                    <div className="text-center">
+                        <div className="text-xl sm:text-2xl lg:text-2xl font-bold text-green-600 mb-2 sm:mb-3">
+                            Instant Response
+                        </div>
+                        <div className="text-sm sm:text-base lg:text-base mt-2 sm:mt-4 text-gray-600 leading-relaxed">Average response time using the AI Assistant</div>
+                    </div>
                     <MetricCard 
                         value={98} 
                         suffix="%" 

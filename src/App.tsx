@@ -9,6 +9,7 @@ import PrivacyPolicy from './Components/Privacy-Policy/privacyPolicy'
 import TermsAndCondition from './Components/TermsAndCondition/TermsAndCondition'
 import Career from './Components/Career/Career'
 import { DemoModal } from './Components/ui/DemoModal'
+import { ScrollToTop } from './Components/ui/ScrollToTop'
 import { subscribeToDemoModal } from './lib/demoModal'
 import { AdminAuthProvider } from './Admin/context/AdminAuthContext'
 import { AdminThemeProvider } from './Admin/context/AdminThemeContext'
@@ -34,6 +35,25 @@ function App() {
     })
     return unsubscribe
   }, [])
+
+  // Scroll to top on page refresh and route change
+  useEffect(() => {
+    // Scroll to top immediately when component mounts (page refresh)
+    window.scrollTo(0, 0)
+    
+    // Also scroll to top when pathname changes (route navigation)
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0)
+    }
+    
+    // Listen for popstate events (back/forward navigation)
+    window.addEventListener('popstate', handleRouteChange)
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange)
+    }
+  }, [pathname])
 
   // Admin routes
   if (isAdminRoute) {
@@ -67,6 +87,7 @@ function App() {
       {isBlogRoute ? <BlogPage /> : isPrivacyRoute ? <PrivacyPolicy /> : isTermsRoute ? <TermsAndCondition /> : isCareerRoute ? <Career /> : <HeroComponent />}
       {/* <ChatBot /> */}
       <Footer />
+      <ScrollToTop />
       <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
     </div>
   )

@@ -22,10 +22,10 @@ export function SparklesPreview() {
           {/* Social Proof Badge */}
           <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 rounded-full mb-4 sm:mb-6">
             <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" />
-            Trusted by 500+ retailers
+            Trusted by Leading retailers
           </div>
 
-          <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-center text-white/70 relative z-20 px-4 sm:px-6 md:px-8">
+          <h1 className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl font-bold text-center text-white/70 relative z-20 px-4 sm:px-6 md:px-8">
             Turn storefront chaos into loyal customers with the AI Customer Experience Platform.
           </h1>
 
@@ -43,7 +43,7 @@ export function SparklesPreview() {
             </div>
             <div className="flex items-center justify-center gap-2 text-white/70">
               <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-              <span className="font-semibold text-sm sm:text-base md:text-lg">2 min response time</span>
+              <span className="font-semibold text-sm sm:text-base md:text-lg">Instant response</span>
             </div>
             <div className="flex items-center justify-center gap-2 text-white/70">
               <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
