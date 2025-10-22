@@ -59,17 +59,17 @@ export const Footer = () => {
                             The AI Customer Experience Platform that transforms storefront chaos into loyal customers.
                         </p>
                         <div className="text-xs sm:text-sm text-gray-400">
-                            <div>500+ Active Retailers</div>
+                            <div>Trusted by Leading Retailers</div>
                             <div>40% Avg. Conversion Increase</div>
-                            <div>2 min Response Time</div>
+                            <div>Instant Response</div>
                         </div>
                     </div>
 
                     <div>
                         <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Product</h4>
                         <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-400">
-                            <li><a href="/#partners" className="hover:text-white transition-colors">Features</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+                            <li><a href="/#Features" className="hover:text-white transition-colors">Features</a></li>
+                            <li><a href="/#pricing" className="hover:text-white transition-colors">Pricing</a></li>
                             {/* <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li> */}
                             {/* <li><a href="#" className="hover:text-white transition-colors">API</a></li> */}
                             {/* <li><a href="#" className="hover:text-white transition-colors">Security</a></li> */}

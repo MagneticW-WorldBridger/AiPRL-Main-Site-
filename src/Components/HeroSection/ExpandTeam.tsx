@@ -2,7 +2,7 @@ import BlurText from "../ui/BlurText";
 import Users from '../../assets/GraphicContent/User04.png'
 import { CheckCheck } from 'lucide-react';
 import TextType from "../ui/TextTyping";
-import { showDemoModal } from '../../lib/demoModal';
+// import { showDemoModal } from '../../lib/demoModal';
 
 const handleAnimationComplete = () => {
   console.log('Animation completed!');
@@ -10,7 +10,7 @@ const handleAnimationComplete = () => {
 
 const handleButtonClick = () => {
   console.log('Try a Demo button clicked!');
-  showDemoModal();
+  // showDemoModal();
 };
 
 export function ExpandTeam() {

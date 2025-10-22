@@ -72,7 +72,7 @@ export const StickyScroll = ({
         <p className="text-white/80 w-full sm:w-4/5 md:w-2/4 mt-2 sm:mt-3 mx-auto text-sm sm:text-base md:text-xl">AiPRL is your 24/7 AI assistant, engineered to elevate every interaction, empower your team, and deliver seamless, high-impact customer experiences.</p>
       </div>
 
-      <div className="mx-auto w-full max-w-[95%] sm:max-w-[90%] md:max-w-[80%] px-2 sm:px-4 md:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Mobile & Tablet: Stacked layout with content below each text section */}
         <div className="block lg:hidden">
           {content.map((item, index) => (
@@ -151,9 +151,9 @@ export const StickyScroll = ({
         </div>
 
         {/* Desktop: Original side-by-side layout */}
-        <div className="hidden lg:grid grid-cols-[1.15fr_1fr] items-start gap-6 xl:gap-10">
+        <div className="hidden lg:grid grid-cols-5 items-start gap-3 xl:gap-4">
         {/* Left column – scrolly text */}
-        <div className="w-full max-w-xl">
+        <div className="w-full col-span-2">
           {content.map((item, index) => (
             <div
               key={item.title + index}
@@ -167,7 +167,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="text-3xl xl:text-5xl font-bold text-white/80"
+                  className="text-2xl xl:text-4xl font-bold text-white/80"
               >
                 {item.title}
               </motion.h2>
@@ -178,7 +178,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="mt-6 max-w-prose text-lg xl:text-lg leading-7 xl:leading-8 text-white/80"
+                  className="mt-6 max-w-prose text-lg md:text-[15px] lg:text-lg leading-7 xl:leading-8 text-white/80"
               >
                 {item.description}
               </motion.p>
@@ -189,7 +189,7 @@ export const StickyScroll = ({
                   y: activeCard === index ? 0 : 20
                 }}
                 transition={{ duration: 0.6, ease: "easeInOut", delay: 0.1 }}
-                  className="mt-6 max-w-prose text-lg xl:text-lg leading-7 xl:leading-8 text-white/80"
+                  className="mt-6 max-w-prose text-lg md:text-[15px] lg:text-lg leading-7 xl:leading-8 text-white/80"
               >
                 {item.paragraphContent}
               </motion.p>
@@ -199,11 +199,11 @@ export const StickyScroll = ({
         </div>
 
         {/* Right column – sticky preview */}
-          <div className="sticky top-[20%] h-fit">
+          <div className="sticky top-[20%] h-fit col-span-3">
           <motion.div
             style={{ background: backgroundGradient }}
             className={cn(
-                "relative w-[28rem] xl:w-[54rem] h-[60vh] xl:h-[70vh] rounded-2xl p-3 shadow-2xl overflow-hidden",
+                "relative w-full xl:w-full h-[60vh] xl:h-[70vh] rounded-2xl p-3 shadow-2xl overflow-hidden",
               contentClassName,
             )}
               key={activeCard}
