@@ -9,7 +9,36 @@ import {
 } from "@tabler/icons-react";
 import { IconCaretLeftFilled } from "@tabler/icons-react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
-import Aiprl from '../../assets/Imagecontent.png'
+import Aiprl from '../../assets/Curious-Customer.png'
+
+// Video Player Component - Simple YouTube Embed
+export const VideoPlayer = ({
+  isVisible,
+  className = "h-full w-full"
+}: {
+  isVisible: boolean;
+  className?: string;
+}) => {
+  const youtubeVideoId = "hLHGCZD8ruk";
+
+  return (
+    <div className={`relative ${className}`}>
+      <iframe
+        className="h-full w-full"
+        src={`https://www.youtube.com/embed/${youtubeVideoId}?${isVisible ? 'autoplay=1&' : ''}mute=1&loop=1&playlist=${youtubeVideoId}&rel=0&modestbranding=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        style={{
+          objectPosition: 'center center',
+          minHeight: '100%',
+          minWidth: '100%'
+        }}
+      />
+    </div>
+  );
+};
 
 export const MacbookScroll = ({
   showGradient,
@@ -26,6 +55,7 @@ export const MacbookScroll = ({
   });
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -39,6 +69,14 @@ export const MacbookScroll = ({
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
+
+  // Trigger video when scroll progress reaches 0.3
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      setShowVideo(latest > 0.3);
+    });
+    return unsubscribe;
+  }, [scrollYProgress]);
 
   const isMobile = dimensions.width < 768;
   const isTablet = dimensions.width >= 768 && dimensions.width < 1024;
@@ -96,6 +134,7 @@ export const MacbookScroll = ({
         scaleY={scaleY}
         rotate={rotate}
         translate={translateY}
+        showVideo={showVideo}
       />
       
       {/* Base area - Responsive proportions */}
@@ -140,11 +179,13 @@ export const Lid = ({
   scaleY,
   rotate,
   translate,
+  showVideo,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
+  showVideo: boolean;
 }) => {
   return (
     <div className="relative [perspective:1200px]">
@@ -182,14 +223,33 @@ export const Lid = ({
         className="absolute inset-0 mx-auto mt-2 h-[8rem] w-[14rem] rounded-xl bg-[#010101] p-1 sm:mt-4 sm:h-[11rem] sm:w-[18rem] sm:p-2 md:mt-5 md:h-[12rem] md:w-[20rem] md:p-2 lg:-mt-16 lg:h-[18rem] lg:w-[32rem] lg:p-1 xl:h-[22rem] xl:w-[45rem]"
       >
         <div className="absolute inset-0 rounded-lg bg-[#272729] overflow-hidden">
-          {/* Content Container - Properly centered */}
-          <div className="relative h-full w-full flex items-center justify-center p-1 sm:p-2 md:p-2.5 lg:p-4">
-            <img
-              src={Aiprl}
-              alt="Aiprl Assist"
-              className="h-full w-full rounded-md object-contain"
-              style={{ maxHeight: '100%', maxWidth: '100%' }}
-            />
+          {/* Content Container - Full screen without padding */}
+          <div className="relative h-full w-full">
+            {/* Image - shown by default */}
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: showVideo ? 0 : 1 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              <img
+                src={Aiprl}
+                alt="Aiprl Assist"
+                className="h-full w-full object-cover"
+              />
+            </motion.div>
+            
+            {/* Video - shown when scrolled */}
+            <motion.div
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: showVideo ? 1 : 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              <VideoPlayer 
+                isVisible={showVideo}
+              />
+            </motion.div>
           </div>
         </div>
       </motion.div>
@@ -445,5 +505,110 @@ export const OptionKey = ({ className }: { className: string }) => {
 const AceternityLogo = () => {
   return (
     <img src={AiprlLogo} alt="Aiprllogo" className="h-1.5 w-1.5 text-black sm:h-2 sm:w-2 md:h-3 md:w-3" />
+  );
+};
+
+// Responsive Video Scroll Component
+// Usage: Replace MacbookScroll with ResponsiveVideoScroll in your components
+// Desktop (≥1024px): Shows MacBook scroll effect
+// Mobile & Tablet (<1024px): Shows Container scroll effect with 3D card
+export const ResponsiveVideoScroll = ({
+  showGradient,
+  badge,
+}: {
+  showGradient?: boolean;
+  title?: string | React.ReactNode;
+  badge?: React.ReactNode;
+  titleComponent?: string | React.ReactNode;
+}) => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      setDimensions({ width, height: window.innerHeight });
+      setIsDesktop(width >= 1024); // Desktop breakpoint
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  // Show loading state while dimensions are being calculated
+  if (dimensions.width === 0) {
+    return <div className="h-screen w-full" />;
+  }
+
+  // Desktop: Use MacBook scroll
+  if (isDesktop) {
+    return (
+      <MacbookScroll
+        showGradient={showGradient}
+        badge={badge}
+      />
+    );
+  }
+
+  // Mobile & Tablet: Use Container scroll
+  // return (
+  //   <ContainerScroll
+  //     titleComponent={titleComponent || (
+  //       <h2 className="text-2xl md:text-4xl font-bold text-neutral-800 dark:text-white">
+  //         Experience AiprlAssist in Action
+  //       </h2>
+  //     )}
+  //   >
+  //     <VideoContainer />
+  //   </ContainerScroll>
+  // );
+};
+
+// Video Container for ContainerScroll
+const VideoContainer = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+  });
+  const [showVideo, setShowVideo] = useState(false);
+
+  // Trigger video when scroll progress reaches 0.3
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      setShowVideo(latest > 0.3);
+    });
+    return unsubscribe;
+  }, [scrollYProgress]);
+
+  return (
+    <div ref={containerRef} className="relative h-full w-full">
+      {/* Image - shown by default */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: showVideo ? 0 : 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <img
+          src={Aiprl}
+          alt="Aiprl Assist"
+          className="h-full w-full object-cover rounded-lg"
+        />
+      </motion.div>
+      
+      {/* Video - shown when scrolled */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showVideo ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <VideoPlayer 
+          isVisible={showVideo}
+          className="h-full w-full rounded-lg"
+        />
+      </motion.div>
+    </div>
   );
 };

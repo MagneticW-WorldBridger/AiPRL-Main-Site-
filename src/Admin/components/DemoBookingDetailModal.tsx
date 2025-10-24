@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  X, 
-  Save,
-  AlertCircle
+import {
+  X,
+  Save
 } from 'lucide-react';
 import type { DemoBooking, UpdateDemoBookingData } from '../../services/demoBookingApi';
 import { useAdminTheme } from '../hooks/useAdminTheme';

@@ -82,11 +82,8 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({ isOpen, onClose })
   };
 
   const calculateROI = () => {
-    const revenue = parseFloat(formData.monthlyRevenue) || 0;
-    const customers = parseFloat(formData.customerCount) || 0;
     const hours = parseFloat(formData.supportHours) || 0;
     const staff = parseFloat(formData.supportStaff) || 0;
-    const responseTime = parseFloat(formData.responseTime) || 0;
 
     // Calculate current support costs (assuming $25/hour average support cost)
     const hourlyRate = 25;
@@ -95,7 +92,6 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({ isOpen, onClose })
     // Calculate potential savings with AI Assistant
     const efficiencyGain = 0.6; // 60% efficiency gain
     const timeReduction = 0.4; // 40% time reduction
-    const responseImprovement = 0.8; // 80% faster responses
 
     const reducedHours = hours * (1 - timeReduction);
     const reducedStaff = Math.ceil(staff * (1 - efficiencyGain));

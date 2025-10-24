@@ -15,7 +15,6 @@ interface FullWidthChatWidgetProps {
 
 function FullWidthChatWidget({
   isVisible,
-  onClose: _onClose,
   onMinimize,
   messages,
   isLoading,

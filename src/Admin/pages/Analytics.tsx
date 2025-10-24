@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Users, 
-  Eye, 
-  Calendar,
+import {
+  BarChart3,
+  TrendingUp,
+  Users,
+  Eye,
   ArrowUpRight,
   ArrowDownRight
 } from 'lucide-react';
@@ -301,7 +300,7 @@ export const Analytics: React.FC = () => {
             Monthly Views
           </h3>
           <div className="space-y-4">
-            {analyticsData.monthlyViews.map((item, index) => (
+            {analyticsData.monthlyViews.map((item) => (
               <div key={item.month} className="flex items-center space-x-4">
                 <div className="w-12 text-sm font-medium text-gray-500">
                   {item.month}

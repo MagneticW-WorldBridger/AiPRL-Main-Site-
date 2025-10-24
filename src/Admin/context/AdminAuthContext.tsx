@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { signInAdmin, signOutAdmin, onAuthStateChange, getCurrentUser } from '../services/firebaseAuth';
 
 interface User {
   uid: string;
@@ -110,35 +109,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
     }
   };
 
-  const getCustomToken = async (uid: string) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/custom-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uid }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setToken(data.token);
-        localStorage.setItem('admin_token', data.token);
-      } else {
-        console.error('Failed to get custom token:', response.status);
-        // Create a simple token for now
-        const simpleToken = `admin-token-${uid}-${Date.now()}`;
-        setToken(simpleToken);
-        localStorage.setItem('admin_token', simpleToken);
-      }
-    } catch (error) {
-      console.error('Error getting custom token:', error);
-      // Create a simple token for now
-      const simpleToken = `admin-token-${uid}-${Date.now()}`;
-      setToken(simpleToken);
-      localStorage.setItem('admin_token', simpleToken);
-    }
-  };
 
   const login = async (email: string, password: string) => {
     setLoading(true);
@@ -186,12 +156,6 @@ export const AdminAuthProvider: React.FC<AdminAuthProviderProps> = ({ children }
     } catch (error) {
       console.error('Logout error:', error);
     }
-  };
-
-  const getFirebaseToken = async (email: string, password: string): Promise<string> => {
-    // For now, we'll use a simple mock token
-    // In production, you would implement proper Firebase Auth here
-    return 'mock-firebase-token';
   };
 
   const value: AuthContextType = {

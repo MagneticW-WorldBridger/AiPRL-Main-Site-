@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Search, Grid, List, Trash2, Download, Eye } from 'lucide-react';
+import { Upload, Search, Grid, List, Trash2, Eye } from 'lucide-react';
 import { useAdminTheme } from '../hooks/useAdminTheme';
 import { useBlogManagement } from '../hooks/useBlogManagement';
 

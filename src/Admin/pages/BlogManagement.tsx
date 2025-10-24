@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, Filter, Grid, List } from 'lucide-react';
+import { Plus, Search, Grid, List } from 'lucide-react';
 import { useAdminTheme } from '../hooks/useAdminTheme';
 import { useBlogManagement, type BlogPost } from '../hooks/useBlogManagement';
 import { BlogCard } from '../components/BlogCard';

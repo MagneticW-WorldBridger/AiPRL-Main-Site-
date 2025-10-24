@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  Settings as SettingsIcon, 
-  Save, 
-  Eye, 
-  EyeOff,
-  Upload,
-  Trash2,
+import {
+  Save,
   Bell,
   Shield,
   Palette,
@@ -52,8 +47,7 @@ export const Settings: React.FC = () => {
     backupRetention: 30,
     cloudBackup: false
   });
-  
-  const [showPassword, setShowPassword] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
