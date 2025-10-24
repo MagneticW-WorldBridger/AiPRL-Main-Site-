@@ -69,16 +69,13 @@
         .voice-indicator.speaking { background: var(--rk-accent); box-shadow: 0 0 10px var(--rk-accent); }
         @keyframes voicePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
         .center-icon { position: absolute; top: 30vh; left: 50%; width: 350px; height: 350px; transform: translate(-50%, -50%); background-image: url('/girl.png'); background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 50%; box-shadow: 0 8px 20px rgba(17,24,39,.08); z-index: 10; animation: float 6s ease-in-out infinite; }
-        /* Mobile: Zoom out and optimize layout */
+        /* Mobile: Zoom out everything proportionally */
         @media (max-width:768px){ 
-            body { zoom: 0.75; }
-            .center-icon { position: absolute; top: 25vh; left: 50%; width: 200px; height: 200px; }
-            .chat-sidebar { height: 35vh; }
-            canvas { height: 50vh; }
-            .controls { top: 5px; left: 5px; padding: 10px; }
-            .logo { font-size: 22px; margin-bottom: 10px; }
-            .status { bottom: 36vh; left: 5px; padding: 10px; font-size: 10px; min-width: 180px; }
-            button { padding: 8px 16px; margin: 4px; font-size: 11px; }
+            body { zoom: 0.6; }
+            .center-icon { width: 350px; height: 350px; }
+            .chat-sidebar { height: 40vh; }
+            .controls { top: 10px; left: 10px; padding: 12px; font-size: 14px; }
+            .status { bottom: 41vh; left: 10px; padding: 12px; font-size: 11px; }
         }
     </style>
 </head>
