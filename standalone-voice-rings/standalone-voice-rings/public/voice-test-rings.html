@@ -162,7 +162,7 @@
       if (!userId || userId === 'anonymous') return '';
       
       try {
-        const response = await fetch('https://YOUR_RAILWAY_API_URL/api/get-history', {
+        const response = await fetch('https://aiprl-main-site-production.up.railway.app/api/get-history', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ userId, limit: 10 })

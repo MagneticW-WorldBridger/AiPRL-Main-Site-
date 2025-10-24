@@ -1,8 +1,13 @@
 const express = require('express');
 const { Pool } = require('pg');
 const OpenAI = require('openai');
+const crypto = require('crypto');
 
 const app = express();
+
+// CRITICAL: Parse body as RAW for webhook signature validation
+app.use('/api/elevenlabs-post-call', express.raw({ type: 'application/json' }));
+// Parse JSON for other endpoints
 app.use(express.json());
 
 const openai = new OpenAI({
@@ -467,20 +472,66 @@ CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully.
   }
 });
 
-// ElevenLabs post-call webhook
+// ElevenLabs post-call webhook with signature validation
 app.post('/api/elevenlabs-post-call', async (req, res) => {
   try {
-    const { type, data } = req.body;
+    const ELEVENLABS_WEBHOOK_SECRET = process.env.ELEVENLABS_WEBHOOK_SECRET || 'wsec_76951c17ce748cc6929f5f5e1cf38bf2598f8ef94e80c840e35bd96fa0c';
+    
+    // Get signature from header
+    const signatureHeader = req.headers['elevenlabs-signature'];
+    if (!signatureHeader) {
+      console.error('[VOICE POST-CALL] Missing ElevenLabs-Signature header');
+      return res.status(401).json({ error: 'Missing signature header' });
+    }
+
+    // Parse signature header: "t=TIMESTAMP,v0=SIGNATURE"
+    const headers = signatureHeader.split(',');
+    const timestamp = headers.find(e => e.startsWith('t='))?.substring(2);
+    const signature = headers.find(e => e.startsWith('v0='));
+
+    if (!timestamp || !signature) {
+      console.error('[VOICE POST-CALL] Invalid signature format');
+      return res.status(401).json({ error: 'Invalid signature format' });
+    }
+
+    // Validate timestamp (not older than 30 minutes)
+    const reqTimestamp = Number(timestamp) * 1000;
+    const tolerance = Date.now() - 30 * 60 * 1000;
+    if (reqTimestamp < tolerance) {
+      console.error('[VOICE POST-CALL] Request expired');
+      return res.status(403).json({ error: 'Request expired' });
+    }
+
+    // Get raw body as string
+    const body = req.body.toString('utf8');
+    
+    // Validate signature
+    const message = `${timestamp}.${body}`;
+    const digest = 'v0=' + crypto.createHmac('sha256', ELEVENLABS_WEBHOOK_SECRET).update(message).digest('hex');
+    
+    if (signature !== digest) {
+      console.error('[VOICE POST-CALL] Invalid signature');
+      console.error('[VOICE POST-CALL] Expected:', digest);
+      console.error('[VOICE POST-CALL] Received:', signature);
+      return res.status(401).json({ error: 'Invalid signature' });
+    }
+
+    console.log('[VOICE POST-CALL] ✅ Signature validated successfully');
+
+    // Parse the body now that it's validated
+    const event = JSON.parse(body);
+    const { type, data } = event;
 
     if (type === 'post_call_transcription') {
       const { conversation_id, transcript, conversation_initiation_client_data } = data;
       
-      // Extract userId from the conversation data
+      // Extract userId - try multiple sources
       const userId = conversation_initiation_client_data?.dynamic_variables?.userId || 
                     data.user_id || 
+                    data.metadata?.user_id ||
                     'anonymous';
 
-      console.log(`[VOICE POST-CALL] Received transcript for user: ${userId}, conversation: ${conversation_id}`);
+      console.log(`[VOICE POST-CALL] ✅ Received transcript for user: ${userId}, conversation: ${conversation_id}`);
       console.log(`[VOICE POST-CALL] Transcript has ${transcript.length} turns`);
 
       await saveVoiceTranscript(userId, transcript);
