@@ -35,7 +35,15 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, onMinimize }) => 
     };
 
     const cleanAndRenderHTML = (content: string) => {
-
+        // Extract HTML from code blocks (```html ... ```)
+        const htmlBlockMatch = content.match(/```html\s*([\s\S]*?)```/);
+        
+        if (htmlBlockMatch) {
+            // If HTML block found, use its content
+            return { __html: htmlBlockMatch[1].trim() };
+        }
+        
+        // Otherwise, strip code blocks and render as text
         const cleaned = content
             .replace(/```[\s\S]*?```/g, '')
             .replace(/`([^`]+)`/g, '<code>$1</code>')
