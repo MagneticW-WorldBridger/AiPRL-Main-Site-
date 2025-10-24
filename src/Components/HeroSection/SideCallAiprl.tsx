@@ -1,6 +1,5 @@
 import { ArrowRight, ChevronRight } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
-import { showDemoModal } from '../../lib/demoModal'
 
 export const SideCallAiprl = () => {
     const [hasReachedBlog, setHasReachedBlog] = useState(false)

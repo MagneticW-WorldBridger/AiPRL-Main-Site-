@@ -41,7 +41,7 @@ export const useDemoBookingManagement = () => {
         return result.data;
       }
       return null;
-    } catch (err) {
+    } catch {
       setError('Failed to fetch booking details');
       return null;
     }
@@ -109,7 +109,7 @@ export const useDemoBookingManagement = () => {
         return result.data;
       }
       return [];
-    } catch (err) {
+    } catch {
       setError('Search failed');
       return [];
     }
@@ -125,7 +125,7 @@ export const useDemoBookingManagement = () => {
         return result.data;
       }
       return [];
-    } catch (err) {
+    } catch {
       setError('Failed to fetch bookings by status');
       return [];
     }
@@ -140,7 +140,7 @@ export const useDemoBookingManagement = () => {
       if (result.success && result.data) {
         setStats(result.data);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to fetch statistics');
     }
   }, [token]);
@@ -155,7 +155,7 @@ export const useDemoBookingManagement = () => {
         return result.data;
       }
       return [];
-    } catch (err) {
+    } catch {
       setError('Failed to fetch recent bookings');
       return [];
     }
@@ -184,7 +184,7 @@ export const useDemoBookingManagement = () => {
         setError(`Updated ${successCount} of ${ids.length} bookings`);
         return false;
       }
-    } catch (err) {
+    } catch {
       setError('Bulk update failed');
       return false;
     } finally {
@@ -213,7 +213,7 @@ export const useDemoBookingManagement = () => {
         setError(`Deleted ${successCount} of ${ids.length} bookings`);
         return false;
       }
-    } catch (err) {
+    } catch {
       setError('Bulk delete failed');
       return false;
     } finally {

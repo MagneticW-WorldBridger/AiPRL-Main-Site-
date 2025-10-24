@@ -47,7 +47,7 @@ export const Footer = () => {
             </div>
           </div>
         </div> */}
-                <div className="h-32 sm:h-40 md:h-48 lg:h-[20rem] flex items-center justify-center">
+                <div className="h-28 sm:h-32 md:h-48 lg:h-[20rem] flex items-center justify-center">
                     <TextHoverEffect text="AiprlAssist" />
                 </div>
 

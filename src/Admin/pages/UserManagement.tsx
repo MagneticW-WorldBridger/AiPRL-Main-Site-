@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Users, 
-  Search, 
-  Filter, 
-  MoreVertical, 
-  Mail, 
-  Calendar,
-  Shield,
-  UserCheck,
-  UserX,
+import {
+  Users,
+  Search,
   Edit,
   Trash2
 } from 'lucide-react';
@@ -32,8 +25,6 @@ export const UserManagement: React.FC = () => {
   const [roleFilter, setRoleFilter] = useState<'all' | 'admin' | 'editor' | 'viewer'>('all');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const [showUserModal, setShowUserModal] = useState(false);
-  const [editingUser, setEditingUser] = useState<User | null>(null);
 
   // Mock data for demonstration
   useEffect(() => {
@@ -212,7 +203,6 @@ export const UserManagement: React.FC = () => {
         
         <div className="flex items-center space-x-3">
           <button
-            onClick={() => setShowUserModal(true)}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors duration-200 ${
               'bg-orange-500 text-white hover:bg-orange-600'
             }`}
@@ -435,7 +425,6 @@ export const UserManagement: React.FC = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => setEditingUser(user)}
                         className={`p-1 rounded transition-colors duration-200 ${
                           theme === 'light'
                             ? 'text-gray-600 hover:bg-gray-100'

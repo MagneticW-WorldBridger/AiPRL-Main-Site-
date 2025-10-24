@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAdminAuth } from '../hooks/useAdminAuth';
 import { AdminLogin } from '../pages/AdminLogin';
 import { AdminDashboard } from '../pages/AdminDashboard';

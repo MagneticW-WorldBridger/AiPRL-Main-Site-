@@ -57,6 +57,7 @@ export const OverlayMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ 
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+                    onClick={onClose}
                 >
                     <motion.div
                         initial={{ y: 24, scale: 0.98, opacity: 0 }}
@@ -64,6 +65,7 @@ export const OverlayMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ 
                         exit={{ y: 24, scale: 0.98, opacity: 0 }}
                         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                         className="absolute inset-4 rounded-2xl p-6 md:p-8 bg-gradient-to-br bg-black/80 shadow-2xl"
+                        onClick={(e) => e.stopPropagation()}
                     >
                         <div className="absolute left-6 top-6">
                             <BrandLogo />
@@ -71,10 +73,10 @@ export const OverlayMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ 
 
                         <button
                             onClick={onClose}
-                            className="absolute cursor-pointer right-0 top-0 inline-flex h-16 w-16 items-center justify-center rounded-full p-2 bg-white/10 hover:bg-white/20 transition"
+                            className="absolute cursor-pointer right-0 top-0 inline-flex h-10 w-10 items-center justify-center rounded-full p-2 bg-white/10 hover:bg-white/20 transition"
                             aria-label="Close menu"
                         >
-                            <X className="h-16 w-16 text-white rounded-full" />
+                            <X className="h-full w-full text-white rounded-full" onClick={onClose}/>
                         </button>
 
                         <div className="flex h-full w-full">

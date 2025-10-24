@@ -27,6 +27,7 @@ const ChatContainer: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isScrolled, setIsScrolled] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reopenTimerRef = useRef<number | null>(null);
 
@@ -84,12 +85,7 @@ const ChatContainer: React.FC = () => {
         isLoading: true,
       };
 
-      //To be deleted Started
-      setIsExpanded(true);
-      //To be deleted Ended
-
       setMessages(prev => [...prev, loadingMessage]);
-
 
       try {
         //Uses the API service to send the message
@@ -151,6 +147,23 @@ const ChatContainer: React.FC = () => {
     };
   }, []);
 
+  // Handle scroll to make chat bar sticky
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
       {isExpanded && (
@@ -171,9 +184,11 @@ const ChatContainer: React.FC = () => {
       >
         <div
           ref={panelRef}
-          className={`fixed item-center shadow-lg shadow-orange-400/40 z-50 rounded-lg flex top-4 flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${isExpanded
+          className={`fixed item-center shadow-lg shadow-orange-400/40 z-50 rounded-lg flex flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${
+            isScrolled ? 'top-0' : 'top-4'
+          } ${isExpanded
               ? 'w-[90%] lg:max-w-6xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
-              : 'w-[90%] lg:max-w-6xl lg:mt-3 mt-10 left-1/2 -translate-x-1/2 overflow-visible'
+              : `w-[90%] lg:max-w-6xl left-1/2 -translate-x-1/2 overflow-visible ${isScrolled ? 'lg:mt-1 mt-2' : 'lg:mt-3 mt-10'}`
             }`}
         >
           {/* Chat messages - only show when expanded */}

@@ -1,7 +1,14 @@
 "use client";
 
 import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
-import CharlesDickens from "../../assets/AiprlLogo.svg";
+// import CharlesDickens from "../../assets/AiprlLogo.svg";
+import PennyMustard from "../../assets/GraphicContent/PennyMustard.png";
+import PattyPeck from "../../assets/GraphicContent/PattyPeck.png";
+import Mercato from "../../assets/GraphicContent/Mercato.png";
+import RuralKing from "../../assets/GraphicContent/RuralKing.png";
+import Gavigan from "../../assets/GraphicContent/Gavigan's.png";
+import WoodStock from "../../assets/GraphicContent/WoodStock.png";
+import Baers from "../../assets/GraphicContent/Baers.png";
 
 export function InfiniteMovingCardsDemo() {
   return (
@@ -10,6 +17,7 @@ export function InfiniteMovingCardsDemo() {
         items={testimonials}
         direction="right"
         speed="slow"
+        className="scale-150 sm:scale-150 md:scale-150"
       />
     </div>
   );
@@ -17,38 +25,52 @@ export function InfiniteMovingCardsDemo() {
 
 const testimonials = [
   {
-    title: "A Tale of Two Cities",
+    title: "Penny Mustard",
     image: {
-      src: CharlesDickens,
-      alt: "Charles Dickens",
+      src: PennyMustard,
+      alt: "Penny Mustard",
     },
   },
   {
-    title: "Hamlet",
+    title: "Patty Peck",
     image: {
-      src: CharlesDickens,
-      alt: "William Shakespeare",
+      src: PattyPeck,
+      alt: "Patty Peck",
     },
   },
   {
-    title: "A Dream Within a Dream",
+    title: "Mercato",
     image: {
-      src: CharlesDickens,
-      alt: "Edgar Allan Poe",
+      src: Mercato,
+      alt: "Mercato",
     },
   },
   {
-    title: "Pride and Prejudice",
+    title: "Rural King",
     image: {
-      src: CharlesDickens,
-      alt: "Jane Austen",
+      src: RuralKing,
+      alt: "Rural King",
     },
   },
   {
-    title: "Moby-Dick",
+    title: "Gavigan's",
     image: {
-      src: CharlesDickens,
-      alt: "Herman Melville",
+      src: Gavigan,
+      alt: "Gavigan's",
     },
   },
+  {
+    title: "WoodStock",
+    image: {
+      src: WoodStock,
+      alt: "WoodStock",
+    },
+  },
+  {
+    title: "Baers",
+    image: {
+      src: Baers,
+      alt: "Baers",
+    },
+  }
 ];

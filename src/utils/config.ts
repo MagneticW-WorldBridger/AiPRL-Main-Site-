@@ -41,7 +41,7 @@ export interface AppConfig {
       // Validate API URL format
       try {
         new URL(this.config.chatApi.url);
-      } catch (error) {
+      } catch {
         throw new Error(`Invalid VITE_CHAT_API_URL format: ${this.config.chatApi.url}`);
       }
   

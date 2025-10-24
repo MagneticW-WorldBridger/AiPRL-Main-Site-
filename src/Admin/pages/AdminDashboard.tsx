@@ -17,7 +17,7 @@ export const AdminDashboard: React.FC = () => {
     drafts: 0,
     thisMonth: 0,
   });
-  const [bookingStats, setBookingStats] = useState({
+  const [bookingStats] = useState({
     total: 0,
     pending: 0,
     scheduled: 0,
