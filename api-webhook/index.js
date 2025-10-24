@@ -50,7 +50,7 @@ async function getOrCreateConversation(userIdentifier, platformType = 'web') {
   }
 }
 
-async function getConversationHistory(conversationId, limit = 10) {
+async function getConversationHistory(conversationId, limit = 50) {
   const client = await pool.connect();
   try {
     // Get the user_identifier from the conversation
@@ -167,7 +167,7 @@ app.post('/api/webhook', async (req, res) => {
     console.log(`[TEXT CHAT] Processing request for user: ${userIdentifier}`);
     
     const conversationId = await getOrCreateConversation(userIdentifier);
-    const history = await getConversationHistory(conversationId, 30);
+    const history = await getConversationHistory(conversationId, 50); // Load last 50 messages to include voice history
     
     console.log(`[TEXT CHAT] Retrieved ${history.length} messages from history`);
     
@@ -587,7 +587,7 @@ app.post('/api/elevenlabs-post-call', async (req, res) => {
 // Get conversation history (for voice agent to load at start)
 app.post('/api/get-history', async (req, res) => {
   try {
-    const { userId, limit = 10 } = req.body;
+    const { userId, limit = 50 } = req.body; // Increased to 50 to include older voice conversations
 
     if (!userId) {
       return res.status(400).json({ error: 'userId required' });
