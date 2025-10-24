@@ -65,7 +65,10 @@ async function getConversationHistory(conversationId, limit = 50) {
     
     const userId = userResult.rows[0].user_identifier;
     
-    // Get messages from ALL conversations (web + voice) for this user
+    // Get long-term memories (summaries of old conversations)
+    const longTermMemories = await getLongTermMemories(userId, 3);
+    
+    // Get recent messages from ALL conversations (web + voice) for this user
     const result = await client.query(
       `SELECT m.message_role as role, m.message_content as content, m.message_created_at 
        FROM chatbot_messages m
@@ -76,7 +79,8 @@ async function getConversationHistory(conversationId, limit = 50) {
       [userId, limit]
     );
 
-    return result.rows;
+    // Combine long-term memories + recent messages
+    return [...longTermMemories, ...result.rows];
   } finally {
     client.release();
   }
@@ -136,6 +140,153 @@ async function saveVoiceTranscript(userId, transcript) {
     }
 
     console.log(`[VOICE] Saved ${savedCount}/${transcript.length} messages for user ${userId}`);
+  } finally {
+    client.release();
+  }
+}
+
+// ========== LONG-TERM MEMORY FUNCTIONS ==========
+
+async function generateEmbedding(text) {
+  try {
+    const response = await openai.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: text,
+      dimensions: 384 // Match database vector size
+    });
+    return response.data[0].embedding;
+  } catch (error) {
+    console.error('[EMBEDDING] Error generating embedding:', error);
+    return null;
+  }
+}
+
+async function summarizeConversation(messages) {
+  try {
+    const conversationText = messages
+      .map(m => `${m.role}: ${m.content}`)
+      .join('\n');
+    
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "Summarize this conversation, extracting key facts, preferences, and information about the user. Be concise but comprehensive."
+        },
+        {
+          role: "user",
+          content: conversationText
+        }
+      ],
+      max_tokens: 300,
+      temperature: 0.3,
+    });
+    
+    return completion.choices[0].message.content;
+  } catch (error) {
+    console.error('[SUMMARY] Error summarizing:', error);
+    return null;
+  }
+}
+
+async function archiveOldMessages(userId) {
+  const client = await pool.connect();
+  try {
+    // Get total message count for user
+    const countResult = await client.query(
+      `SELECT COUNT(*) as total 
+       FROM chatbot_messages m
+       JOIN chatbot_conversations c ON m.conversation_id = c.conversation_id
+       WHERE c.user_identifier = $1`,
+      [userId]
+    );
+    
+    const totalMessages = parseInt(countResult.rows[0].total);
+    
+    // If less than 50 messages, no need to archive
+    if (totalMessages < 50) {
+      return;
+    }
+    
+    console.log(`[ARCHIVE] User ${userId} has ${totalMessages} messages, archiving old ones...`);
+    
+    // Get oldest 30 messages to archive
+    const oldMessages = await client.query(
+      `SELECT m.message_id, m.message_role as role, m.message_content as content, 
+              m.message_created_at, c.conversation_id
+       FROM chatbot_messages m
+       JOIN chatbot_conversations c ON m.conversation_id = c.conversation_id
+       WHERE c.user_identifier = $1
+       ORDER BY m.message_created_at ASC
+       LIMIT 30`,
+      [userId]
+    );
+    
+    if (oldMessages.rows.length === 0) {
+      return;
+    }
+    
+    // Summarize the old messages
+    const summary = await summarizeConversation(oldMessages.rows);
+    
+    if (!summary) {
+      console.error('[ARCHIVE] Failed to generate summary');
+      return;
+    }
+    
+    // Generate embedding for the summary
+    const embedding = await generateEmbedding(summary);
+    
+    if (!embedding) {
+      console.error('[ARCHIVE] Failed to generate embedding');
+      return;
+    }
+    
+    // Save to long_term_memories
+    await client.query(
+      `INSERT INTO long_term_memories 
+       (user_context, memory_content, memory_type, importance_score, embedding, source_conversation_id)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [userId, summary, 'conversation_summary', 0.8, JSON.stringify(embedding), oldMessages.rows[0].conversation_id]
+    );
+    
+    // Delete the archived messages
+    const messageIds = oldMessages.rows.map(m => m.message_id);
+    await client.query(
+      `DELETE FROM chatbot_messages WHERE message_id = ANY($1)`,
+      [messageIds]
+    );
+    
+    console.log(`[ARCHIVE] ✅ Archived ${oldMessages.rows.length} messages for user ${userId}`);
+    console.log(`[ARCHIVE] Summary: ${summary.substring(0, 100)}...`);
+    
+  } catch (error) {
+    console.error('[ARCHIVE] Error:', error);
+  } finally {
+    client.release();
+  }
+}
+
+async function getLongTermMemories(userId, limit = 5) {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `SELECT memory_content, created_at, importance_score
+       FROM long_term_memories
+       WHERE user_context = $1
+       ORDER BY created_at ASC
+       LIMIT $2`,
+      [userId, limit]
+    );
+    
+    return result.rows.map(row => ({
+      role: 'system',
+      content: `[Previous conversation summary]: ${row.memory_content}`
+    }));
+  } catch (error) {
+    console.error('[LONG_TERM] Error fetching memories:', error);
+    return [];
   } finally {
     client.release();
   }
@@ -481,6 +632,11 @@ CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully.
     await saveMessage(conversationId, 'assistant', response);
     
     console.log(`[TEXT CHAT] Saved conversation messages to database`);
+    
+    // Archive old messages if needed (asynchronously, don't wait)
+    archiveOldMessages(userIdentifier).catch(err => 
+      console.error('[TEXT CHAT] Archive error:', err)
+    );
 
     return res.status(200).json([
       {
