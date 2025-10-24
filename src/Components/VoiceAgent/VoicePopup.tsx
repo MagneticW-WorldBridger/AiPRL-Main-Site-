@@ -20,7 +20,8 @@ export function VoicePopup({ isOpen, onClose }: VoicePopupProps) {
 
     // Create iframe that loads the standalone page
     const iframe = document.createElement('iframe');
-    iframe.src = `http://localhost:3000/voice-test-rings.html?embed=1&theme=dark&userId=${userId}`;
+    const voiceServiceUrl = import.meta.env.VITE_VOICE_SERVICE_URL || 'http://localhost:3000';
+    iframe.src = `${voiceServiceUrl}/voice-test-rings.html?embed=1&theme=dark&userId=${userId}`;
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
