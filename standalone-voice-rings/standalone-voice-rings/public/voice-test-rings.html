@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>AiPRL Voice Assistant - Boost Mobile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+          --rk-primary: #ff8c00;
+          --rk-accent: #ffa500;
+          --rk-info: #1e90ff;
+          --rk-success: #10B981;
+          --rk-surface: #0a0a0a;
+          --rk-text: #ffffff;
+          --rk-muted: #666666;
+          --rk-radius: 12px;
+        }
+        body.theme-rk {
+          --rk-primary: #C8102E;
+          --rk-accent: #F59E0B;
+          --rk-info: #2563EB;
+          --rk-success: #10B981;
+          --rk-surface: #FFFFFF;
+          --rk-text: #111827;
+          --rk-muted: #374151;
+          --rk-radius: 12px;
+        }
+        body { margin: 0; overflow: hidden; background: var(--rk-surface); color: var(--rk-text); font-family: Inter, ui-sans-serif, system-ui; height: 100vh; }
+        /* Embed mode: Keep controls visible */
+        body.embed .center-icon { width: 300px; height: 300px; box-shadow: none; opacity: 0.95; }
+        body.embed canvas { top: 0; left: 0; }
+        canvas { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 60vh; z-index: 1; }
+        .controls { position: absolute; top: 30px; left: 30px; z-index: 100; background: color-mix(in oklab, var(--rk-surface), black 15%); backdrop-filter: blur(20px); border: 1px solid color-mix(in oklab, var(--rk-primary), transparent 60%); border-radius: var(--rk-radius); padding: 20px; box-shadow: 0 8px 20px rgba(17,24,39,.08); }
+        .logo { font-size: 28px; font-weight: 700; background: linear-gradient(45deg, var(--rk-accent), var(--rk-info)); background-size: 300% 300%; animation: gradientShift 3s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-align: center; letter-spacing: 2px; }
+        @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        button { padding: 12px 24px; margin: 8px; background: color-mix(in oklab, var(--rk-primary), transparent 80%); color: var(--rk-text); border: 1px solid color-mix(in oklab, var(--rk-primary), transparent 50%); cursor: pointer; border-radius: var(--rk-radius); backdrop-filter: blur(10px); transition: all .3s ease; font-weight: 600; letter-spacing: 0.3px; font-size: 12px; }
+        button:hover { background: color-mix(in oklab, var(--rk-primary), transparent 65%); border-color: var(--rk-primary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(17,24,39,.08); }
+        button:disabled { background: rgba(20,20,20,0.5); border-color: rgba(100,100,100,0.3); cursor: not-allowed; transform: none; box-shadow: none; color: #666; }
+        .connect-btn { background: var(--rk-primary); border: none; color: white; }
+        .connect-btn:hover { background: color-mix(in oklab, var(--rk-primary), black 10%); }
+        .disconnect-btn { background: var(--rk-info); border: none; color: white; }
+        .disconnect-btn:hover { background: color-mix(in oklab, var(--rk-info), black 10%); }
+        .status { position: absolute; bottom: 30px; left: 30px; background: color-mix(in oklab, var(--rk-surface), black 15%); backdrop-filter: blur(20px); border: 1px solid color-mix(in oklab, var(--rk-info), transparent 70%); border-radius: var(--rk-radius); padding: 20px; box-shadow: 0 8px 20px rgba(17,24,39,.08); z-index: 100; min-width: 220px; }
+        .status-indicator { display: flex; align-items: center; margin-bottom: 10px; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; animation: pulse 2s infinite; }
+        .status-dot.connected { background: var(--rk-info); box-shadow: 0 0 10px var(--rk-info); }
+        .status-dot.disconnected { background: var(--rk-muted); }
+        .status-dot.connecting { background: var(--rk-accent); box-shadow: 0 0 10px var(--rk-accent); }
+        @keyframes pulse { 0%{opacity:1} 50%{opacity:.6} 100%{opacity:1} }
+        .chat-sidebar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 40vh; background: color-mix(in oklab, var(--rk-surface), black 5%); backdrop-filter: blur(20px); border-top: 2px solid color-mix(in oklab, var(--rk-primary), transparent 70%); z-index: 90; display: flex; flex-direction: column; transform: translateY(0); transition: transform .3s ease; }
+        .chat-sidebar.visible { transform: translateY(0); }
+        .chat-toggle { display: none; }
+        .chat-header { padding: 25px 20px 15px; border-bottom: 1px solid color-mix(in oklab, var(--rk-primary), transparent 70%); background: color-mix(in oklab, var(--rk-surface), black 8%); }
+        .chat-title { font-size: 18px; font-weight: 600; background: linear-gradient(45deg, var(--rk-accent), var(--rk-info)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; scrollbar-width: thin; scrollbar-color: color-mix(in oklab, var(--rk-primary), transparent 70%) transparent; }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: color-mix(in oklab, var(--rk-primary), transparent 60%); border-radius: 3px; }
+        .message { margin-bottom: 15px; padding: 12px 16px; border-radius: var(--rk-radius); max-width: 90%; word-wrap: break-word; animation: messageSlide .3s ease; font-size: 14px; line-height: 1.4; }
+        @keyframes messageSlide { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+        .message.user { background: color-mix(in oklab, var(--rk-primary), transparent 85%); border: 1px solid color-mix(in oklab, var(--rk-primary), transparent 60%); margin-left: auto; text-align: right; }
+        .message.ai { background: color-mix(in oklab, var(--rk-info), transparent 85%); border: 1px solid color-mix(in oklab, var(--rk-info), transparent 60%); margin-right: auto; }
+        .message.system { background: color-mix(in oklab, var(--rk-surface), black 20%); border: 1px solid color-mix(in oklab, var(--rk-muted), transparent 40%); margin: 0 auto; text-align: center; font-style: italic; font-size: 12px; color: var(--rk-muted); }
+        .message-time { font-size: 10px; opacity: .6; margin-top: 5px; }
+        .voice-status { padding: 15px 20px; background: color-mix(in oklab, var(--rk-surface), black 12%); border-top: 1px solid color-mix(in oklab, var(--rk-primary), transparent 80%); text-align: center; font-size: 12px; }
+        .voice-indicator { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--rk-muted); margin-right: 8px; transition: all .3s ease; }
+        .voice-indicator.active { background: var(--rk-info); box-shadow: 0 0 10px var(--rk-info); animation: voicePulse 1s infinite; }
+        .voice-indicator.speaking { background: var(--rk-accent); box-shadow: 0 0 10px var(--rk-accent); }
+        @keyframes voicePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+        .center-icon { position: absolute; top: 30vh; left: 50%; width: 350px; height: 350px; transform: translate(-50%, -50%); background-image: url('/girl.png'); background-size: cover; background-repeat: no-repeat; background-position: center; border-radius: 50%; box-shadow: 0 8px 20px rgba(17,24,39,.08); z-index: 10; animation: float 6s ease-in-out infinite; }
+        /* Mobile: Adjust sizes */
+        @media (max-width:768px){ 
+            .center-icon { position: absolute; top: 30vh; left: 50%; width: 220px; height: 220px; }
+            .chat-sidebar { height: 40vh; }
+            .controls { top: 10px; left: 10px; padding: 12px; }
+            .status { bottom: 41vh; left: 10px; padding: 12px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="audioVisualizer"></canvas>
+    <div class="center-icon"></div>
+    <div class="controls">
+        <div class="logo">AiPRL</div>
+        <button id="connectBtn" class="connect-btn">Connect to AiPRL</button>
+        <button id="disconnectBtn" class="disconnect-btn" disabled>Disconnect</button>
+    </div>
+    <div class="status">
+        <div class="status-indicator">
+            <div class="status-dot disconnected" id="statusDot"></div>
+            <div id="status">Disconnected</div>
+        </div>
+        <div id="debugInfo" style="font-size:11px;opacity:.7;margin-top:8px;">Ready to connect</div>
+    </div>
+    <div class="chat-sidebar visible" id="chatSidebar">
+        <div class="chat-header"><div class="chat-title">Live Conversation</div></div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message system">
+                <div>AiPRL Voice Assistant Ready</div>
+                <div class="message-time">Boost Mobile Training Assistant</div>
+            </div>
+        </div>
+        <div class="voice-status">
+            <span class="voice-indicator" id="voiceIndicator"></span>
+            <span id="voiceText">Ready</span>
+        </div>
+    </div>
+
+    <script src="/elevenlabs-client.js"></script>
+    <script>
+    (function(){try{const p=new URLSearchParams(window.location.search);const e=p.get('embed');if(e==='1'||e==='true'){document.body.classList.add('embed')} const t=p.get('theme'); if(t==='rk'){document.body.classList.add('theme-rk')} const userId=p.get('userId'); if(userId){window.userId=userId; console.log('🔑 Voice Agent - Received userId:', userId);}}catch(e){}})();
+    let client=null; let conversation=null; let isActive=true;
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        let attempts = 0; const maxAttempts = 50;
+        while (attempts < maxAttempts) {
+          if (window.client && window.client.Conversation) { client = window.client; break; }
+          await new Promise(r=>setTimeout(r,100)); attempts++;
+        }
+        if (!client) throw new Error('ElevenLabs client not available after 5 seconds');
+      } catch (err) {
+        console.error('Failed to initialize ElevenLabs client:', err);
+        addMessage('system', 'Failed to initialize voice client: ' + err.message);
+      }
+    });
+    const canvas = document.getElementById('audioVisualizer');
+    const ctx = canvas.getContext('2d', { antialias: true, alpha: true });
+    const dpr = window.devicePixelRatio || 1;
+    const canvasHeight = window.innerHeight * 0.6;
+    canvas.width = window.innerWidth * dpr; canvas.height = canvasHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px'; canvas.style.height = canvasHeight + 'px';
+    ctx.scale(dpr, dpr); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    const rkPrimary = getComputedStyle(document.body).getPropertyValue('--rk-primary').trim();
+    const rkInfo = getComputedStyle(document.body).getPropertyValue('--rk-info').trim();
+    const rkAccent = getComputedStyle(document.body).getPropertyValue('--rk-accent').trim();
+    const bandConfigs = [
+      { color: rkPrimary || 'rgba(255, 140, 0, 0.8)', radius: 205, idleOffset: Math.random() * 1000 },
+      { color: rkInfo || 'rgba(30, 144, 255, 0.8)', radius: 215, idleOffset: Math.random() * 1000 },
+      { color: rkAccent || 'rgba(255, 165, 0, 0.6)', radius: 225, idleOffset: Math.random() * 1000 }
+    ];
+    let inputFreqData=new Uint8Array(1024), outputFreqData=new Uint8Array(1024), inputVolume=0, outputVolume=0, smoothedData=[0,0,0];
+    function smoothTransition(c,t,s=0.3){return c+(t-c)*s}
+    function getBandData(a,s,e){const b=a.slice(s,e);return b.reduce((m,v)=>m+v,0)/b.length}
+         function drawRing(cfg, idx, vol, type){const cx=canvas.width/(2*dpr), cy=canvas.height/(2*dpr), seg=180, step=(Math.PI*2)/seg; const sv=smoothTransition(smoothedData[idx], vol, 0.3); smoothedData[idx]=sv; let color=cfg.color; if(type==='user'&&inputVolume>0.001){const i=Math.min(1,inputVolume*100); color=rkPrimary?`rgba(200,16,46,${0.5+i*0.5})`:`rgba(255,140,0,${0.6+i*0.4})`} else if(type==='ai'&&outputVolume>0.001){const i=Math.min(1,outputVolume*5); color=rkInfo?`rgba(37,99,235,${0.5+i*0.5})`:`rgba(30,144,255,${0.6+i*0.4})`} ctx.save(); ctx.beginPath(); for(let i=0;i<=seg;i++){const a=i*step, base=cfg.radius; const idle=Math.sin(a*3+performance.now()/800+cfg.idleOffset)*5; const react=(sv/255)*30; const dyn=Math.sin(a*6)*react; const harm=Math.sin(a*2+performance.now()/1000)*(sv/15); const r=base+idle+dyn+harm; const spiral=(sv/255)*5; const x=cx+Math.cos(a+spiral)*r; const y=cy+Math.sin(a+spiral)*r; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.closePath(); ctx.strokeStyle=color; ctx.lineWidth=4+(sv/255)*8; ctx.shadowBlur=10+(sv/255)*30; ctx.shadowColor=color; ctx.globalCompositeOperation='screen'; ctx.stroke(); if(sv>100){ctx.shadowBlur=20+(sv/255)*40; ctx.lineWidth=ctx.lineWidth*0.5; ctx.stroke();} ctx.restore();}
+    function render(){ if(!isActive) return; ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr); const len=Math.max(inputFreqData.length, outputFreqData.length); const lowBass=getBandData(inputFreqData,0,len/8); drawRing(bandConfigs[0],0,lowBass,'user'); const highBass=getBandData(outputFreqData,len/8,len/4); drawRing(bandConfigs[1],1,highBass,'ai'); const lowMids=getBandData(inputFreqData,len/4,len/3); const highMids=getBandData(outputFreqData,len/4,len/3); const mixed=(lowMids+highMids)/2; drawRing(bandConfigs[2],2,mixed,'mixed'); requestAnimationFrame(render);} render();
+    function startFrequencyMonitoring(conv){ if(!conv) return; function loop(){ try{ inputFreqData=conv.getInputByteFrequencyData(); outputFreqData=conv.getOutputByteFrequencyData(); inputVolume=conv.getInputVolume(); outputVolume=conv.getOutputVolume(); const indicator=document.getElementById('voiceIndicator'); const voiceText=document.getElementById('voiceText'); if(inputVolume>0.001){indicator.className='voice-indicator speaking'; voiceText.textContent='You Speaking';} else if(outputVolume>0.001){indicator.className='voice-indicator active'; voiceText.textContent='AiPRL Speaking';} else {indicator.className='voice-indicator'; voiceText.textContent='Listening';}}catch(e){} if(conv && conv.isOpen()) requestAnimationFrame(loop);} loop(); }
+    function addMessage(type, content, timestamp=new Date()){ const c=document.getElementById('chatMessages'); const d=document.createElement('div'); d.className=`message ${type}`; const t=timestamp.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); d.innerHTML=`<div>${content}</div><div class="message-time">${t}</div>`; c.appendChild(d); c.scrollTop=c.scrollHeight; }
+    const connectBtn=document.getElementById('connectBtn'); const disconnectBtn=document.getElementById('disconnectBtn'); const statusDiv=document.getElementById('status'); const debugDiv=document.getElementById('debugInfo'); const statusDot=document.getElementById('statusDot');
+    function updateStatus(s){ statusDiv.textContent=s; statusDot.className='status-dot '+s.toLowerCase(); if(s==='Connected'){ connectBtn.disabled=true; disconnectBtn.disabled=false; } else { connectBtn.disabled=false; disconnectBtn.disabled=true; } }
+    connectBtn.addEventListener('click', async ()=>{
+      try{
+        if(!client){ addMessage('system','❌ Voice client not initialized. Please refresh the page.'); return; }
+        updateStatus('Connecting'); debugDiv.textContent='Getting signed URL...'; addMessage('system','Initializing AiPRL connection...');
+        const r=await fetch('/api/elevenlabs/signed-url',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ agentId:'agent_0801k823d1bsf83rsyn8xs9fht59' }) });
+        if(!r.ok) throw new Error(`Failed to get signed URL: ${r.status}`);
+        const { signedUrl } = await r.json(); debugDiv.textContent='Connecting to AiPRL...';
+        conversation = await client.Conversation.startSession({
+          signedUrl,
+          onConnect:()=>{ updateStatus('Connected'); debugDiv.textContent='Connected! Start talking...'; addMessage('system','Connected successfully! Start talking...'); setTimeout(()=>startFrequencyMonitoring(conversation),100); },
+          onDisconnect:()=>{ updateStatus('Disconnected'); debugDiv.textContent='Disconnected from AiPRL'; addMessage('system','Disconnected from AiPRL'); conversation=null; },
+          onError:(e)=>{ updateStatus('Error'); debugDiv.textContent='Error: '+e; addMessage('system','Connection error: '+e); },
+          onMessage:(m)=>{ debugDiv.textContent=`Latest: ${m.source}`; if(m.source==='user') addMessage('user', m.message); else if(m.source==='ai') addMessage('ai', m.message); },
+          // Add userId to conversation context for memory
+          overrides: {
+            agent: {
+              webhook: {
+                url: "https://endpoint-aiprl-main-site.vercel.app/",
+                method: "POST",
+                body: JSON.stringify({
+                  userId: window.userId || 'anonymous',
+                  platformType: "voice"
+                })
+              }
+            }
+          }
+        });
+      }catch(e){ updateStatus('Error'); debugDiv.textContent='Connection failed: '+e.message; addMessage('system','Connection failed: '+e.message); }
+    });
+    disconnectBtn.addEventListener('click',()=>{ if(conversation){ conversation.endSession(); conversation=null; updateStatus('Disconnected'); debugDiv.textContent='Manually disconnected'; addMessage('system','Manually disconnected from AiPRL'); } });
+    window.addEventListener('resize',()=>{ const canvasHeight = window.innerHeight * 0.6; canvas.width=window.innerWidth*dpr; canvas.height=canvasHeight*dpr; canvas.style.width=window.innerWidth+'px'; canvas.style.height=canvasHeight+'px'; ctx.scale(dpr,dpr); });
+    </script>
+</body>
+</html>
+
+

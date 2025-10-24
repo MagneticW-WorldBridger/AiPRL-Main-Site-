@@ -1,5 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { getUserId } from '../../utils/userIdentity';
 
 interface VoicePopupProps {
   isOpen: boolean;
@@ -7,10 +8,36 @@ interface VoicePopupProps {
 }
 
 export function VoicePopup({ isOpen, onClose }: VoicePopupProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const userId = useMemo(() => getUserId(), []);
 
-  // Auto-connect is handled via embed mode parameter in the iframe URL
-  // No need for message passing to prevent duplicate connections
+  // Load the standalone voice agent directly into the modal
+  useEffect(() => {
+    if (!isOpen || !containerRef.current) return;
+
+    // Clear any existing content
+    containerRef.current.innerHTML = '';
+
+    // Create iframe that loads the standalone page
+    const iframe = document.createElement('iframe');
+    iframe.src = `http://localhost:3000/voice-test-rings.html?embed=1&theme=dark&userId=${userId}`;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    iframe.allow = 'microphone; autoplay; screen-wake-lock; camera';
+    iframe.title = 'AiPRL Voice Assistant';
+    
+    // Remove sandbox to allow microphone access
+    // iframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups';
+    
+    containerRef.current.appendChild(iframe);
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+    };
+  }, [isOpen, userId]);
 
   if (!isOpen) return null;
 
@@ -23,9 +50,9 @@ export function VoicePopup({ isOpen, onClose }: VoicePopupProps) {
       />
       
       {/* Modal */}
-      <div className="relative w-[60%] h-[80%] max-w-6xl max-h-[95vh] bg-black rounded-2xl overflow-hidden shadow-2xl">
+      <div className="relative w-[95%] h-[95%] max-w-none max-h-none bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-500/50">
         {/* Header */}
-        <div className="absolute  top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10">
           <button
             onClick={onClose}
             className="p-2 cursor-pointer hover:bg-white/10 rounded-full transition-colors"
@@ -34,14 +61,10 @@ export function VoicePopup({ isOpen, onClose }: VoicePopupProps) {
           </button>
         </div>
 
-        {/* Voice Agent Iframe */}
-        <iframe
-          ref={iframeRef}
-          src="http://localhost:3000/voice-test-rings.html?embed=1&theme=dark"
-          className="w-full h-full border-0"
-          allow="microphone; autoplay; screen-wake-lock; camera"
-          title="AiPRL Voice Assistant"
-          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation"
+        {/* Voice Agent Container */}
+        <div 
+          ref={containerRef}
+          className="w-full h-full"
         />
       </div>
     </div>

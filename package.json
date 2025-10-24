@@ -6,18 +6,20 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:voice\"",
     "dev:frontend": "vite",
-    "dev:voice": "cd standalone-voice-rings && npm start",
+    "dev:voice": "cd standalone-voice-rings/standalone-voice-rings && npm start",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "setup-voice": "node setup-voice-rings.js"
   },
   "dependencies": {
+    "@swc/core": "^1.13.21",
     "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/vite": "^4.1.13",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
+    "@vitejs/plugin-react": "^5.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^12.4.0",
@@ -43,7 +45,7 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@types/react-transition-group": "^4.4.12",
-    "@vitejs/plugin-react-swc": "^4.0.0",
+    "@vitejs/plugin-react-swc": "^4.2.0",
     "concurrently": "^8.2.2",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -52,6 +54,6 @@
     "tw-animate-css": "^1.3.8",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "vite": "^7.1.12"
   }
 }
