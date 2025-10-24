@@ -304,6 +304,81 @@ app.use((req, res, next) => {
   next();
 });
 
+// Helper function to call n8n webhook for tool execution
+async function callN8nWebhook(instruction, userId) {
+  const N8N_WEBHOOK_URL = 'https://drivedevelopment.app.n8n.cloud/webhook/84b59153-ebea-475d-ad72-9ce89dd164a8';
+  
+  try {
+    console.log(`[N8N WEBHOOK] Calling with instruction: ${instruction}`);
+    console.log(`[N8N WEBHOOK] User ID: ${userId}`);
+    
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: instruction,
+        id: userId
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`N8N webhook failed: ${response.status} ${response.statusText}`);
+    }
+    
+    const result = await response.text();
+    console.log(`[N8N WEBHOOK] Response: ${result}`);
+    
+    return result || 'Action completed successfully.';
+  } catch (error) {
+    console.error('[N8N WEBHOOK] Error:', error);
+    return `Error: ${error.message}`;
+  }
+}
+
+// Helper function to format tool parameters into natural language instruction
+function formatToolInstruction(toolName, parameters) {
+  const now = new Date();
+  const currentTime = now.toISOString();
+  
+  if (toolName === 'schedule_appointment') {
+    const { name, email, phone, company_name, company_website, appointment_datetime, notes } = parameters;
+    
+    let instruction = `Schedule an appointment for ${name} (email: ${email}, phone: ${phone})`;
+    
+    if (company_name) {
+      instruction += ` from ${company_name}`;
+    }
+    
+    if (company_website) {
+      instruction += ` (website: ${company_website})`;
+    }
+    
+    instruction += ` on ${appointment_datetime}`;
+    
+    if (notes) {
+      instruction += `. Additional notes: ${notes}`;
+    }
+    
+    instruction += `. Current time is ${currentTime}. Send confirmation email to ${email}.`;
+    
+    return instruction;
+  }
+  
+  if (toolName === 'submit_ticket') {
+    const { name, email, phone, subject, description } = parameters;
+    
+    let instruction = `Create a support ticket from ${name} (email: ${email}, phone: ${phone})`;
+    instruction += `. Subject: ${subject}. Description: ${description}`;
+    instruction += `. Send confirmation email to ${email} and notify the support team.`;
+    
+    return instruction;
+  }
+  
+  return 'Unknown tool request';
+}
+
 // Text chat webhook (original)
 app.post('/api/webhook', async (req, res) => {
   try {
@@ -380,7 +455,7 @@ Your task is to answer all the questions from the user, You are not allowed to a
 
 While booking an Appointment, you must ask each question. Refer to the chat history to make sure all the information is provided.
 
-You will only run the "book_appointment" function once and not again and again. 
+You have access to tools that can schedule appointments and submit support tickets. Use them when appropriate, but ONLY after collecting all necessary information from the user. 
 
 ###Extra information about AiPRL Assist:
 
@@ -514,98 +589,28 @@ If you want an AI that can basically run your front office and support team, Ent
 Let April do the work — while you focus on building your business.
 Proof of concept usually takes around 90 days.
 
-### Appointment Booking process
-Whenever someone wants to book an appointment, You will follow the steps give below:
+### Appointment Booking Process
+When a user wants to book an appointment, collect the following information step by step:
+1. Name, Email, and Phone
+2. Company name and company website (optional)
+3. Preferred date and time (mention working hours: Monday-Friday 9am-6pm CST)
 
-First, you will ask for their Name, Email and phone for the appointment they want to book. 
-Wait for the user's response and make sure the user has provided all Name, Email and Phone. 
-(If any information is remaining, ask for it and then only move on to the next step)
+After collecting ALL information, confirm with the user. When they confirm, use the schedule_appointment tool with all the collected details.
 
-Second, you will ask for their Company name, and company website: (If they don't have a website, it's fine)
-Once the user provides the above information, move to the next step.
+### Support Ticket Process
+When a user wants to talk to support or submit a ticket:
+1. Offer to submit a ticket and explain that support will respond soon
+2. Collect: Name, Email, Phone
+3. Ask for: Subject and Description of their concern
 
-third, You will ask when they would like to book the appointment, mention our working hours are Monday to Friday 9 am to 6pm CST. 
-The date and time could also be in this format: "Next Monday at 5 pm" 
+After collecting ALL information, use the submit_ticket tool with the details.
 
-Note: Use the current time to confirm the exact date. 
-
-Once all the necessary information is received you will confirm with the user: Would you like me to go ahead and book the meeting for you? Once booked you will receive confirmation email on your phone. 
-
-Note: NEVER make up, assume, or generate information. You ONLY collect, validate, and confirm information explicitly provided by the user.
-
-Validation Rules (Be FLEXIBLE and UNDERSTANDING)
-
-Phone Number Validation:
-- Accept ANY 10-digit number for US numbers
-- Accept international formats with country codes
-- If unsure, just ask for clarification - don't lecture
-
-Email Validation:
-- ONLY requirement: Must have @ symbol and a domain (like user@domain.com)
-- DON'T reject based on content - accept ANY email with proper format
-- If missing @ or domain, politely ask for correction
-
-Name Validation:
-- Accept whatever name the user provides
-- If they give first name only, that's fine - ask for last name IF you need it
-- Don't overthink it
-
-Collection Process (NATURAL approach)
-
-When booking appointments or collecting info:
-1. Have a CONVERSATION first - don't interrogate
-2. Extract information naturally from the conversation
-3. If you need something specific, ask casually
-4. Confirm details ONCE before finalizing
-
-Response Guidelines:
-- Be brief and friendly
-- Don't lecture about formats
-- If something seems wrong, just ask politely
-- Trust the user - they know their own information
-
-If the user say 'yes' then you will run the function : "book_Appointment" That will make sure the appointment gets booked. 
-
-If no mention that what else would they like help with.
-
-###Ticket Creation: 
-
-Whenever the user demands to talk to someone or wants to reach out to support or anything similar, you will first inform the user that you can help them submit a ticket and our support team will get back to them as soon as possible. Would they like to proceed? (Note it can be impressed 
-
-If they say yes or agree, then you will ask the user their name, email and phone. 
-
-Once they provide the user ask them what is their subject of the ticket is and what their concern is so that the team can help them better. 
-
-Once they provide that then ONLY you will run the function "submit_ticket". 
-
-Note: If someone is interested in trying AI phone call feature of AiPRL Assist, Follow the steps below
-
-### Try AiPRL Voice Feature:
-
-Here's how the flow should go:
-
-1. Start by asking for their Full Name and Email.
-   - Make sure the user provides both.
-   - Check that the email is in a valid format.
-   - Don't move forward until both are confirmed.
-
-2. Next, ask for the name of their Company.
-   - Ensure the company name sounds real and professional.
-   - Politely reject or re-ask if they enter anything inappropriate or obviously invalid (e.g., names like "Pornhub" or joke entries).
-
-3. Then ask for their Phone Number. 
-   - Validate that it looks like a proper phone number with 10 digits and ask them to include their country code too.
-
-   - Always assume the user has the US country code of "+1", unless they tell you otherwise (Do not mention this) 
-
-4. Once all details are collected and valid, confirm with the user:
-   - Ask if they're ready to receive a test call from AiPRL Assist.
-   - If they agree, go ahead and run the function: \`Call_Person\`.
-
-IMPORTANT: You must not book appointment for the past time. If today is December 4, 2025 then you must reject to book an appointment for December 2, 2025.
-
-Keep the tone friendly and helpful throughout the conversation 😊  
-Use emojis where it makes sense to keep things engaging, and avoid sounding robotic.
+### Important Validation Rules:
+- Phone: Accept 10-digit US numbers or international with country code
+- Email: Must have @ and domain
+- Don't be strict - be conversational and helpful
+- Extract information from conversation history naturally
+- Never ask for info you already have
 
 CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully. If the user says they already gave you information, FIND IT in the history and acknowledge it. Never say "I don't have memory" when the information is in the current conversation.`
       }
@@ -619,14 +624,143 @@ CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully.
 
     console.log(`[TEXT CHAT] Sending ${messages.length} messages to OpenAI`);
     
+    // Define tools for OpenAI
+    const tools = [
+      {
+        type: "function",
+        function: {
+          name: "schedule_appointment",
+          description: "Schedule an appointment on Google Calendar after collecting all required information from the user. Use this only after the user confirms they want to book.",
+          parameters: {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+                description: "Full name of the person booking the appointment"
+              },
+              email: {
+                type: "string",
+                description: "Email address of the person"
+              },
+              phone: {
+                type: "string",
+                description: "Phone number of the person"
+              },
+              company_name: {
+                type: "string",
+                description: "Name of the company"
+              },
+              company_website: {
+                type: "string",
+                description: "Company website URL (optional)"
+              },
+              appointment_datetime: {
+                type: "string",
+                description: "Preferred date and time for the appointment in natural language (e.g., 'Next Monday at 2 PM CST', 'Tomorrow at 3:30 PM', 'December 15, 2024 at 10 AM')"
+              },
+              notes: {
+                type: "string",
+                description: "Any additional notes or context about the appointment"
+              }
+            },
+            required: ["name", "email", "phone", "company_name", "appointment_datetime"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "submit_ticket",
+          description: "Submit a support ticket via email after collecting all required information from the user.",
+          parameters: {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+                description: "Full name of the person submitting the ticket"
+              },
+              email: {
+                type: "string",
+                description: "Email address of the person"
+              },
+              phone: {
+                type: "string",
+                description: "Phone number of the person"
+              },
+              subject: {
+                type: "string",
+                description: "Subject/title of the support ticket"
+              },
+              description: {
+                type: "string",
+                description: "Detailed description of the issue or concern"
+              }
+            },
+            required: ["name", "email", "phone", "subject", "description"]
+          }
+        }
+      }
+    ];
+    
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: messages,
+      tools: tools,
+      tool_choice: "auto",
       max_tokens: 1000,
       temperature: 0.7,
     });
 
-    const response = completion.choices[0].message.content;
+    const choice = completion.choices[0];
+    let response = choice.message.content;
+    
+    // Check if OpenAI wants to call a tool
+    if (choice.message.tool_calls && choice.message.tool_calls.length > 0) {
+      console.log(`[TEXT CHAT] Tool calls detected: ${choice.message.tool_calls.length}`);
+      
+      // Process each tool call
+      for (const toolCall of choice.message.tool_calls) {
+        const toolName = toolCall.function.name;
+        const toolArgs = JSON.parse(toolCall.function.arguments);
+        
+        console.log(`[TEXT CHAT] Calling tool: ${toolName}`);
+        console.log(`[TEXT CHAT] Tool arguments:`, toolArgs);
+        
+        // Format tool parameters into natural language instruction
+        const instruction = formatToolInstruction(toolName, toolArgs);
+        
+        // Call n8n webhook
+        const toolResult = await callN8nWebhook(instruction, userIdentifier);
+        
+        console.log(`[TEXT CHAT] Tool result: ${toolResult}`);
+        
+        // Add the assistant's tool call message to conversation
+        messages.push({
+          role: "assistant",
+          content: null,
+          tool_calls: [toolCall]
+        });
+        
+        // Add the tool result to conversation
+        messages.push({
+          role: "tool",
+          tool_call_id: toolCall.id,
+          name: toolName,
+          content: toolResult
+        });
+      }
+      
+      // Get final response from OpenAI after tool execution
+      const finalCompletion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: messages,
+        max_tokens: 1000,
+        temperature: 0.7,
+      });
+      
+      response = finalCompletion.choices[0].message.content;
+      console.log(`[TEXT CHAT] Final response after tool execution: ${response}`);
+    }
     
     await saveMessage(conversationId, 'user', query);
     await saveMessage(conversationId, 'assistant', response);
