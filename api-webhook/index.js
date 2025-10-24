@@ -751,7 +751,10 @@ app.post('/api/get-history', async (req, res) => {
 
     const client = await pool.connect();
     try {
-      // Get messages from BOTH web and voice conversations
+      // Get long-term memories (summaries of old conversations)
+      const longTermMemories = await getLongTermMemories(userId, 3);
+      
+      // Get recent messages from BOTH web and voice conversations
       const result = await client.query(
         `SELECT m.message_role as role, m.message_content as content 
          FROM chatbot_messages m
@@ -762,9 +765,12 @@ app.post('/api/get-history', async (req, res) => {
         [userId, limit]
       );
 
-      console.log(`[GET HISTORY] Retrieved ${result.rows.length} messages for user: ${userId}`);
+      console.log(`[GET HISTORY] Retrieved ${longTermMemories.length} long-term memories + ${result.rows.length} recent messages for user: ${userId}`);
 
-      return res.status(200).json({ history: result.rows.reverse() });
+      // Combine long-term memories + recent messages (reverse recent messages for chronological order)
+      const combinedHistory = [...longTermMemories, ...result.rows.reverse()];
+      
+      return res.status(200).json({ history: combinedHistory });
     } finally {
       client.release();
     }
