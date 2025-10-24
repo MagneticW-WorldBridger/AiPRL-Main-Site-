@@ -529,17 +529,27 @@ app.post('/api/elevenlabs-post-call', async (req, res) => {
 
     // Parse the body now that it's validated
     const event = JSON.parse(body);
+    
+    // LOG COMPLETE PAYLOAD FOR DEBUGGING
+    console.log('[VOICE POST-CALL] 📦 FULL PAYLOAD:', JSON.stringify(event, null, 2));
+    
     const { type, data } = event;
 
     if (type === 'post_call_transcription') {
       const { conversation_id, transcript, conversation_initiation_client_data } = data;
       
-      // Extract userId - try multiple sources
-      const userId = conversation_initiation_client_data?.dynamic_variables?.userId || 
-                    data.user_id || 
-                    data.metadata?.user_id ||
-                    'anonymous';
-
+      // Extract userId - try multiple sources (based on ElevenLabs official schema)
+      const userIdFromDynamic = conversation_initiation_client_data?.dynamic_variables?.userId;
+      const userIdFromData = data.user_id;
+      const userIdFromMetadata = data.metadata?.user_id;
+      
+      const userId = userIdFromDynamic || userIdFromData || userIdFromMetadata || 'anonymous';
+      
+      console.log(`[VOICE POST-CALL] 👤 UserId extraction:`);
+      console.log(`[VOICE POST-CALL]   - From dynamic_variables: ${userIdFromDynamic || 'NOT FOUND'}`);
+      console.log(`[VOICE POST-CALL]   - From data.user_id: ${userIdFromData || 'NOT FOUND'}`);
+      console.log(`[VOICE POST-CALL]   - From metadata: ${userIdFromMetadata || 'NOT FOUND'}`);
+      console.log(`[VOICE POST-CALL]   - FINAL userId: ${userId}`);
       console.log(`[VOICE POST-CALL] ✅ Received transcript for user: ${userId}, conversation: ${conversation_id}`);
       console.log(`[VOICE POST-CALL] Transcript has ${transcript.length} turns`);
       
