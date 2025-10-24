@@ -53,13 +53,27 @@ async function getOrCreateConversation(userIdentifier, platformType = 'web') {
 async function getConversationHistory(conversationId, limit = 10) {
   const client = await pool.connect();
   try {
+    // Get the user_identifier from the conversation
+    const userResult = await client.query(
+      `SELECT user_identifier FROM chatbot_conversations WHERE conversation_id = $1`,
+      [conversationId]
+    );
+    
+    if (userResult.rows.length === 0) {
+      return [];
+    }
+    
+    const userId = userResult.rows[0].user_identifier;
+    
+    // Get messages from ALL conversations (web + voice) for this user
     const result = await client.query(
-      `SELECT message_role as role, message_content as content 
-       FROM chatbot_messages 
-       WHERE conversation_id = $1 
-       ORDER BY message_created_at ASC
+      `SELECT m.message_role as role, m.message_content as content, m.message_created_at 
+       FROM chatbot_messages m
+       JOIN chatbot_conversations c ON m.conversation_id = c.conversation_id
+       WHERE c.user_identifier = $1 
+       ORDER BY m.message_created_at ASC
        LIMIT $2`,
-      [conversationId, limit]
+      [userId, limit]
     );
 
     return result.rows;
