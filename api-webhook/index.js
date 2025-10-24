@@ -104,15 +104,24 @@ async function saveVoiceTranscript(userId, transcript) {
       conversationId = result.rows[0].conversation_id;
     }
 
+    // Filter out empty messages and save
+    let savedCount = 0;
     for (const turn of transcript) {
+      // Skip if message is null, undefined, or empty
+      if (!turn.message || turn.message.trim() === '') {
+        console.log(`[VOICE] Skipping empty message from ${turn.role}`);
+        continue;
+      }
+      
       await client.query(
         `INSERT INTO chatbot_messages (conversation_id, message_role, message_content)
          VALUES ($1, $2, $3)`,
         [conversationId, turn.role === 'agent' ? 'assistant' : 'user', turn.message]
       );
+      savedCount++;
     }
 
-    console.log(`[VOICE] Saved ${transcript.length} messages for user ${userId}`);
+    console.log(`[VOICE] Saved ${savedCount}/${transcript.length} messages for user ${userId}`);
   } finally {
     client.release();
   }
@@ -533,6 +542,11 @@ app.post('/api/elevenlabs-post-call', async (req, res) => {
 
       console.log(`[VOICE POST-CALL] ✅ Received transcript for user: ${userId}, conversation: ${conversation_id}`);
       console.log(`[VOICE POST-CALL] Transcript has ${transcript.length} turns`);
+      
+      // Debug: Log transcript structure
+      transcript.forEach((turn, i) => {
+        console.log(`[VOICE POST-CALL] Turn ${i}: role=${turn.role}, message=${turn.message ? 'present' : 'NULL/EMPTY'}`);
+      });
 
       await saveVoiceTranscript(userId, transcript);
 
