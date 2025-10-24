@@ -198,11 +198,15 @@
           onDisconnect:()=>{ updateStatus('Disconnected'); debugDiv.textContent='Disconnected from AiPRL'; addMessage('system','Disconnected from AiPRL'); conversation=null; },
           onError:(e)=>{ updateStatus('Error'); debugDiv.textContent='Error: '+e; addMessage('system','Connection error: '+e); },
           onMessage:(m)=>{ debugDiv.textContent=`Latest: ${m.source}`; if(m.source==='user') addMessage('user', m.message); else if(m.source==='ai') addMessage('ai', m.message); },
-          // Pass userId and previous context to agent
+          // Pass userId as dynamic variable for webhook
+          dynamicVariables: {
+            userId: window.userId || 'anonymous'
+          },
+          // Pass previous context to agent
           overrides: previousContext ? {
             agent: {
               prompt: {
-                prompt: `User ID: ${window.userId || 'anonymous'}\n\n${previousContext}\n\nNow continue the conversation naturally based on this context.`
+                prompt: `${previousContext}\n\nNow continue the conversation naturally based on this previous context.`
               }
             }
           } : undefined
