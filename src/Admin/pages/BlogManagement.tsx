@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Search, Filter, Grid, List } from 'lucide-react';
 import { useAdminTheme } from '../hooks/useAdminTheme';
-import { useBlogManagement, BlogPost } from '../hooks/useBlogManagement';
+import { useBlogManagement, type BlogPost } from '../hooks/useBlogManagement';
 import { BlogCard } from '../components/BlogCard';
 
 export const BlogManagement: React.FC = () => {

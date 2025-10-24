@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { hideDemoModal } from "../../lib/demoModal";
-import { demoBookingApi, CreateDemoBookingData } from "../../services/demoBookingApi";
+import { demoBookingApi, type CreateDemoBookingData } from "../../services/demoBookingApi";
 
 interface DemoModalProps {
   open: boolean;

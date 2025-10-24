@@ -1,5 +1,5 @@
 import React from "react";
-import type { BlogPost } from "../../data/blogPosts";
+import type { BlogPost } from "../../services/blogApi";
 
 interface BlogArticleProps {
   post: BlogPost;
@@ -33,11 +33,15 @@ export const BlogArticle: React.FC<BlogArticleProps> = ({ post, relatedPosts }) 
         ) : null}
 
         <div className="space-y-6 text-white/70">
-          {post.body.map((paragraph, index) => (
+          {post.body?.map((paragraph, index) => (
             <p key={index} className="text-base leading-7 sm:text-lg sm:leading-8">
               {paragraph}
             </p>
-          ))}
+          )) || (
+            <p className="text-base leading-7 sm:text-lg sm:leading-8">
+              No content available.
+            </p>
+          )}
         </div>
       </div>
 

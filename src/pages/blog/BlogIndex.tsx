@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { blogApi, type BlogPost } from "../../services/blogApi";
 import { blogPosts } from "../../data/blogPosts";
-import { blogApi, BlogPost } from "../../services/blogApi";
 
 export const BlogIndex: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>(blogPosts); // Start with static data as fallback

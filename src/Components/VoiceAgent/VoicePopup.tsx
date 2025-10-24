@@ -51,7 +51,7 @@ export function VoicePopup({ isOpen, onClose }: VoicePopupProps) {
       />
       
       {/* Modal */}
-      <div className="relative w-[95%] h-[95%] max-w-none max-h-none bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-500/50">
+      <div className="relative w-full h-full sm:w-[95%] sm:h-[95%] max-w-none max-h-none bg-black sm:rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-500/50">
         {/* Header */}
         <div className="absolute top-4 right-4 z-10">
           <button

@@ -1,14 +1,17 @@
 import { readEnv } from '../utils/env';
+import { getUserId, setConversationId } from '../utils/userIdentity';
 
 // Chat API Service
-// This service handles all API calls to your n8n webhook
+// This service handles all API calls to your backend webhook
 
 interface ChatApiResponse {
     output: string;
+    conversationId?: string;
   }
   
   interface ChatApiRequest {
     query: string;
+    userId: string;
   }
   
   class ChatApiService {
@@ -35,15 +38,22 @@ interface ChatApiResponse {
         throw new Error('Query cannot be empty');
       }
   
+      // Get persistent userId - shared with voice agent
+      const userId = getUserId();
+  
       if (this.debugMode) {
         console.log('Sending query to API:', query);
+        console.log('Using userId:', userId);
       }
   
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.timeout);
   
       try {
-        const requestBody: ChatApiRequest = { query: query.trim() };
+        const requestBody: ChatApiRequest = { 
+          query: query.trim(),
+          userId: userId  // Include userId for memory persistence
+        };
   
         const response = await fetch(this.apiUrl, {
           method: 'POST',
@@ -68,13 +78,20 @@ interface ChatApiResponse {
         }
   
         const aiResponse = data[0]?.output;
+        const conversationId = data[0]?.conversationId;
         
         if (!aiResponse) {
           throw new Error('No output received from API');
         }
+
+        // Store conversationId if returned from backend
+        if (conversationId) {
+          setConversationId(conversationId);
+        }
   
         if (this.debugMode) {
           console.log('Received API response:', aiResponse);
+          console.log('ConversationId:', conversationId);
         }
   
         return aiResponse;

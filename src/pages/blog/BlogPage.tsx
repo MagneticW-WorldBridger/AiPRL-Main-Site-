@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { blogPosts } from "../../data/blogPosts";
 import { BlogIndex } from "./BlogIndex";
 import { BlogArticle } from "./BlogArticle";
-import { blogApi, BlogPost } from "../../services/blogApi";
+import { blogApi, type BlogPost } from "../../services/blogApi";
 
 const getPathname = () => {
   if (typeof window === "undefined") return "/";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, Clock, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useAdminTheme } from '../hooks/useAdminTheme';
-import { BlogPost } from '../hooks/useBlogManagement';
+import type { BlogPost } from '../hooks/useBlogManagement';
 
 interface BlogCardProps {
   blog: BlogPost;
