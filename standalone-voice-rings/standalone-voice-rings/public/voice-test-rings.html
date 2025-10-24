@@ -182,34 +182,28 @@
     connectBtn.addEventListener('click', async ()=>{
       try{
         if(!client){ addMessage('system','❌ Voice client not initialized. Please refresh the page.'); return; }
-        updateStatus('Connecting'); debugDiv.textContent='Loading your conversation history...'; addMessage('system','Loading your conversation history...');
+        updateStatus('Connecting'); debugDiv.textContent='Loading conversation history...'; addMessage('system','Loading your conversation history...');
         
         // Load previous conversations
         const previousContext = await loadPreviousConversations(window.userId);
         
-        debugDiv.textContent='Getting signed URL...'; addMessage('system','Initializing AiPRL connection...');
-        const r=await fetch('/api/elevenlabs/signed-url',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ agentId:'agent_0801k823d1bsf83rsyn8xs9fht59' }) });
-        if(!r.ok) throw new Error(`Failed to get signed URL: ${r.status}`);
-        const { signedUrl } = await r.json(); debugDiv.textContent='Connecting to AiPRL...';
+        debugDiv.textContent='Connecting to AiPRL...'; addMessage('system','Initializing AiPRL connection...');
         
+        // Start session with agentId and overrides (NOT signedUrl)
         conversation = await client.Conversation.startSession({
-          signedUrl,
-          onConnect:()=>{ updateStatus('Connected'); debugDiv.textContent='Connected! Start talking...'; addMessage('system','Connected successfully! Start talking...'); setTimeout(()=>startFrequencyMonitoring(conversation),100); },
-          onDisconnect:()=>{ updateStatus('Disconnected'); debugDiv.textContent='Disconnected from AiPRL'; addMessage('system','Disconnected from AiPRL'); conversation=null; },
-          onError:(e)=>{ updateStatus('Error'); debugDiv.textContent='Error: '+e; addMessage('system','Connection error: '+e); },
-          onMessage:(m)=>{ debugDiv.textContent=`Latest: ${m.source}`; if(m.source==='user') addMessage('user', m.message); else if(m.source==='ai') addMessage('ai', m.message); },
-          // Pass userId as dynamic variable for webhook
-          dynamicVariables: {
-            userId: window.userId || 'anonymous'
-          },
-          // Pass previous context to agent
+          agentId: 'agent_0801k823d1bsf83rsyn8xs9fht59',
+          userId: window.userId || 'anonymous',
           overrides: previousContext ? {
             agent: {
               prompt: {
                 prompt: `${previousContext}\n\nNow continue the conversation naturally based on this previous context.`
               }
             }
-          } : undefined
+          } : undefined,
+          onConnect:()=>{ updateStatus('Connected'); debugDiv.textContent='Connected! Start talking...'; addMessage('system','Connected successfully! Start talking...'); setTimeout(()=>startFrequencyMonitoring(conversation),100); },
+          onDisconnect:()=>{ updateStatus('Disconnected'); debugDiv.textContent='Disconnected from AiPRL'; addMessage('system','Disconnected from AiPRL'); conversation=null; },
+          onError:(e)=>{ updateStatus('Error'); debugDiv.textContent='Error: '+e; addMessage('system','Connection error: '+e); },
+          onMessage:(m)=>{ debugDiv.textContent=`Latest: ${m.source}`; if(m.source==='user') addMessage('user', m.message); else if(m.source==='ai') addMessage('ai', m.message); }
         });
       }catch(e){ updateStatus('Error'); debugDiv.textContent='Connection failed: '+e.message; addMessage('system','Connection failed: '+e.message); }
     });
