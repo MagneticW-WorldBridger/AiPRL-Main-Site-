@@ -199,17 +199,13 @@
           onError:(e)=>{ updateStatus('Error'); debugDiv.textContent='Error: '+e; addMessage('system','Connection error: '+e); },
           onMessage:(m)=>{ debugDiv.textContent=`Latest: ${m.source}`; if(m.source==='user') addMessage('user', m.message); else if(m.source==='ai') addMessage('ai', m.message); },
           // Pass userId and previous context to agent
-          overrides: {
+          overrides: previousContext ? {
             agent: {
               prompt: {
-                prompt: previousContext ? `User ID: ${window.userId || 'anonymous'}\n\n${previousContext}\n\nNow continue the conversation naturally based on this context.` : undefined
+                prompt: `User ID: ${window.userId || 'anonymous'}\n\n${previousContext}\n\nNow continue the conversation naturally based on this context.`
               }
             }
-          },
-          // Pass userId for post-call webhook
-          clientMetadata: {
-            userId: window.userId || 'anonymous'
-          }
+          } : undefined
         });
       }catch(e){ updateStatus('Error'); debugDiv.textContent='Connection failed: '+e.message; addMessage('system','Connection failed: '+e.message); }
     });
