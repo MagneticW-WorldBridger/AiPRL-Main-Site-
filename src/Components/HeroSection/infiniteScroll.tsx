@@ -4,7 +4,7 @@ import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 // import CharlesDickens from "../../assets/AiprlLogo.svg";
 import PennyMustard from "../../assets/GraphicContent/PennyMustard.png";
 import PattyPeck from "../../assets/GraphicContent/PattyPeck.png";
-import Mercato from "../../assets/GraphicContent/Mercato.png";
+import Mercato from "../../assets/GraphicContent/MERCATO-MAIN.png";
 import RuralKing from "../../assets/GraphicContent/RuralKing.png";
 import Gavigan from "../../assets/GraphicContent/Gavigan's.png";
 import WoodStock from "../../assets/GraphicContent/WoodStock.png";

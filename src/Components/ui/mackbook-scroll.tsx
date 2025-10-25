@@ -117,7 +117,7 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-      className="relative flex min-h-[120vh] w-full shrink-0 flex-col items-center justify-start pt-4 pb-32 [perspective:1000px] sm:min-h-[140vh] sm:pt-6 sm:pb-40 md:min-h-[150vh] md:pt-8 md:pb-48 lg:min-h-[180vh] lg:pt-12 lg:pb-56"
+      className="relative flex min-h-[120vh] w-full shrink-0 flex-col items-center justify-start pt-4 pb-16 [perspective:1000px] sm:min-h-[140vh] sm:pt-6 sm:pb-24 md:min-h-[150vh] md:pt-8 md:pb-32 lg:min-h-[180vh] lg:pt-12 lg:pb-40"
     >
       <motion.h2
         style={{
@@ -177,7 +177,7 @@ export const Lid = ({
           transformStyle: "preserve-3d",
           transformOrigin: "top",
         }}
-        className="mx-auto mt-2 h-[8rem] w-[14rem] rounded-xl overflow-hidden sm:mt-4 sm:h-[11rem] sm:w-[18rem] md:mt-5 md:h-[12rem] md:w-[20rem] lg:mt-8 lg:h-[18rem] lg:w-[32rem] xl:h-[22rem] xl:w-[45rem]"
+        className="mx-auto mt-2 h-[10rem] w-[17rem] rounded-xl overflow-hidden sm:mt-4 sm:h-[14rem] sm:w-[24rem] md:mt-5 md:h-[16rem] md:w-[28rem] lg:mt-8 lg:h-[20rem] lg:w-[36rem] xl:h-[24rem] xl:w-[42rem]"
       >
         {/* Content Container */}
         <div className="relative h-full w-full">
