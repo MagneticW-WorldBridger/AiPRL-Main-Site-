@@ -8,8 +8,6 @@ import { Retails } from "./Retails"
 // import { Testimony } from "./Testimony"
 import { Pricing } from "./Pricing"
 import { Newsletter } from "../Newletters/NewsLetter"
-// import ChatbotWidget from "../ChatBotChatRace/chatBot"
-// import ChatbotDock from "../ChatbotComponents"
 import { BlogPreview } from "./BlogPreview"
 
 function index() {
@@ -50,11 +48,6 @@ function index() {
       <section id="resources" className="scroll-mt-28">
         <Newsletter />
       </section>
-
-      {/* <section id="contact" className="scroll-mt-28"> */}
-        {/* <ChatbotWidget />  */}
-        {/* <ChatbotDock /> */}
-      {/* </section> */}
     </div>
   )
 }
