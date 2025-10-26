@@ -13,7 +13,6 @@ import { AdminAuthProvider } from './Admin/context/AdminAuthContext'
 import { AdminThemeProvider } from './Admin/context/AdminThemeContext'
 import { AdminRouter } from './Admin/components/AdminRouter'
 import { validateConfig } from './Admin/utils/config'
-import ChatbotDock from './Components/ChatbotComponents'
 import { ChatProvider } from './contexts/ChatContext'
 
 function App() {
@@ -99,12 +98,11 @@ function App() {
   return (
     <ChatProvider onOpenChat={handleOpenChat}>
       <div className='bg-black'>
-        <NavbarDemo />
+        <NavbarDemo onChatReady={(openChat) => { openChatRef.current = openChat; }} />
         {isBlogRoute ? <BlogPage /> : isPrivacyRoute ? <PrivacyPolicy /> : isTermsRoute ? <TermsAndCondition /> : isCareerRoute ? <Career /> : <HeroComponent />}
         <Footer />
         <ScrollToTop />
         <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
-        <ChatbotDock onReady={(openChat) => { openChatRef.current = openChat; }} />
       </div>
     </ChatProvider>
   )

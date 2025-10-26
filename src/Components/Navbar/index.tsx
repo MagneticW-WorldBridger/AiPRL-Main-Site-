@@ -2,20 +2,21 @@ import { useState } from "react";
 import { TopNav } from "./TopNav";
 import { OverlayMenu } from "./OverlayMenu";
 import { BrandLogo } from "./BrandLogo";
-// import { Home } from "./Home";
 import ChatContainer from "../ChatComponent/ChatContainer";
 
+interface NavbarProps {
+    onChatReady?: (openChat: (context: string, message: string) => void) => void;
+}
 
-export default function App() {
+export default function App({ onChatReady }: NavbarProps) {
     const [open, setOpen] = useState(false);
-
 
     return (
         <>
             <div className="font-[Inter] bg-black">
                 <div className="w-full flex justify-between items-center z-40">
                     <TopNav onOpen={() => setOpen(true)} />
-                    <ChatContainer />
+                    <ChatContainer onReady={onChatReady} />
                 </div>
                 <BrandLogo />
                 {/* <Home onOpen={() => setOpen(true)} /> */}
