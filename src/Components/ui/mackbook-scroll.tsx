@@ -81,7 +81,7 @@ export const MacbookScroll = ({
   const isMobile = dimensions.width < 768;
   const isTablet = dimensions.width >= 768 && dimensions.width < 1024;
 
-  // Better scroll transforms for smoother animation
+  // Scroll transforms for animation
   const scaleX = useTransform(
     scrollYProgress,
     [0, 0.6],
@@ -117,59 +117,37 @@ export const MacbookScroll = ({
   return (
     <div
       ref={ref}
-        className="relative flex min-h-[100vh] w-full shrink-0 flex-col items-center justify-start py-4 [perspective:1000px] sm:min-h-[120vh] sm:py-8 md:min-h-[130vh] md:py-10 lg:min-h-[160vh] lg:py-16"
+      className="relative flex min-h-[120vh] w-full shrink-0 flex-col items-center justify-start pt-4 pb-16 [perspective:1000px] sm:min-h-[140vh] sm:pt-6 sm:pb-24 md:min-h-[150vh] md:pt-8 md:pb-32 lg:min-h-[180vh] lg:pt-12 lg:pb-40"
     >
       <motion.h2
         style={{
           opacity: textOpacity,
         }}
-        className="mb-4 text-center text-lg font-bold text-neutral-800 dark:text-white sm:mb-8 sm:text-2xl md:mb-10 md:text-3xl lg:mb-16 lg:text-4xl"
+        className="mb-4 text-center text-lg font-bold text-neutral-800 dark:text-white sm:mb-6 sm:text-2xl md:mb-8 md:text-3xl lg:mb-10 lg:text-4xl"
       >
         {/* Your heading content here */}
       </motion.h2>
-      
-      {/* Lid */}
-      <Lid
-        scaleX={scaleX}
-        scaleY={scaleY}
-        rotate={rotate}
-        translate={translateY}
-        showVideo={showVideo}
-      />
-      
-      {/* Base area - Responsive proportions */}
-      <div className="relative -z-10 mx-auto h-[12rem] w-[20rem] overflow-hidden rounded-xl bg-gray-200 dark:bg-[#272729] sm:h-[16rem] sm:w-[28rem] md:h-[20rem] md:w-[32rem] lg:h-[28rem] lg:w-[48rem] xl:h-[32rem] xl:w-[56rem]">
-        {/* Above keyboard bar */}
-        <div className="relative mb-1 h-6 w-full sm:mb-2 sm:h-8 md:mb-2 md:h-9 lg:mb-4 lg:h-12">
-          <div className="absolute inset-x-0 mx-auto h-1 w-[80%] bg-[#050505] sm:h-2 md:h-2.5 lg:h-4" />
-        </div>
-        
-        <div className="relative flex h-[60%]">
-          <div className="mx-auto h-full w-[15%] overflow-hidden">
-            <SpeakerGrid isMobile={isMobile} />
-          </div>
-          <div className="mx-auto h-full w-[70%]">
-            <Keypad isMobile={isMobile} />
-          </div>
-          <div className="mx-auto h-full w-[15%] overflow-hidden">
-            <SpeakerGrid isMobile={isMobile} />
-          </div>
-        </div>
-        
-        <Trackpad />
-        
-        <div className="absolute inset-x-0 bottom-0 mx-auto h-0.5 w-8 rounded-tl-2xl rounded-tr-2xl bg-gradient-to-t from-[#272729] to-[#050505] sm:h-1 sm:w-12 md:h-1.5 md:w-14 lg:w-20" />
-        
-        {showGradient && (
-          <div className="absolute inset-x-0 bottom-0 z-50 h-24 w-full bg-gradient-to-t from-white via-white to-transparent dark:from-black dark:via-black sm:h-32 md:h-40"></div>
-        )}
-        
-        {badge && (
-          <div className="absolute bottom-0.5 left-0.5 sm:bottom-1 sm:left-1 md:bottom-1.5 md:left-1.5 lg:bottom-4 lg:left-4">
-            {badge}
-          </div>
-        )}
+
+      {/* Video Screen - No keyboard base */}
+      <div className="relative z-20 w-full flex items-start justify-center">
+        <Lid
+          scaleX={scaleX}
+          scaleY={scaleY}
+          rotate={rotate}
+          translate={translateY}
+          showVideo={showVideo}
+        />
       </div>
+
+      {showGradient && (
+        <div className="absolute inset-x-0 bottom-0 z-10 h-24 w-full bg-gradient-to-t from-white via-white to-transparent dark:from-black dark:via-black sm:h-32 md:h-40"></div>
+      )}
+
+      {badge && (
+        <div className="absolute bottom-0.5 left-0.5 sm:bottom-1 sm:left-1 md:bottom-1.5 md:left-1.5 lg:bottom-4 lg:left-4 z-30">
+          {badge}
+        </div>
+      )}
     </div>
   );
 };
@@ -189,28 +167,7 @@ export const Lid = ({
 }) => {
   return (
     <div className="relative [perspective:1200px]">
-      {/* Static lid back */}
-      <div
-        style={{
-          transform: "perspective(1200px) rotateX(-22deg) translateZ(0px)",
-          transformOrigin: "bottom",
-          transformStyle: "preserve-3d",
-        }}
-        className="relative mx-auto mt-2 h-[8rem] w-[14rem] rounded-xl bg-[#010101] p-1 sm:mt-4 sm:h-[11rem] sm:w-[18rem] sm:p-2 md:mt-5 md:h-[12rem] md:w-[20rem] md:p-2 lg:mt-8 lg:h-[18rem] lg:w-[32rem] lg:p-3 xl:h-[25rem] xl:w-[56rem]" 
-      >
-        <div
-          style={{
-            boxShadow: "0px 2px 0px 2px #171717 inset",
-          }}
-          className="absolute inset-0 flex items-center justify-center rounded-lg bg-[#010101]"
-        >
-          <span className="text-white">
-            <AceternityLogo />
-          </span>
-        </div>
-      </div>
-      
-      {/* Animated screen */}
+      {/* Animated screen - No back lid */}
       <motion.div
         style={{
           scaleX: scaleX,
@@ -220,37 +177,35 @@ export const Lid = ({
           transformStyle: "preserve-3d",
           transformOrigin: "top",
         }}
-        className="absolute inset-0 mx-auto mt-2 h-[8rem] w-[14rem] rounded-xl bg-[#010101] p-1 sm:mt-4 sm:h-[11rem] sm:w-[18rem] sm:p-2 md:mt-5 md:h-[12rem] md:w-[20rem] md:p-2 lg:-mt-16 lg:h-[18rem] lg:w-[32rem] lg:p-1 xl:h-[22rem] xl:w-[45rem]"
+        className="mx-auto mt-2 h-[10rem] w-[17rem] rounded-xl overflow-hidden sm:mt-4 sm:h-[14rem] sm:w-[24rem] md:mt-5 md:h-[16rem] md:w-[28rem] lg:mt-8 lg:h-[20rem] lg:w-[36rem] xl:h-[24rem] xl:w-[42rem]"
       >
-        <div className="absolute inset-0 rounded-lg bg-[#272729] overflow-hidden">
-          {/* Content Container - Full screen without padding */}
-          <div className="relative h-full w-full">
-            {/* Image - shown by default */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: showVideo ? 0 : 1 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              <img
-                src={Aiprl}
-                alt="Aiprl Assist"
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
-            
-            {/* Video - shown when scrolled */}
-            <motion.div
-              className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: showVideo ? 1 : 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              <VideoPlayer 
-                isVisible={showVideo}
-              />
-            </motion.div>
-          </div>
+        {/* Content Container */}
+        <div className="relative h-full w-full">
+          {/* Image - shown by default */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: showVideo ? 0 : 1 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <img
+              src={Aiprl}
+              alt="Aiprl Assist"
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+
+          {/* Video - shown when scrolled */}
+          <motion.div
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: showVideo ? 1 : 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <VideoPlayer
+              isVisible={showVideo}
+            />
+          </motion.div>
         </div>
       </motion.div>
     </div>
