@@ -2,18 +2,23 @@ import BlurText from "../ui/BlurText";
 import Users from '../../assets/GraphicContent/User04.png'
 import { CheckCheck } from 'lucide-react';
 import TextType from "../ui/TextTyping";
-// import { showDemoModal } from '../../lib/demoModal';
+import { useChatContext } from '../../contexts/ChatContext';
 
 const handleAnimationComplete = () => {
   console.log('Animation completed!');
 };
 
-const handleButtonClick = () => {
-  console.log('Try a Demo button clicked!');
-  // showDemoModal();
-};
-
 export function ExpandTeam() {
+  const { openChatWithContext } = useChatContext();
+
+  const handleButtonClick = () => {
+    console.log('[ExpandTeam] Try a Demo button clicked!');
+    openChatWithContext(
+      'try_demo_button',
+      "I'd like to see a demo of AiPRL Assist!"
+    );
+  };
+
   return (
     <>
       <div className="w-full bg-[#000000] py-4 sm:py-6 md:py-8 lg:py-16 flex flex-col items-center justify-center">

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Check, Star, Globe } from 'lucide-react'
 import { useCounterAnimation } from '../../hooks/useCounterAnimation'
 import { ROICalculator } from './ROICalculator'
+import { useChatContext } from '../../contexts/ChatContext'
 
 interface PricingPlan {
     id: string
@@ -96,8 +97,17 @@ const MetricCard: React.FC<MetricCardProps> = ({ value, prefix = '', suffix = ''
 };
 
 export const Pricing = () => {
+    const { openChatWithContext } = useChatContext();
     // const [isYearly, setIsYearly] = useState(true)
     const [isROICalculatorOpen, setIsROICalculatorOpen] = useState(false)
+
+    const handleGetStarted = (planId: string, planName: string) => {
+        console.log(`[Pricing] Get Started clicked for ${planName}`);
+        openChatWithContext(
+            `get_started_${planId}`,
+            `I want to get started with the ${planName} plan!`
+        );
+    }
 
     // const formatPrice = (price: number) => {
     //     return new Intl.NumberFormat('en-US', {
@@ -245,6 +255,7 @@ export const Pricing = () => {
 
                                         {/* Button */}
                                         <button
+                                            onClick={() => handleGetStarted(plan.id, plan.name)}
                                             className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                                 plan.buttonVariant
                                             )} hover:scale-105 active:scale-95`}
@@ -312,6 +323,7 @@ export const Pricing = () => {
 
                                     {/* Button */}
                                     <button
+                                        onClick={() => handleGetStarted(plan.id, plan.name)}
                                         className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                             plan.buttonVariant
                                         )} hover:scale-105 active:scale-95`}
