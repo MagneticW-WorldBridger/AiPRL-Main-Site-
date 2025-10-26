@@ -416,7 +416,38 @@ Be conversational and helpful, NOT robotic. Ask questions naturally when needed,
 
 Use emojis naturally, not in every single message.
 
-Keep your response concise and friendly. You must NEVER use asterisks or # in your response to highlight something. Keep your responses under 4 to 5 lines maximum. 
+Keep your response concise and friendly. You must NEVER use asterisks or # in your response to highlight something. Keep your responses under 4 to 5 lines maximum.
+
+###⚠️ CRITICAL TOOL CALLING RULES - READ THIS OR DIE ⚠️
+
+**YOU ARE FORBIDDEN FROM SAYING YOU'LL DO SOMETHING WITHOUT ACTUALLY DOING IT.**
+
+This is NOT a suggestion. This is a HARD RULE. Violating this rule means you are LYING to the user.
+
+🚨 **ABSOLUTELY FORBIDDEN - DO NOT EVER DO THIS:**
+- ❌ "I'll schedule that for you" → This is a LIE if you don't call the tool
+- ❌ "Let me get that scheduled" → This is a LIE if you don't call the tool  
+- ❌ "One moment, scheduling now" → This is a LIE if you don't call the tool
+- ❌ "I'm booking your appointment" → This is a LIE if you don't call the tool
+- ❌ "Your appointment is confirmed" → This is a LIE if you haven't called the tool yet
+- ❌ ANY promise about taking an action WITHOUT immediately calling the function
+
+**THE RULE: If you don't have all required info → ASK. If you have all info and user confirms → CALL THE TOOL. NO MIDDLE GROUND.**
+
+✅ **CORRECT BEHAVIOR - THIS IS THE ONLY WAY:**
+1. User confirms with "yes", "ok", "sure", "sounds good", "tomorrow at 2pm", etc.
+2. You have: name, email, phone, company_name, appointment_datetime (for appointments) OR name, email, phone, subject, description (for tickets)
+3. **IMMEDIATELY** call schedule_appointment or submit_ticket function
+4. The function executes and returns a result
+5. **THEN** you can say "Your appointment is scheduled!" with a beautiful HTML response
+
+**THE TOOL CALL IS YOUR RESPONSE. Not words about calling the tool. THE ACTUAL TOOL CALL.**
+
+Think of it like this:
+- WRONG: "Let me check the weather" (just words)
+- RIGHT: Call get_weather() function (actual action)
+
+If you say you'll do something, YOU MUST DO IT IN THE SAME RESPONSE by calling the function. No exceptions. No excuses. No "I'll do it in my next message." DO IT NOW OR SAY NOTHING ABOUT IT. 
 
 ### Response Formatting (HTML Only)
 
@@ -647,7 +678,18 @@ When a user wants to book an appointment, collect the following information step
 2. Company name and company website (optional)
 3. Preferred date and time (mention working hours: Monday-Friday 9am-6pm CST)
 
-After collecting ALL information, confirm with the user. When they confirm, use the schedule_appointment tool with all the collected details.
+After collecting ALL information, show them a summary and ask "Does this look good?" or "Ready to book?"
+
+⚠️ **CRITICAL - THE MOMENT OF TRUTH:**
+When user confirms (yes/ok/sure/sounds good/etc.) → Your NEXT action is CALLING schedule_appointment function. NOT saying words. CALLING THE FUNCTION.
+
+**You have TWO CHOICES ONLY:**
+1. Call schedule_appointment tool (correct) ✅
+2. Say "I'll schedule it" without calling the tool (WRONG, this is LYING) ❌
+
+Choose option 1. ALWAYS. Every single time. No exceptions.
+
+**Remember:** The tool call happens FIRST, then you respond with a beautiful HTML success message using the tool's result. Words without action = lying to users = bad AI.
 
 ### Support Ticket Process
 When a user wants to talk to support or submit a ticket:
@@ -676,13 +718,33 @@ CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully.
 
     console.log(`[TEXT CHAT] Sending ${messages.length} messages to OpenAI`);
     
+    // Detect if user is confirming (heuristic based on user's latest message)
+    const confirmationKeywords = ['yes', 'yeah', 'ok', 'sure', 'sounds good', 'that works', 'perfect', 'confirm', 'go ahead', 'do it', 'schedule it'];
+    const userConfirmedAppointment = confirmationKeywords.some(keyword => query.toLowerCase().includes(keyword));
+    
+    // Check if conversation history shows we've collected appointment info
+    const hasAppointmentDetails = history.some(msg => 
+      msg.role === 'assistant' && (
+        msg.content?.includes('confirm') || 
+        msg.content?.includes('schedule') ||
+        msg.content?.includes('appointment')
+      )
+    );
+    
+    // If user confirmed and we've been discussing appointment, be aggressive with tool calling
+    const shouldForceToolCall = userConfirmedAppointment && hasAppointmentDetails;
+    
+    if (shouldForceToolCall) {
+      console.log(`[TEXT CHAT] 🎯 DETECTION: User confirmed appointment. Forcing tool_choice to 'required'`);
+    }
+    
     // Define tools for OpenAI
     const tools = [
       {
         type: "function",
         function: {
           name: "schedule_appointment",
-          description: "Schedule an appointment on Google Calendar after collecting all required information from the user. Use this only after the user confirms they want to book.",
+          description: "IMMEDIATELY schedule an appointment on Google Calendar when you have all required information (name, email, phone, company_name, appointment_datetime) AND the user confirms. Call this function RIGHT AWAY when user says yes/ok/sure/confirm - do NOT respond with text first. The function call IS your response.",
           parameters: {
             type: "object",
             properties: {
@@ -758,7 +820,7 @@ CRITICAL: Before EVERY response, read the ENTIRE conversation history carefully.
       model: "gpt-4o-mini",
       messages: messages,
       tools: tools,
-      tool_choice: "auto",
+      tool_choice: shouldForceToolCall ? "required" : "auto", // Force tool call when user confirms
       max_tokens: 1000,
       temperature: 0.7,
     });
