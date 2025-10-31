@@ -120,19 +120,19 @@ export const SideCallAiprl = () => {
 
     return (
         <>
-            {/* Mobile & Tablet: Manual toggle button */}
+            {/* Mobile & Tablet: Manual toggle button - RIGHT SIDE */}
             <div className='lg:hidden'>
                 {/* Arrow indicator - Always show when blog is reached */}
                 {hasReachedBlog && (
-                    <div 
-                        className='fixed left-0 z-40 top-[45%] cursor-pointer transition-all duration-300'
+                    <div
+                        className='fixed right-0 z-40 top-[45%] cursor-pointer transition-all duration-300'
                         onClick={handleClick}
                     >
-                        <div className={`flex items-center justify-center w-4 h-32 transition-all duration-300 rounded-r-full shadow-lg ${
+                        <div className={`flex items-center justify-center w-3 h-32 transition-all duration-300 rounded-l-full shadow-lg ${
                             mobileButtonToggled ? 'bg-black' : 'bg-[#fd8a0d] hover:bg-black'
                         }`}>
                             <ChevronRight className={`h-4 w-4 text-white transition-transform duration-300 ${
-                                mobileButtonToggled ? 'rotate-180' : ''
+                                mobileButtonToggled ? '' : 'rotate-180'
                             }`} />
                         </div>
                     </div>
@@ -140,10 +140,10 @@ export const SideCallAiprl = () => {
 
                 {/* Full button - Only show when toggled */}
                 {hasReachedBlog && isVisible && mobileButtonToggled && (
-                    <div className={`fixed -rotate-90 left-0 z-40 -ml-10 top-[45%] transform-gpu ${
-                        isAnimating ? 'animate-bounce-in-left' : isExiting ? 'animate-slide-out-left' : ''
+                    <div className={`fixed -rotate-90 right-0 z-40 -mr-10 top-[45%] transform-gpu ${
+                        isAnimating ? 'animate-bounce-in-right' : isExiting ? 'animate-slide-out-right' : ''
                     }`}>
-                        <div className='flex border-2 border-black/80 shadow-2xl shadow-grey-500 bg-black transition-all duration-300 px-4 py-2 cursor-pointer text-white rounded-full flex-col items-center justify-center gap-1 hover:scale-105 active:scale-95' 
+                        <div className='flex border-2 border-black/80 shadow-2xl shadow-grey-500 bg-black transition-all duration-300 px-4 py-2 cursor-pointer text-white rounded-full flex-col items-center justify-center gap-1 hover:scale-105 active:scale-95'
                         // onClick={showDemoModal}
                         >
                             <h1 className='text-sm flex items-center justify-center gap-2 text-white font-bold'>Book a Demo <span><ArrowRight className='h-3 w-3' /></span></h1>

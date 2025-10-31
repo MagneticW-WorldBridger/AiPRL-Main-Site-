@@ -89,7 +89,7 @@ export function SparklesPreview() {
                 className="relative w-full py-1.5 sm:py-4 md:py-4 flex items-center justify-center sm:w-auto bg-[#fd8a0d]/60 hover:bg-[#fd8a0d] cursor-pointer hover:text-black transition-all duration-300 text-lg sm:text-xl md:text-2xl font-bold rounded-full dark:bg-slate-900 text-white/70 dark:text-white/70 border-neutral-200 dark:border-slate-800 px-6 sm:px-8 md:px-10"
               >
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 mr-3 sm:mr-5 md:mr-6" />
-                Talk to Aiprl
+                Talk to AiPRL
               </button>
             </div>
             {/* <button className="w-auto sm:w-auto text-center bg-transparent text-white/70 px-4 sm:px-6 md:px-8 lg:px-10 border-2 rounded-full border-gray-300 hover:border-gray-400 py-2 sm:py-3 md:py-4 flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg lg:text-xl font-semibold transition-all duration-300">

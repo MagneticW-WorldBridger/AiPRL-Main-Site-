@@ -27,3 +27,9 @@ qr-redirect-service/
 *.njsproj
 *.sln
 *.sw?
+
+bash.exe.stackdump
+USER_IDENTITY_IMPLEMENTATION.md
+VOICE_AGENT_USERID_EXAMPLE.md
+SETUP_INSTRUCTIONS.md
+RAILWAY_ENV_SETUP.md

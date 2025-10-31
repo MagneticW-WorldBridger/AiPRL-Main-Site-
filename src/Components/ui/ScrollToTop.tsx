@@ -25,7 +25,7 @@ export const ScrollToTop = () => {
   const scrollToTop = () => {
     const startPosition = window.scrollY
     const startTime = performance.now()
-    const duration = 1000 // 1 second duration
+    const duration = 2000 // 1 second duration
 
     const easeInOutCubic = (t: number) => {
       return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
@@ -51,7 +51,7 @@ export const ScrollToTop = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group"
+          className="fixed cursor-pointer bottom-6 right-6 z-40 bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 group"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-6 h-6" />
