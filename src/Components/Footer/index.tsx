@@ -1,4 +1,7 @@
 import { TextHoverEffect } from '../ui/text-hover-effect'
+import { X, Linkedin, Youtube } from "lucide-react";
+import { SocialIcon } from "../Navbar/SocialIcon";
+
 
 // Declare DelveCookieConsent for TypeScript
 declare global {
@@ -47,14 +50,14 @@ export const Footer = () => {
             </div>
           </div>
         </div> */}
-                <div className="h-28 sm:h-32 md:h-48 lg:h-[20rem] flex items-center justify-center">
-                    <TextHoverEffect text="AiprlAssist" />
+                <div className="h-24 sm:h-32 md:h-48 lg:h-[20rem] flex items-center justify-center">
+                    <TextHoverEffect text="AiPRL Assist" />
                 </div>
 
                 {/* Main Footer Content */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
                     <div>
-                        <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">AIPRL Assist</h4>
+                        <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">AiPRL Assist</h4>
                         <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">
                             The AI Customer Experience Platform that transforms storefront chaos into loyal customers.
                         </p>
@@ -91,7 +94,7 @@ export const Footer = () => {
                         <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Company</h4>
                         <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-400">
                             <li><a href="/#solutions" className="hover:text-white transition-colors">About Us</a></li>
-                            <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
+                            <li><a href="/careers" className="hover:text-white transition-colors">Work with us</a></li>
                             {/* <li><a href="#" className="hover:text-white transition-colors">Contact</a></li> */}
                             <li><a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a></li>
                             <li><a href="/terms-and-conditions" className="hover:text-white transition-colors">Terms and Condition</a></li>
@@ -106,10 +109,26 @@ export const Footer = () => {
                 <div className="border-t border-gray-800 pt-6 sm:pt-8">
                     <div className="flex flex-col sm:flex-row justify-between items-center">
                         <div className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4 md:mb-0">
-                            © {new Date().getFullYear()} AIPRL Assist. All rights reserved.
+                            © {new Date().getFullYear()} AiPRL Assist. All rights reserved.
+                        </div>
+                        <div className="flex text-white w-14 shrink-0 flex-col items-center justify-end gap-3 pb-4">
+                            {/* <SocialIcon label="Twitter" href="#">
+                                    <Twitter className="h-4 w-4 text-white" />
+                                </SocialIcon>
+                                <SocialIcon label="Instagram" href="#">
+                                    <Instagram className="h-4 w-4 text-white" />
+                                </SocialIcon> */}
+                            <div className="flex items-center gap-2">
+                                <SocialIcon label="LinkedIn" href="https://www.linkedin.com/company/aiprl-assist">
+                                    <Linkedin className="h-4 w-4 text-white" />
+                                </SocialIcon>
+                                <SocialIcon label="YouTube" href="https://www.youtube.com/channel/UCSf5jpcJxL3AAxlak6l9Png">
+                                    <Youtube className="h-4 w-4 text-white" />
+                                </SocialIcon>
+                            </div>
                         </div>
                         <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400">
-                            <button 
+                            <button
                                 onClick={() => {
                                     if (typeof window !== 'undefined' && window.DelveCookieConsent) {
                                         window.DelveCookieConsent.show();

@@ -51,13 +51,32 @@ const pricingPlans: PricingPlan[] = [
         icon: <Star className="w-6 h-6 text-yellow-400" />
     },
     {
+        id: 'AI Flow',
+        name: 'AI Flow',
+        description: 'deisgned  for Large, multi-location or omnichannel retailers.',
+        monthlyPrice: "Custom Pricing",
+        yearlyPrice: "Custom Pricing", // 10% off
+        features: [
+            'Everything in Growth',
+            'Multi-LLM optimization',
+            'Voice onboarding',
+            '7 API integrations',
+            'Enhanced Retail API Connections',
+            'Data Stitching of Both Hard and Soft Signals',
+            '24/7 Enterprise with dedicated AI specialists '
+        ],
+        buttonText: 'Get Started',
+        buttonVariant: 'outline',
+        icon: <Globe className="w-6 h-6 text-blue-400" />
+    },
+    {
         id: 'enterprise',
         name: 'Enterprise',
         description: 'Designed for large retail operations that need full customization and orchestration with the AiPRL AI Assistant.',
         monthlyPrice: "Custom Pricing",
         yearlyPrice: "Custom Pricing", // 10% off
         features: [
-            'Everything in Growth',
+            'Everything in AI Flow',
             'Custom workflows and automation',
             'Advanced integrations',
             'End-to-end orchestration',
@@ -118,7 +137,7 @@ export const Pricing = () => {
         }
     }
 
-    return (<section id="pricing" className="scroll-mt-28 py-12 sm:py-14 md:py-16 lg:py-20 px-2 sm:px-4 bg-gradient-to-tr from-black via-black/10 to-black relative overflow-hidden">
+    return (<section id="pricing" className="scroll-mt-28 py-12 sm:py-14 w-full md:py-16 lg:py-20 px-2 sm:px-4 bg-gradient-to-tr from-black via-black/10 to-black relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0" style={{
@@ -126,7 +145,7 @@ export const Pricing = () => {
             }} />
         </div>
 
-        <div className="max-w-7xl mx-auto relative">
+        <div className="w-auto mx-auto relative">
             {/* Header */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 px-2 sm:px-4">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-600 mb-3 sm:mb-4">
@@ -179,7 +198,7 @@ export const Pricing = () => {
             </div>
 
             {/* Pricing Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-full gap-6 sm:gap-8 lg:gap-6 xl:gap-8 max-w-[95%] lg:max-w-[90%] xl:max-w-[90%] mx-auto px-4 sm:px-6">
                 {pricingPlans.map((plan) => {
                     if (plan.recommended) {
                         return (
@@ -202,13 +221,13 @@ export const Pricing = () => {
                                         </div>
                                     </div>
 
-                                    <div className="p-6 sm:p-8 lg:p-10 my-8 sm:my-10">
+                                    <div className="p-6 sm:p-8 lg:p-4 xl:p-6 my-8 sm:my-10">
                                         {/* Plan Name */}
                                         <div className="mb-6 sm:mb-8">
-                                            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
+                                            <h3 className="text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
                                                 {plan.name}
                                             </h3>
-                                            <p className="text-xs sm:text-sm lg:text-base text-gray-600 leading-relaxed">{plan.description}</p>
+                                            <p className="text-xs sm:text-sm lg:text-xs xl:text-sm text-gray-600 leading-relaxed">{plan.description}</p>
                                         </div>
 
                                         {/* Price */}
@@ -261,7 +280,7 @@ export const Pricing = () => {
                     // Regular cards (Basic and Enterprise)
                     return (
                         <div key={plan.id} className="relative">
-                            <div className="relative bg-gray-900/40 rounded-2xl shadow-lg border-2 border-gray-900 shadow-gray-900/90 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <div className="relative bg-gray-900/40 h-full rounded-2xl shadow-lg border-2 border-gray-900 shadow-gray-900/90 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 {/* Icon */}
                                 {plan.icon && (
                                     <div className="absolute top-6 right-6 opacity-20">
@@ -269,13 +288,13 @@ export const Pricing = () => {
                                     </div>
                                 )}
 
-                                <div className="p-6 sm:p-8 lg:p-10">
+                                <div className="p-6 sm:p-8 lg:p-6 xl:p-6">
                                     {/* Plan Name */}
                                     <div className="mb-6 sm:mb-8">
-                                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
+                                        <h3 className="text-lg sm:text-xl lg:text-xl xl:text-2xl font-bold text-white/80 mb-3 sm:mb-4">
                                             {plan.name}
                                         </h3>
-                                        <p className="text-xs sm:text-sm lg:text-base text-gray-600 leading-relaxed">{plan.description}</p>
+                                        <p className="text-xs sm:text-sm lg:text-sm xl:text-base text-gray-600 leading-relaxed">{plan.description}</p>
                                     </div>
 
                                     {/* Price */}
@@ -312,7 +331,7 @@ export const Pricing = () => {
 
                                     {/* Button */}
                                     <button
-                                        className={`w-full cursor-pointer py-3 px-4 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
+                                        className={`w-full cursor-pointer py-3 px-3 sm:px-6 rounded-lg font-medium transition-all duration-200 border-2 text-sm sm:text-base ${getButtonStyles(
                                             plan.buttonVariant
                                         )} hover:scale-105 active:scale-95`}
                                     >
@@ -327,9 +346,9 @@ export const Pricing = () => {
 
             {/* Additional Info */}
             <div className="text-center mt-12 sm:mt-16">
-                <p className="text-sm sm:text-base text-gray-600 mb-4 px-4">
+                {/* <p className="text-sm sm:text-base text-gray-600 mb-4 px-4">
                     All plans include 14-day free trial. No credit card required.
-                </p>
+                </p> */}
                 <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-500 px-4">
                     {/* <span>✓ Cancel anytime</span> */}
                     <span>✓ 24/7 support</span>
@@ -359,9 +378,9 @@ export const Pricing = () => {
             {/* Customer Success Metrics */}
             <div className="mt-16 sm:mt-20">
                 <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-700 text-center mb-8 sm:mb-12 px-4">
-                    Join 500+ retailers transforming customer experiences with AiPRL
+                    Join leading retailers transforming customer experiences with AiPRL
                 </h3>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto px-4 sm:px-6">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-6 xl:gap-8 max-w-6xl mx-auto px-4 sm:px-6">
                     <MetricCard 
                         value={40} 
                         suffix="%" 

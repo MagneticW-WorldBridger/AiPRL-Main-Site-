@@ -1,6 +1,6 @@
 "use client";
 import { StickyScroll } from "../ui/sticky-scroll-reveal";
-import CaptureActionableInsights from '../../assets/GraphicContent/Enhanced.png';
+import CaptureActionableInsights from '../../assets/GraphicContent/SplitImage.png';
 import DriveRepeatBusiness from '../../assets/GraphicContent/User02.png';
 import ImproveCustomerExperience from '../../assets/GraphicContent/User03.png';
 

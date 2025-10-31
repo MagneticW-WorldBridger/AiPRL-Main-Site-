@@ -3,7 +3,7 @@ import { IoSparklesOutline } from 'react-icons/io5';
 
 const suggestions = [
   "What are the most common customer inquiries?",
-  "Show mw top performing dealers by region",
+  "Show me top performing dealers by region",
   "What products have the highest satisfaction rates?",
   "Analyze recent chat conversation trends",
   "Which facilities need attention based on performance metrics?",
@@ -23,7 +23,15 @@ const SuggestedResponses: React.FC<SuggestedResponsesProps> = ({ onSuggestionCli
           <button
             key={index}
             className="flex items-start cursor-pointer text-left p-2 rounded-md hover:bg-gray-100/10 transition-colors text-sm text-gray-200 w-full group"
-            onClick={() => onSuggestionClick(suggestion)}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onSuggestionClick(suggestion);
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           >
             <IoSparklesOutline className="w-4 h-4 text-purple-400 mr-2 mt-0.5 group-hover:text-orange-400 transition-colors" />
             <span className="group-hover:text-white transition-colors">

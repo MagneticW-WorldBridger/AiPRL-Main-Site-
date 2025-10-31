@@ -18,7 +18,7 @@ export function ExpandTeam() {
     <>
       <div className="w-full bg-[#000000] py-4 sm:py-6 md:py-8 lg:py-16 flex flex-col items-center justify-center">
         <BlurText
-          text="More SUPPORT. Less OVERHEAD. CONSISTENT results."
+          text="More SUPPORT. Less OVERHEAD. Consistent RESULTS."
           delay={150}
           animateBy="words"
           direction="top"

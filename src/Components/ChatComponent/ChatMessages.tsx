@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { IoPersonOutline, IoRemoveOutline, IoSparklesOutline } from 'react-icons/io5';
+import { IoPersonOutline, IoClose, IoSparklesOutline } from 'react-icons/io5';
 
 export interface Message {
     id: string;
@@ -69,8 +69,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, onMinimize }) => 
                     <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                     <span className="text-gray-400 text-xs">Online</span>
                 {onMinimize && (
-                    <button className="p-1 ml-5 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200" onClick={onMinimize} aria-label="Minimize chat">
-                        <IoRemoveOutline className="w-6 h-6 cursor-pointer text-gray-400" />
+                    <button className="p-1 ml-5 rounded-full hover:bg-gray-700 cursor-pointer transition-colors duration-200" onClick={onMinimize} aria-label="Close chat">
+                        <IoClose className="w-6 h-6 cursor-pointer text-gray-400 hover:text-white" />
                     </button>
                 )}
                 </div>
@@ -118,7 +118,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ messages, onMinimize }) => 
                                 >
                                     {message.isLoading ? (
                                         <div className="flex items-center space-x-2">
-                                            <span className="text-sm">AI is thinking</span>
+                                            <span className="text-sm">AIprl is thinking</span>
                                             <div className="flex space-x-1">
                                                 <div className="p-[2px] bg-orange-400 rounded-full animate-bounce"></div>
                                                 <div className="p-[2px] bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>

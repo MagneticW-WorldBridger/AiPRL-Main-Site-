@@ -40,10 +40,10 @@ export default function Career() {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="bg-[#fd8a0d] hover:bg-[#fd8a0d]/90 text-black font-semibold py-4 px-8 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                  Join Our Talent Network
-                  <ArrowRight className="w-5 h-5" />
+                  Work With us 
+                  {/* <ArrowRight className="w-5 h-5" /> */}
                 </button>
-                <button 
+                {/* <button 
                   onClick={() => {
                     const solutionsSection = document.getElementById('solutions');
                     if (solutionsSection) {
@@ -55,7 +55,7 @@ export default function Career() {
                   className="border border-white/20 hover:border-white/40 text-white font-semibold py-4 px-8 rounded-lg transition-colors cursor-pointer"
                 >
                   Learn About Our Culture
-                </button>
+                </button> */}
               </div>
 
               {/* Login Link */}

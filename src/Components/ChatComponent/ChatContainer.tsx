@@ -7,10 +7,10 @@ import { useChatApi } from "../../hooks/useChatApi";
 
 const chatPlaceholderMessages = [
   "What can I help you with?",
-  "How can AiprlAssist improve my inbound conversion rates?",
-  "How easy is it to test AiprlAssist?",
-  "Can I see AiprlAssist trained on my website?",
-  "How can AiprlAssist ensure data privacy and compliance with GDPR?",
+  "How can AiPRL Assist improve my inbound conversion rates?",
+  "How easy is it to test AiPRL Assist?",
+  "Can I see AiPRL Assist trained on my website?",
+  "How can AiPRL Assist ensure data privacy and compliance with GDPR?",
 ];
 
 export interface Message {
@@ -28,8 +28,10 @@ const ChatContainer: React.FC = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reopenTimerRef = useRef<number | null>(null);
+  const lastScrollY = useRef(0);
 
   const { sendMessage: sendApiMessage, isLoading: apiLoading } = useChatApi();
 
@@ -134,8 +136,10 @@ const ChatContainer: React.FC = () => {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    handleSendMessage(suggestion);
+    // Close suggestions immediately
     setShowSuggestions(false);
+    // Send the message
+    handleSendMessage(suggestion);
   };
 
   // Clears timer if component unmounts
@@ -147,22 +151,47 @@ const ChatContainer: React.FC = () => {
     };
   }, []);
 
-  // Handle scroll to make chat bar sticky
+  // Handle scroll to make chat bar sticky and hide/show on scroll
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      const currentScrollY = window.scrollY;
+
+      // Make sticky after scrolling 20px
+      if (currentScrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
+
+      // Only apply smart scrolling when chat is NOT expanded
+      if (!isExpanded) {
+        // Hide on scroll down, show on scroll up
+        if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+          // Scrolling down and past 100px
+          setIsVisible(false);
+        } else if (currentScrollY < lastScrollY.current) {
+          // Scrolling up
+          setIsVisible(true);
+        }
+
+        // Always show at the very top
+        if (currentScrollY < 20) {
+          setIsVisible(true);
+        }
+      } else {
+        // When chat is expanded, always keep it visible
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isExpanded]);
 
   return (
     <>
@@ -185,8 +214,8 @@ const ChatContainer: React.FC = () => {
         <div
           ref={panelRef}
           className={`fixed item-center shadow-lg shadow-orange-400/40 z-50 rounded-lg flex flex-col items-center justify-center transition-all duration-500 ease-in-out transform origin-top ${
-            isScrolled ? 'top-0' : 'top-4'
-          } ${isExpanded
+            isScrolled ? 'top-0 duration-300' : 'lg:top-10 md:top-5 sm:top-5 top-4'
+          } ${!isVisible ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'} ${isExpanded
               ? 'w-[90%] lg:max-w-6xl h-[90vh] left-1/2 -translate-x-1/2 overflow-visible'
               : `w-[90%] lg:max-w-6xl left-1/2 -translate-x-1/2 overflow-visible ${isScrolled ? 'lg:mt-1 mt-2' : 'lg:mt-3 mt-10'}`
             }`}
@@ -202,10 +231,8 @@ const ChatContainer: React.FC = () => {
           <div className="relative w-full">
             {/* Suggestions dropdown on Default */}
             {showSuggestions && !isExpanded && (
-              <div 
+              <div
                 className="absolute top-full left-0 right-0 mb-2 z-[60]"
-                onMouseEnter={() => setShowSuggestions(true)}
-                onMouseLeave={() => setShowSuggestions(false)}
               >
                 <SuggestedResponses onSuggestionClick={handleSuggestionClick} />
               </div>
@@ -223,10 +250,8 @@ const ChatContainer: React.FC = () => {
 
             {/* Suggestions dropdown when expanded */}
             {showSuggestions && isExpanded && (
-              <div 
+              <div
                 className="absolute bottom-full left-0 right-0 mt-2 z-[60]"
-                onMouseEnter={() => setShowSuggestions(true)}
-                onMouseLeave={() => setShowSuggestions(false)}
               >
                 <SuggestedResponses onSuggestionClick={handleSuggestionClick} />
               </div>
