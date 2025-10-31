@@ -54,7 +54,6 @@ function index() {
         {/* <ChatbotWidget />  */}
         {/* <ChatbotDock /> */}
       {/* </section> */}
-      </section>
     </div>
   )
 }
