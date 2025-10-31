@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import NavbarDemo from './Components/Navbar'
 import HeroComponent from './Components/HeroSection'
-// import { ChatBot } from './Components/ChatBot/chatBot'
 import { Footer } from './Components/Footer'
-// import LiquidEther from './Components/ui/LiquidEther'
 import { BlogPage } from './pages/blog/BlogPage'
 import PrivacyPolicy from './Components/Privacy-Policy/privacyPolicy'
 import TermsAndCondition from './Components/TermsAndCondition/TermsAndCondition'
@@ -15,6 +13,7 @@ import { AdminAuthProvider } from './Admin/context/AdminAuthContext'
 import { AdminThemeProvider } from './Admin/context/AdminThemeContext'
 import { AdminRouter } from './Admin/components/AdminRouter'
 import { validateConfig } from './Admin/utils/config'
+import { ChatProvider } from './contexts/ChatContext'
 
 function App() {
   const pathname = useMemo(() => {
@@ -28,12 +27,27 @@ function App() {
   const isTermsRoute = pathname.startsWith('/terms-and-conditions')
   const isCareerRoute = pathname.startsWith('/careers')
   const [demoOpen, setDemoOpen] = useState(false)
+  const openChatRef = useRef<((context: string, message: string) => void) | null>(null)
 
   useEffect(() => {
     const unsubscribe = subscribeToDemoModal(({ open }) => {
       setDemoOpen(open)
     })
     return unsubscribe
+  }, [])
+
+  // Handle chat opening from buttons
+  const handleOpenChat = useCallback((context: string, message: string) => {
+    if (openChatRef.current) {
+      openChatRef.current(context, message);
+    } else {
+      console.warn('[App] Chat not ready yet, retrying...');
+      setTimeout(() => {
+        if (openChatRef.current) {
+          openChatRef.current(context, message);
+        }
+      }, 500);
+    }
   }, [])
 
   // Scroll to top on page refresh and route change
@@ -82,14 +96,15 @@ function App() {
 
   // Main app routes
   return (
-    <div className='bg-black'>
-      <NavbarDemo />
-      {isBlogRoute ? <BlogPage /> : isPrivacyRoute ? <PrivacyPolicy /> : isTermsRoute ? <TermsAndCondition /> : isCareerRoute ? <Career /> : <HeroComponent />}
-      {/* <ChatBot /> */}
-      <Footer />
-      <ScrollToTop />
-      <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
-    </div>
+    <ChatProvider onOpenChat={handleOpenChat}>
+      <div className='bg-black'>
+        <NavbarDemo onChatReady={(openChat) => { openChatRef.current = openChat; }} />
+        {isBlogRoute ? <BlogPage /> : isPrivacyRoute ? <PrivacyPolicy /> : isTermsRoute ? <TermsAndCondition /> : isCareerRoute ? <Career /> : <HeroComponent />}
+        <Footer />
+        <ScrollToTop />
+        <DemoModal open={demoOpen} onClose={() => setDemoOpen(false)} />
+      </div>
+    </ChatProvider>
   )
 }
 

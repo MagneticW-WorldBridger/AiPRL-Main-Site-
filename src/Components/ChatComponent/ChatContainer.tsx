@@ -22,7 +22,11 @@ export interface Message {
   isError?: boolean;
 }
 
-const ChatContainer: React.FC = () => {
+interface ChatContainerProps {
+  onReady?: (openChat: (context: string, message: string) => void) => void;
+}
+
+const ChatContainer: React.FC<ChatContainerProps> = ({ onReady }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -31,6 +35,7 @@ const ChatContainer: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reopenTimerRef = useRef<number | null>(null);
+
   const lastScrollY = useRef(0);
 
   const { sendMessage: sendApiMessage, isLoading: apiLoading } = useChatApi();
@@ -141,6 +146,28 @@ const ChatContainer: React.FC = () => {
     // Send the message
     handleSendMessage(suggestion);
   };
+
+  // Function to open chat with context from buttons
+  const openChatWithContext = React.useCallback((context: string, autoMessage: string) => {
+    console.log('[ChatContainer] Opening with context:', context, 'Message:', autoMessage);
+    
+    // Open and expand the chat
+    setIsOpen(true);
+    setIsExpanded(true);
+    
+    // Auto-send the contextual message after a brief delay
+    setTimeout(() => {
+      handleSendMessage(autoMessage);
+    }, 500);
+  }, []);
+
+  // Expose the openChatWithContext function to parent via onReady callback
+  useEffect(() => {
+    if (onReady && !hasCalledOnReady.current) {
+      onReady(openChatWithContext);
+      hasCalledOnReady.current = true;
+    }
+  }, [onReady, openChatWithContext]);
 
   // Clears timer if component unmounts
   useEffect(() => {

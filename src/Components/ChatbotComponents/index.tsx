@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useChatBackend } from "../../hooks/useChatBackend";
 import MessageIcon from "./MessageIcon";
 import IconClickedShow from "./IconClickedShow";
 import FullChatSystem from "./FullChatSystem";
 import FullWidthChatWidget from "./FullWidthChatWidget";
 
-const ChatbotDock = () => {
+interface ChatbotDockProps {
+  onReady?: (openChat: (context: string, message: string) => void) => void;
+}
+
+const ChatbotDock = ({ onReady }: ChatbotDockProps) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [isFullWidthVisible, setIsFullWidthVisible] = useState(false);
+  const [entryContext, setEntryContext] = useState<string | null>(null);
 
   const { messages, isLoading, isTyping, sendMessage } = useChatBackend();
+  const hasCalledOnReady = useRef(false);
 
   const handleMessageIconClick = () => {
     if (isChatVisible || isFullWidthVisible) {
@@ -44,6 +50,30 @@ const ChatbotDock = () => {
     setIsFullWidthVisible(false);
     setIsChatVisible(true);
   };
+
+  // Function to open chat with context - exposed to parent
+  const openChatWithContext = useCallback((context: string, autoMessage: string) => {
+    console.log('[ChatbotDock] Opening with context:', context, 'Message:', autoMessage);
+    setEntryContext(context);
+    
+    // Open full-width chat for button clicks (better UX)
+    setIsPopupVisible(false);
+    setIsChatVisible(false);
+    setIsFullWidthVisible(true);
+    
+    // Auto-send the contextual message
+    setTimeout(() => {
+      sendMessage(autoMessage);
+    }, 500); // Small delay for smooth animation
+  }, [sendMessage]);
+
+  // Expose the openChatWithContext function to parent
+  useEffect(() => {
+    if (onReady && !hasCalledOnReady.current) {
+      onReady(openChatWithContext);
+      hasCalledOnReady.current = true;
+    }
+  }, [onReady, openChatWithContext]);
 
   return (
     <>

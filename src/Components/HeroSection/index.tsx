@@ -50,11 +50,11 @@ function index() {
       {/* <section id="resources" className="scroll-mt-28">
         <Newsletter />
       </section> */}
-
       {/* <section id="contact" className="scroll-mt-28"> */}
         {/* <ChatbotWidget />  */}
         {/* <ChatbotDock /> */}
       {/* </section> */}
+      </section>
     </div>
   )
 }
